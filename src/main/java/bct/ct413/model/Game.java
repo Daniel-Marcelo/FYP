@@ -13,7 +13,7 @@ public class Game {
 	private String status;
 	
 	
-	/*
+	/*Test COMMENT
 	 * Not fields in database
 	 */
 	private List<User> usersInGame = new ArrayList<User>();
