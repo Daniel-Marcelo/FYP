@@ -1,0 +1,81 @@
+<beans	
+	xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+  
+ <!-- telling container to take care of annotations stuff -->  
+ <context:annotation-config />  
+  
+ <!-- declaring base package -->  
+ <context:component-scan base-package="bct.ct413" />  
+ 
+ <!-- adding view resolver to show jsp's  -->  
+ <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+  <property name="prefix" value="/WEB-INF/views/" />  
+  <property name="suffix" value=".jsp" />  
+ </bean>  
+ 
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:annotation-driven />
+  
+ <!-- declare beans -->  
+ <bean id="userDAO" class="bct.ct413.dao.UserDAOImpl" />  
+ <bean id = "tradeDAO" class = "bct.ct413.dao.TradeDAOImpl"/> 
+ <bean id = "tradeTransactionDAO" class = "bct.ct413.dao.TradeTransactionDAOImpl"/> 
+  <bean id = "gameDAO" class = "bct.ct413.dao.GameDAOImpl"/> 
+ 
+ 
+   
+  
+  
+ <!-- declare datasource bean -->  
+ <bean id="dataSource"  
+  class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+  <property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+  <property name="url" value="jdbc:mysql://danu6.it.nuigalway.ie:3306/mydb1318" />  
+  <property name="username" value="mydb1318md" />  
+  <property name="password" value="qe5qyc" />  
+ </bean>  
+ 
+ 
+ <!-- If request parameter "targetUrl" is existed, then forward to this url --> 
+  <!-- For update login form -->
+  <bean id="savedRequestAwareAuthenticationSuccessHandler"
+	class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+	<property name="targetUrlParameter" value="targetUrl" />
+  </bean>
+  
+  
+  
+  
+  
+  
+  <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <!-- SMTP settings -->
+    <property name="host" value="smtp.gmail.com." />
+    <property name="port" value="587" />
+    <property name="username" value="danielm.mckee@gmail.com" />
+    <property name="password" value="tommypr28" />
+ 
+    <property name="javaMailProperties">
+        <!-- additional properties specific to JavaMail -->
+        <props>
+            <prop key="mail.transport.protocol">smtp</prop>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.starttls.enable">true</prop>
+        </props>
+    </property>
+</bean>
+  
+  
+</beans>
+
+<!-- http://www.springframework.org/schema/security  -->
