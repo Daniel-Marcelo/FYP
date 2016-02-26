@@ -11,6 +11,7 @@ public interface TradeDAO {
 
 	int addNewOrder(Trade trade);
 
+	//This needs to be gotten rid of, already in userDAO
 	String getSharesOwned(String email);
 
 	List<Trade> getActiveLimitOrdersForUser(String email);
@@ -18,6 +19,9 @@ public interface TradeDAO {
 	double updateLimitOrders(List<Trade> ordersToExecute);
 
 	void addLimitOrderDetails(LimitOrder limitOrder);
+
+	List<Trade> getPortfolioTransactionDetails(
+			String activeUserEmail);
 
 	
 	

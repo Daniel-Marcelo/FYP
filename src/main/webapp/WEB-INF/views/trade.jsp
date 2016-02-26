@@ -67,7 +67,7 @@
 
 		var gameID = document.getElementById("gameID").value;
 		console.log("GAME ID: " + gameID.value);
-		var games = JSON.parse('${gamesForUserJSON}');
+		var games = JSON.parse('${gameBalanceHeaderJSON}');
 		console.log("GAMES: " + JSON.stringify(games));
 		for (i = 0; i < games.length; i++) {
 			console.log("Comparing: " + games[i].gameID + " and " + gameID);

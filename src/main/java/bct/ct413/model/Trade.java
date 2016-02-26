@@ -14,6 +14,8 @@ public class Trade {
 	private String status;
 	private int gameID;
 	
+	private TradeTransaction transaction = new TradeTransaction();
+	
 	
 	public int getTradeID() {
 		return tradeID;
@@ -77,6 +79,12 @@ public class Trade {
 	}
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
+	}
+	public TradeTransaction getTransaction() {
+		return transaction;
+	}
+	public void setTransaction(TradeTransaction transaction) {
+		this.transaction = transaction;
 	}
 
 }

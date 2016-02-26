@@ -144,26 +144,28 @@ function initialiseDataTable(tableID){
 
 <body>
 
-<!-- <div id = "gameButtons" align = "center" >
+	<!-- <div id = "gameButtons" align = "center" >
  -->
-	<h4 style = "color: green;"> ACTIVE</h4>
-	<h4 style = "color: red;">ENDED</h4>
+	<h4 style="color: green;">ACTIVE</h4>
+	<h4 style="color: red;">ENDED</h4>
 	<c:forEach var="game" items="${myGames}">
 
 
-	<c:if test="${game.getStatus() == 'Active'}">
+		<c:if test="${game.getStatus() == 'Active'}">
 
-		<button style="display: block; width: 100%; color: green; border: 2px green solid;" type="submit"
-			class="btn blue-submit" id="game${game.getGameID()}"
-			onClick="getRankings(${game.getGameID()});">${game.getGameName()}</button>
-	</c:if>
-	
+			<button
+				style="display: block; width: 100%; color: green; border: 2px green solid;"
+				type="submit" class="btn blue-submit" id="game${game.getGameID()}"
+				onClick="getRankings(${game.getGameID()});">${game.getGameName()}</button>
+		</c:if>
+
 		<c:if test="${game.getStatus() == 'Ended'}">
 
-		<button style="display: block; width: 100%; color: red; border: 2px red solid;" type="submit"
-			class="btn blue-submit" id="game${game.getGameID()}"
-			onClick="getRankings(${game.getGameID()});">${game.getGameName()}</button>
-	</c:if>
+			<button
+				style="display: block; width: 100%; color: red; border: 2px red solid;"
+				type="submit" class="btn blue-submit" id="game${game.getGameID()}"
+				onClick="getRankings(${game.getGameID()});">${game.getGameName()}</button>
+		</c:if>
 		<div style="display: none; padding: 5px;"
 			id="rankingsTableDiv${game.getGameID()}">
 
@@ -184,13 +186,6 @@ function initialiseDataTable(tableID){
 						<th>Balance</th>
 					</tr>
 				</thead>
-				<tfoot>
-					<tr>
-						<th>Name</th>
-						<th>Country</th>
-						<th>Balance</th>
-					</tr>
-				</tfoot>
 				<tbody>
 					<c:forEach var="user" items="${game.getUsersInGame()}">
 
@@ -210,6 +205,7 @@ function initialiseDataTable(tableID){
 		</div>
 
 	</c:forEach>
-<!-- </div>
- --></body>
+	<!-- </div>
+ -->
+</body>
 </html>

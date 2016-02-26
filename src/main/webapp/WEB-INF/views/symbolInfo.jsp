@@ -4,10 +4,12 @@
 <html>
     <head>
     <meta charset="utf-8">
+       	   	<script src="resources/js/jquery.js"></script> 
+       	   	
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
    	<script src="resources/js/stock-chart.js"></script> 
    	<script src="resources/js/numeral.min.js"></script> 
-   	   	<script src="resources/js/jquery.js"></script> 
+
    	
    	<link rel="stylesheet" href="resources/css/bootstrap.css">
    	   	<link rel="stylesheet" href="resources/css/symbolInfo.css">

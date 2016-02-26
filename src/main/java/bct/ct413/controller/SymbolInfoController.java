@@ -54,6 +54,8 @@ public class SymbolInfoController {
 		System.out.println("TO: "+sdf.format(to.getTime()));
 		
 		yahoofinance.Stock stock = YahooFinance.get(value, from, to,Interval.DAILY);
+	//	System.out.println("Stock exchange for: "+value+ " is "+stock.getStockExchange() +stock.getStats();
+		
 		Gson gson = new Gson();
 		
 		String json2 = gson.toJson(stock);
