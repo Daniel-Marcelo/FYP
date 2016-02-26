@@ -2,10 +2,13 @@
  * 
 */
 /* var variable  = document.googleHistQuotes;
-*/ var dt;
+*/ 
+var dt;
 var intervalID = 0;
-	google.charts.load('current', {'packages':['annotationchart']});
-google.charts.setOnLoadCallback(drawChart); 		
+
+google.charts.load('43', {'packages':['annotationchart']});
+google.charts.setOnLoadCallback(drawChart);
+		
 
 //Function to draw blank chart
 function drawChart() {
@@ -16,7 +19,7 @@ function drawChart() {
 	data.addColumn('number', "");
 	data.addRows([ [ new Date(), 500] ])
 
-	wrapper = new google.visualization.ChartWrapper({
+	dt = wrapper = new google.visualization.ChartWrapper({
 		chartType : 'AnnotationChart',
 		dataTable : data,
 		options : {
@@ -26,7 +29,6 @@ function drawChart() {
 	});
 
 	wrapper.draw();
-	dt = wrapper;
 }
 
 //Draws chart of a symbol entered from user, then updates the information table
@@ -34,8 +36,6 @@ function testMethod(){
 	
     var myLoad = document.getElementById("circularG");
     myLoad.style.visibility = "visible";
-	console.log("Clearing ID: "+intervalID);
-	
 	window.clearInterval(intervalID);
 	
 	var symbolInputField = document.getElementById("companySymbol");

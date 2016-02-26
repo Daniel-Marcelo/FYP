@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 public class TradeDetails {
 	
-	/*
+	/*	
 	 * Used in trade table
 	 */
 	private int tradeID;
@@ -21,12 +21,6 @@ public class TradeDetails {
 	 */
 	private int quantity;
 	
-	public int getGameID() {
-		return gameID;
-	}
-	public void setGameID(int gameID) {
-		this.gameID = gameID;
-	}
 	/*
 	 * Only for market orders
 	 */
@@ -157,6 +151,13 @@ public class TradeDetails {
 		lo.setDurationDays(durationDays);
 		
 		return lo;
+	}
+	
+	public int getGameID() {
+		return gameID;
+	}
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
 	}
 
 }

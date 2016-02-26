@@ -22,8 +22,9 @@ public interface UserDAO {
 	public void updateStocksOwned(Trade trade, int quantity);
 	public void addToDefaultGame(User newUser);
 	public List<UserGameParticipation> getRelevantGames(String email);
-	public List<Game> getGamesForUser(User user);
+	public List<Game> getGamesForUser(String email);
 	public List<User> getGlobalRankings();
 	public List<StockOwned> getStocksOwned(String activeUserEmail);
+	public List<Integer> getGameIDsForUser(String activeUserEmail);
 
 }

@@ -235,7 +235,7 @@ height: 30%;
 /* background-color: yellow; 
  */position: relative; 
 display: inline-block; 
-visibility: hidden;
+visibility: visible;
 }
 
 #stockInfoArea{
@@ -246,6 +246,6 @@ margin: 5.3% 20% 0 0;
 position: relative; 
 display: inline-block; 
 float: right;
-visibility: hidden;
+visibility: visible;
 
 }

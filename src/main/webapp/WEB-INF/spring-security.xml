@@ -21,6 +21,10 @@
  		<intercept-url pattern="/home**" access="hasRole('ROLE_USER')" />
   		<intercept-url pattern="/symbolInfoPage**" access="hasRole('ROLE_USER')" />
   		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
+  		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
+  		<intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" />
+  		
+  		
   		
 		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
 		

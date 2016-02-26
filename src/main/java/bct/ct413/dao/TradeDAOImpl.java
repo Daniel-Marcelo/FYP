@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import bct.ct413.model.LimitOrder;
 import bct.ct413.model.Trade;
+import bct.ct413.model.TradeTransaction;
 
 import com.google.gson.Gson;
 
@@ -290,5 +291,49 @@ public class TradeDAOImpl implements TradeDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<Trade> getPortfolioTransactionDetails(
+			String activeUserEmail) {
+		Connection conn;
+		
+		List<Trade> myTransactions = new ArrayList<Trade>();
+		try {
+			conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn
+					.prepareStatement("SELECT email,  symbol, date, buy_or_sell, trade_type, fyp_trade.transaction_id, status, game_id, share_price, quantity, total "
+							+ "FROM fyp_trade INNER JOIN  fyp_trade_transaction ON fyp_trade.transaction_id = fyp_trade_transaction.transaction_id "
+							+ "WHERE email = ?");
+			stmt1.setString(1, activeUserEmail);
+			
+			
+			ResultSet rs  = stmt1.executeQuery();
+			
+			while(rs.next()){
+				
+				Trade trade = new Trade();
+				trade.setSymbol(rs.getString("symbol"));
+				trade.setDate(rs.getDate("date"));
+				trade.setBuyOrSell(rs.getString("buy_or_sell"));
+				trade.setTradeType(rs.getString("trade_type"));
+				trade.setTransactionID(rs.getInt("transaction_id"));
+				trade.setStatus(rs.getString("status"));
+				trade.setGameID(rs.getInt("game_id"));
+				
+				TradeTransaction transaction = trade.getTransaction();
+
+				transaction.setQuantity(rs.getInt("quantity"));
+				transaction.setSharePrice(rs.getDouble("share_price"));
+				transaction.setTotal(rs.getDouble("total"));
+				myTransactions.add(trade);
+				
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return myTransactions;
+
 	}
 }

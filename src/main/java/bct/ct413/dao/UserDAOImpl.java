@@ -141,13 +141,9 @@ public class UserDAOImpl implements UserDAO {
 			rs.next();
 
 			double balance = rs.getDouble(1);
-			System.out.println("Being retrieved every X seconds: " + balance
-					+ " from game: " + gameID + " for user: " + email);
 			stmt1.close();
 			conn.close();
 
-			System.out.println("\n\nReturning balance for user: " + email
-					+ ": " + balance);
 			return balance;
 
 		} catch (SQLException e) {
@@ -265,13 +261,10 @@ public class UserDAOImpl implements UserDAO {
 			stmt1.setDouble(3, defaultCash);
 
 			stmt1.execute();
-
 			stmt1.close();
 			conn.close();
 
-		} catch (SQLException e) {	e.printStackTrace();
-		}
-
+		} catch (SQLException e) {	e.printStackTrace();}
 	}
 
 	@Override
@@ -319,21 +312,16 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public List<Game> getGamesForUser(User user) {
+	public List<Game> getGamesForUser(String email) {
 
 		List<Game> games = new ArrayList<Game>();
 		try {
+			List<Integer> gameIDs = getGameIDsForUser(email);
 			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT game_id FROM fyp_user_game_participation WHERE email = ?");
-			stmt2.setString(1, user.getEmail());
-
-			ResultSet rs2 = stmt2.executeQuery();
-
-			while (rs2.next()) {
+			
+			for( int gameID : gameIDs) {
 				
-				int gameID = rs2.getInt("game_id");
+				
 				PreparedStatement stmt1 = conn
 						.prepareStatement("SELECT * FROM fyp_game WHERE game_id = ?");
 				stmt1.setInt(1, gameID);
@@ -361,7 +349,11 @@ public class UserDAOImpl implements UserDAO {
 					List<User> usersInGame = getListOfUsersInThisGame(game);
 					game.setUsersInGame(usersInGame);
 				}
+				rs.close();
+				stmt1.close();
 			}
+
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -461,20 +453,21 @@ public class UserDAOImpl implements UserDAO {
 			while(rs.next()){
 				StockOwned stockOwned = new StockOwned();
 				stockOwned.setEmail(activeUserEmail);
-				stockOwned.setGameID(rs.getInt("game_id"));
 				stockOwned.setQuantity(rs.getInt("quantity"));
 				stockOwned.setSymbol(rs.getString("symbol"));
 				stockOwned.setAvgPurchPrice(rs.getDouble("avg_purch_price"));
+				stockOwned.setGameID(rs.getInt("game_id"));
 
 				
-				
+				System.out.println("SYMBOL IS BREAKING: "+stockOwned.getSymbol());
 				yahoofinance.Stock stock = YahooFinance.get(stockOwned.getSymbol());
+				System.out.println(stock.getQuote());
+				System.out.println(stock.getStats());
 
 				stockOwned.setCurrentPrice(stock.getQuote().getPrice().doubleValue());
 				stockOwned.setTotal(stockOwned.getCurrentPrice() * (double) stockOwned.getQuantity());
 				stockOwned.setGainOrLoss(stockOwned.getTotal()-stockOwned.getAvgPurchPrice()*(double)stockOwned.getQuantity());
 				stockOwned.setCompanyName(stock.getName());
-
 				
 				System.out.println("Symbol: "+stockOwned.getCompanyName()+ "\nWith the current price: "+ stockOwned.getCurrentPrice()+" and quantity: "+stockOwned.getQuantity()+" the total is: "+stockOwned.getTotal());
 				System.out.println("The avg purch price is: "+stockOwned.getAvgPurchPrice()+" with the same quantity equals a total of: "+(stockOwned.getAvgPurchPrice()*(double)stockOwned.getQuantity()));
@@ -485,6 +478,31 @@ public class UserDAOImpl implements UserDAO {
 			e.printStackTrace();
 		}
 		return stocksOwned;
+	}
+
+	@Override
+	public List<Integer> getGameIDsForUser(String activeUserEmail) {
+		List<Integer> gameIDs = new ArrayList<Integer>();
+		try {
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt2 = conn
+					.prepareStatement("SELECT game_id FROM fyp_user_game_participation WHERE email = ?");
+			stmt2.setString(1, activeUserEmail);
+
+			ResultSet rs2 = stmt2.executeQuery();
+			
+			while (rs2.next())
+				gameIDs.add(rs2.getInt("game_id"));
+			
+			rs2.close();
+			stmt2.close();
+			conn.close();
+							
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		return gameIDs;
 	}
 
 }
