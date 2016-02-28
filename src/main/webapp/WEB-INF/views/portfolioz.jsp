@@ -42,20 +42,11 @@ function updateStockTableForGame(gameID){
 								]).draw(false); 
 					
 
-/* 					if(stocks[index].gainOrLoss < 0 )
-						document.getElementsByClassName("gainOrLoss")[rowNum].className = "RED";
-					if(stocks[index].gainOrLoss > 0 )
-						document.getElementsByClassName("gainOrLoss")[rowNum].className = "GREEN";
-					else
-						document.getElementsByClassName("gainOrLoss")[rowNum].className = "BLACK";
 
-					rowNum++; */
 			}
 		}
 	}
-	
-/* 	var x = document.getElementsByClassName("gainOrLoss");
-	console.log("X: "+x[0].innerHTML); */
+
 }
 
 function updateTransactionTable(gameID){

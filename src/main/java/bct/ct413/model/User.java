@@ -1,19 +1,19 @@
 package bct.ct413.model;
 
-
-public class User {
+public class User implements Comparable<User> {
 
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
 	private String country;
-	
+
 	/*
 	 * Not field in DB
 	 */
 	private String retypedPassword;
 	private double balance;
+	private double curAccVal;
 
 	public String getEmail() {
 		return email;
@@ -70,6 +70,24 @@ public class User {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
-	
+
+	public double getCurAccVal() {
+		return curAccVal;
+	}
+
+	public void setCurAccVal(double curAccVal) {
+		this.curAccVal = curAccVal;
+	}
+
+	@Override
+	public int compareTo(User o) {
+
+		if (this.curAccVal < o.getCurAccVal())
+			return -1;
+		if (this.curAccVal > o.getCurAccVal())
+			return 1;
+		else
+			return 0;
+	}
+
 }
