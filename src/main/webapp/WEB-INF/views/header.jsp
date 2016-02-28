@@ -19,8 +19,8 @@
 
 $(document).ready(function() {
 	
-	changeBalanceHeader();
-	setInterval(function() {autoUpdateBalance();}, 10000);
+/* 	changeBalanceHeader();
+	setInterval(function() {autoUpdateBalance();}, 10000); */
 	
 });
 	function autoUpdateBalance() {
@@ -66,7 +66,7 @@ $(document).ready(function() {
 
 
 <body>
-	<c:url value="/j_spring_security_logout" var="logoutUrl" />
+	<c:url value="j_spring_security_logout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />

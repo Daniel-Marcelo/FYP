@@ -2,10 +2,12 @@ package bct.ct413.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import bct.ct413.dao.GameDAO;
 import bct.ct413.dao.UserDAO;
 import bct.ct413.model.User;
 
@@ -27,6 +30,9 @@ public class AccessController {
 	@Autowired
 	private UserDAO userDAO;
 	
+	@Autowired
+	private GameDAO gameDAO;
+	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
@@ -36,7 +42,16 @@ public class AccessController {
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
-
+			
+			//login form for update, if login error, get the targetUrl from session again.
+			String targetUrl = getRememberMeTargetUrlFromSession(request);
+			System.out.println("Target URL: "+targetUrl);
+			if(StringUtils.hasText(targetUrl)){
+				System.out.println("IN THIS IF LOOP");
+				model.addObject("targetUrl", targetUrl);
+				model.addObject("loginUpdate", true);
+			}
+			
 		}
 
 		if (logout != null) {
@@ -47,6 +62,18 @@ public class AccessController {
 		model.addObject("user", user);
 		return model;
 
+	}
+	
+	/**
+	 * get targetURL from session
+	 */
+	private String getRememberMeTargetUrlFromSession(HttpServletRequest request){
+		String targetUrl = "";
+		HttpSession session = request.getSession(false);
+		if(session!=null){
+			targetUrl = session.getAttribute("targetUrl")==null?"":session.getAttribute("targetUrl").toString();
+		}
+		return targetUrl;
 	}
 	
 	@RequestMapping(value="/loginfailed", method = RequestMethod.GET)

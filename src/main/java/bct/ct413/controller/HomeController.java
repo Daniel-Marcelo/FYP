@@ -2,17 +2,20 @@ package bct.ct413.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,6 +41,7 @@ import bct.ct413.model.Trade;
 import bct.ct413.model.TradeDetails;
 import bct.ct413.model.TradeTransaction;
 import bct.ct413.model.User;
+import bct.ct413.model.UserGameAccountValHistory;
 import bct.ct413.model.UserGameParticipation;
 
 import com.google.gson.Gson;
@@ -60,6 +64,78 @@ public class HomeController {
 	@Autowired
 	private TradeTransactionDAO tradeTransactionDAO;
 
+	
+	
+	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
+	public ModelAndView adminPage() {
+
+		ModelAndView model = new ModelAndView();
+		model.addObject("title", "Spring Security Remember Me");
+		model.addObject("message", "This page is for ROLE_ADMIN only!");
+		model.setViewName("admin");
+
+		return model;
+
+	}
+	
+	@RequestMapping(value = "/admin/update**", method = RequestMethod.GET)
+	public ModelAndView updatePage(HttpServletRequest request) {
+
+		ModelAndView model = new ModelAndView();
+
+		if (isRememberMeAuthenticated()) {
+			//send login for update
+			setRememberMeTargetUrlToSession(request);
+			model.addObject("loginUpdate", true);
+			model.setViewName("redirect:/login");
+			model.addObject("user", new User());
+
+		} else {
+			model.setViewName("update");
+		}
+
+		return model;
+
+	}
+	
+	/**
+	 * If the login in from remember me cookie, refer
+	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl
+	 */
+	private boolean isRememberMeAuthenticated() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return false;
+		}
+
+		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
+	}
+	
+	/**
+	 * save targetURL in session
+	 */
+	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if(session!=null){
+			session.setAttribute("targetUrl", "/admin/update");
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value = "portfolio", method = RequestMethod.GET)
 	public ModelAndView portfolio() {
 
@@ -103,22 +179,12 @@ public class HomeController {
 
 	}
 
-	/*
-	 * @RequestMapping (value = "getGameDataForUser/{gameID}", method =
-	 * RequestMethod.GET) public @ResponseBody String
-	 * getGameDetails(@PathVariable int gameID){
-	 * 
-	 * System.out.println("Ajax call"); List<StockOwned> stocksForGame =
-	 * userDAO.getStocksOwned(getActiveUserEmail()); return new
-	 * Gson().toJson(stocksForGame);
-	 * 
-	 * }
-	 */
 
 	@RequestMapping(value = "joinGame", method = RequestMethod.POST)
 	public ModelAndView joinGame(@RequestParam("joinCode") String joinCode) {
 
-		gameDAO.addUserToGame(joinCode, getActiveUserEmail());
+		
+		userDAO.addUserToGame(joinCode, getActiveUserEmail());
 		return new ModelAndView("trade").addObject("trade", new TradeDetails());
 
 	}
@@ -150,6 +216,7 @@ public class HomeController {
 
 	@RequestMapping(value = { "/home", "/" }, method = RequestMethod.GET)
 	public ModelAndView listContact(ModelAndView model) throws IOException {
+
 
 		User user = userDAO.getUserDetails(getActiveUserEmail());
 
@@ -189,18 +256,32 @@ public class HomeController {
 		List<Game> games = userDAO.getGamesForUser(getActiveUserEmail());
 		yahoofinance.Stock dow = YahooFinance.get("^DJI", from, to,Interval.DAILY);
 		yahoofinance.Stock sAndP = YahooFinance.get("^GSPC", from, to,Interval.DAILY);
-
+		
+		List<UserGameAccountValHistory> balancesForGames = userDAO.getAllBalanceHistory(getActiveUserEmail());
+		Set<Integer> gameIDs =getGameIDs(games);
 
 		
 		ModelAndView model = new ModelAndView("dashboard");
 		model.addObject("myGames", games);
 		model.addObject("DOW", new Gson().toJson(dow));
 		model.addObject("sAndP", new Gson().toJson(sAndP));
+		model.addObject("balanceHistory", new Gson().toJson(balancesForGames));
+		model.addObject("gameIDs", new Gson().toJson(gameIDs));
+
 
 		return model;
 
 		
 		
+	}
+
+	private Set<Integer> getGameIDs(List<Game> games) {
+		 Set<Integer> gameIDs = new HashSet<Integer>();
+		 
+		 for(Game g: games)
+			 gameIDs.add(g.getGameID());
+		 
+		return gameIDs;
 	}
 
 	@RequestMapping(value = "/updateUserDetails", method = RequestMethod.POST)
@@ -295,7 +376,8 @@ public class HomeController {
 		}
 		newGame.setCreatorEmail(getActiveUserEmail());
 
-		gameDAO.createGame(newGame);
+		int gameID = gameDAO.createGame(newGame);
+		userDAO.addToAccValHistory(gameID,newGame.getStartingCash(), getActiveUserEmail());
 
 		ModelAndView model = new ModelAndView("redirect:/home");
 

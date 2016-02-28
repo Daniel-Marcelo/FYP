@@ -17,6 +17,8 @@ public class Game {
 	 * Not fields in database
 	 */
 	private List<User> usersInGame = new ArrayList<User>();
+	private DashboardUserDetails board;
+	
 	
 	
 	public void printGameDetails(){
@@ -87,6 +89,12 @@ public class Game {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public DashboardUserDetails getBoard() {
+		return board;
+	}
+	public void setBoard(DashboardUserDetails board) {
+		this.board = board;
 	}
 
 }

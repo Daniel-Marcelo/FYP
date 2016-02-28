@@ -53,7 +53,7 @@ td {
 	<%@include file="header.jsp"%>
 
 
-	<%--     	<sec:authorize access="isRememberMe()">
+	    	<sec:authorize access="isRememberMe()">
 		<h2># This user is login by "Remember Me Cookies".</h2>
 	</sec:authorize>
 

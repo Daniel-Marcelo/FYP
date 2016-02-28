@@ -85,7 +85,7 @@ function login(){
 		</c:if>
 
 		<form:form id = "loginForm" name="loginForm"
-			action="auth/login_check?targetUrl=${targetUrl}" method="post"
+			action="/FYP/auth/login_check?targetUrl=${targetUrl}" method="post"
 			modelAttribute="user">
 			<table>
 				<tr>
@@ -101,13 +101,13 @@ function login(){
 					<td><form:input path="password" type="password"
 							class="form-field" placeholder="Password.." /></td>
 				</tr>
-
+<c:if test="${empty loginUpdate}">
 				<tr>
 
-					<td align="center">Remember Me: <input type="checkbox"
+					<td align="center">Remember Me <input type="checkbox"
 						name="remember-me" /></td>
 				</tr>
-				
+		</c:if>		
 				<tr>
 
 					<td align="center"><a id="myLink" href="#" onclick="resetPassword();">Forgot Password</a></td>
