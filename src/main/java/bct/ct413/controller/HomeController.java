@@ -1,6 +1,7 @@
 package bct.ct413.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.Interval;
 import bct.ct413.dao.GameDAO;
@@ -66,72 +68,36 @@ public class HomeController {
 
 	
 	
-	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
-	public ModelAndView adminPage() {
 
-		ModelAndView model = new ModelAndView();
-		model.addObject("title", "Spring Security Remember Me");
-		model.addObject("message", "This page is for ROLE_ADMIN only!");
-		model.setViewName("admin");
-
+	
+	
+	
+	@RequestMapping(value = "watchlist", method = RequestMethod.GET)
+	public ModelAndView watchList() {
+		System.out.println("IN HERE NOW");
+		ModelAndView model = new ModelAndView("watchlist");
+		List<Stock> stocksOnWatch = userDAO.getStocksOnWatch(getActiveUserEmail());
+		model.addObject("stocks", stocksOnWatch);
 		return model;
-
-	}
-	
-	@RequestMapping(value = "/admin/update**", method = RequestMethod.GET)
-	public ModelAndView updatePage(HttpServletRequest request) {
-
-		ModelAndView model = new ModelAndView();
-
-		if (isRememberMeAuthenticated()) {
-			//send login for update
-			setRememberMeTargetUrlToSession(request);
-			model.addObject("loginUpdate", true);
-			model.setViewName("redirect:/login");
-			model.addObject("user", new User());
-
-		} else {
-			model.setViewName("update");
-		}
-
-		return model;
-
-	}
-	
-	/**
-	 * If the login in from remember me cookie, refer
-	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl
-	 */
-	private boolean isRememberMeAuthenticated() {
-
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null) {
-			return false;
-		}
-
-		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-	}
-	
-	/**
-	 * save targetURL in session
-	 */
-	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
-		HttpSession session = request.getSession(false);
-		if(session!=null){
-			session.setAttribute("targetUrl", "/admin/update");
-		}
 	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value = "watchStock/{value}", method = RequestMethod.GET)
+	public @ResponseBody String getStockPerice(@PathVariable String value){
+
+		String message = userDAO.addToWatchList(getActiveUserEmail(), value);
+		return message;
+		
+	}
+	@RequestMapping(value = "deleteStock/{value}", method = RequestMethod.GET)
+	public @ResponseBody String removeFromWatch(@PathVariable String value){
+
+		System.out.println("Removing from watchlist");
+		String message = userDAO.removeFromWatchList(value, getActiveUserEmail());
+		return message;
+		
+	}
 	
 	
 	
@@ -270,9 +236,35 @@ public class HomeController {
 
 
 		return model;
+	}
+	
+	@RequestMapping(value = "removeGame", method = RequestMethod.GET)
+	public ModelAndView removeGameAdmin(){
+		
+		Calendar from = Calendar.getInstance();
+		Calendar to = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");		
+		from.add(Calendar.YEAR, -1); 
+		System.out.println("FROM: "+sdf.format(from.getTime()));
+		System.out.println("TO: "+sdf.format(to.getTime()));
+		
+		List<Game> games = userDAO.getGamesAdmin();
+		yahoofinance.Stock dow = YahooFinance.get("^DJI", from, to,Interval.DAILY);
+		yahoofinance.Stock sAndP = YahooFinance.get("^GSPC", from, to,Interval.DAILY);
+		
+		List<UserGameAccountValHistory> balancesForGames = userDAO.getAllBalanceHistory(getActiveUserEmail());
+		Set<Integer> gameIDs = getGameIDs(games);
 
 		
-		
+		ModelAndView model = new ModelAndView("removegame");
+		model.addObject("myGames", games);
+		model.addObject("DOW", new Gson().toJson(dow));
+		model.addObject("sAndP", new Gson().toJson(sAndP));
+		model.addObject("balanceHistory", new Gson().toJson(balancesForGames));
+		model.addObject("gameIDs", new Gson().toJson(gameIDs));
+
+
+		return model;
 	}
 
 	private Set<Integer> getGameIDs(List<Game> games) {

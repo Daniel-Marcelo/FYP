@@ -18,6 +18,7 @@ import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import bct.ct413.jdbc.UserRowMapper;
 import bct.ct413.model.DashboardUserDetails;
@@ -42,7 +43,38 @@ public class UserDAOImpl implements UserDAO {
 	/*
 	 * private JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 	 */
+	
 	@Override
+	public List<User> getAllUsers(){
+		
+		List<User> allUsers = new ArrayList<User>();
+
+		PreparedStatement stmt1;
+		try {
+			Connection conn = dataSource.getConnection();
+
+			stmt1 = conn
+					.prepareStatement("SELECT * FROM fyp_user");
+			ResultSet rs = stmt1.executeQuery();
+
+			while(rs.next()){
+				
+				User u = new User();
+				u.setCountry(rs.getString("country"));
+				u.setEmail(rs.getString("email"));
+				u.setFirstName(rs.getString("first_name"));
+				u.setLastName(rs.getString("last_name"));
+				
+				allUsers.add(u);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return allUsers;
+	}
+	
+/*	@Override
 	public List<String> getUsers() {
 		List<String> emails = new ArrayList<String>();
 		try {
@@ -61,7 +93,7 @@ public class UserDAOImpl implements UserDAO {
 		}
 		System.out.println("Number of emails: " + emails.size());
 		return emails;
-	}
+	}*/
 	
 	@Override
 	public void updateBalance(String email, double total, int gameID) {
@@ -436,6 +468,58 @@ public class UserDAOImpl implements UserDAO {
 
 		return games;
 	}
+	
+	@Override
+	public List<Game> getGamesAdmin() {
+
+		List<Game> games = new ArrayList<Game>();
+		try {
+			List<Integer> gameIDs = getGameIDsAdmin();
+			System.out.println(gameIDs);
+			Connection conn = dataSource.getConnection();
+			
+			for( int gameID : gameIDs) {
+				
+				
+				PreparedStatement stmt1 = conn
+						.prepareStatement("SELECT * FROM fyp_game WHERE game_id = ?");
+				stmt1.setInt(1, gameID);
+
+				ResultSet rs = stmt1.executeQuery();
+
+				while (rs.next()) {
+
+					Game game = new Game();
+					game.setGameID(rs.getInt("game_id"));
+					game.setGameName(rs.getString("game_name"));
+					game.setGameType(rs.getString("game_type"));
+					game.setStartingCash(rs.getDouble("starting_cash"));
+					game.setCreatorEmail(rs.getString("creator_email"));
+					game.setStartDate((rs.getDate("start_date")).toString());
+					game.setEndDate(rs.getDate("end_date").toString());
+					game.setStatus(rs.getString("status"));
+
+					if (game.getGameType().equals("Private")) {
+						game.setJoinCode(rs.getString("join_code"));
+					}
+					System.out.println("Join Code: " + game.getJoinCode());
+					games.add(game);
+
+					List<User> usersInGame = getListOfUsersInThisGame(game);
+					game.setUsersInGame(usersInGame);
+					game.setBoard(getDashboardStatsAdmin( game));
+				}
+				rs.close();
+				stmt1.close();
+			}
+
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return games;
+	}
 
 	private List<User> getListOfUsersInThisGame(Game game) {
 
@@ -626,6 +710,29 @@ public class UserDAOImpl implements UserDAO {
 			e.printStackTrace();
 		}		return gameIDs;
 	}
+	
+	public List<Integer> getGameIDsAdmin() {
+		List<Integer> gameIDs = new ArrayList<Integer>();
+		try {
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt2 = conn
+					.prepareStatement("SELECT DISTINCT game_id FROM fyp_game");
+
+			ResultSet rs2 = stmt2.executeQuery();
+			
+			while (rs2.next())
+				gameIDs.add(rs2.getInt("game_id"));
+			
+			rs2.close();
+			stmt2.close();
+			conn.close();
+							
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		return gameIDs;
+	}
 	@Override
 	public void addToAccValHistory(int gameID, double startingCash, String email) {
 
@@ -663,6 +770,30 @@ public class UserDAOImpl implements UserDAO {
 			Connection conn = dataSource.getConnection();
 			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_user_game_account_history WHERE email = ?");
 			stmt1.setString(1, email);
+			
+			ResultSet rs = stmt1.executeQuery();
+			
+			while(rs.next()){
+				UserGameAccountValHistory entry = new UserGameAccountValHistory();
+				entry.setGameID(rs.getInt("game_id"));
+				entry.setDate(rs.getString("date"));
+				entry.setClosingAccVal(rs.getDouble("closing_acc_value"));
+				entry.setPercentChange(rs.getDouble("percent_change"));
+				entries.add(entry);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return entries;
+	}
+	@Override
+	public List<UserGameAccountValHistory> getAllBalanceHistory() {
+		
+		List<UserGameAccountValHistory> entries = new ArrayList<UserGameAccountValHistory>();
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_user_game_account_history");
 			
 			ResultSet rs = stmt1.executeQuery();
 			
@@ -724,5 +855,148 @@ public class UserDAOImpl implements UserDAO {
 				board.setDaysLeft(days);
 
 				return board;
+	}
+	
+	public DashboardUserDetails getDashboardStatsAdmin(
+			Game g) {
+
+	
+					int index = 0;
+					Collections.sort(g.getUsersInGame());
+
+					DashboardUserDetails board = new DashboardUserDetails();
+					String name = null;
+					double myAccVal = 0;
+					double highestAccVal = 0;
+					for(User u: g.getUsersInGame()){
+						if(u.getCurAccVal() > highestAccVal){
+							highestAccVal = u.getCurAccVal();
+							name = u.getFirstName()+" "+u.getLastName();
+						}
+/*						if(u.getEmail().equals(email)){
+							System.out.println(email+" was found at index: "+index);
+							myAccVal = u.getCurAccVal();
+							board.setUserPosition(index+1);
+							board.setCurBal(u.getBalance());
+
+						}*/
+						index++;
+						
+					}
+					board.setTopPlayerName(name);
+					board.setUserAccVal(myAccVal);
+					
+			
+				DateTime today = new DateTime();
+				
+				System.out.println("GAME:" +g.getGameName()+" Today Date: "+today);
+				DateTime end = new DateTime(g.getEndDate());
+				
+				System.out.println("GAME:" +g.getGameName()+" End Date: "+end);
+				int days = Days.daysBetween(today, end).getDays();
+
+				
+				board.setDaysLeft(days);
+
+				return board;
+	}
+
+	@Override
+	public void removeFromUserRoles(String email) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_roles WHERE email = ?");
+			stmt1.setString(1, email);
+			stmt1.execute();
+			
+			stmt1.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public String addToWatchList(String email, String symbol) {
+
+		int count = 0;
+		try {
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt2 = conn.prepareStatement("SELECT count(*) FROM fyp_stocks_on_watch where email = ?  AND symbol = ?");
+			stmt2.setString(1, email);
+			stmt2.setString(2, symbol);
+			ResultSet rs = stmt2.executeQuery();
+			
+			while(rs.next())
+				count = rs.getInt("count(*)");
+			
+			if(count != 0){
+				return "You're Already Watching "+ symbol;
+			}
+			else{
+
+			PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO fyp_stocks_on_watch (email, symbol) VALUES(?,?)");
+			stmt1.setString(1,email);
+			stmt1.setString(2, symbol);
+			
+			stmt1.execute();
+			
+			stmt1.close();
+			conn.close();
+			return symbol+ " added to your watch list";
+		}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "Error";
+	}
+
+	@Override
+	public List<Stock> getStocksOnWatch(String email) {
+		List<Stock> stocks = new ArrayList<Stock>();
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt2 = conn.prepareStatement("SELECT symbol from fyp_stocks_on_watch where email = ?");
+			stmt2.setString(1,  email);
+			ResultSet rs = stmt2.executeQuery();
+			
+			while (rs.next()){
+				
+				Stock s = YahooFinance.get(rs.getString("symbol"));
+				stocks.add(s);
+			}
+			
+			stmt2.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return stocks;
+	}
+
+	@Override
+	public String removeFromWatchList(String symbol, String email) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt2 = conn.prepareStatement("DELETE from fyp_stocks_on_watch where email = ? AND symbol = ?");
+			stmt2.setString(1, email);
+			stmt2.setString(2, symbol);
+			
+			stmt2.execute();
+			stmt2.close();
+			conn.close();
+			
+			return symbol+ " removed from watchlist";
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

@@ -24,6 +24,7 @@
   		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
   		<intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" />
   		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
+  		<intercept-url pattern="/removeUserAdmin**" access="hasRole('ROLE_ADMIN')" />
   		
   		
   		

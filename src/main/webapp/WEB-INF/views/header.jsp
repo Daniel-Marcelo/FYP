@@ -80,11 +80,13 @@ $(document).ready(function() {
 				<li class='active'><a href="home">Home</a></li>
 
 				<li><a href="javascript:formSubmit()"> Logout</a></li>
-				<li><a href='portfolioz'>Portfolio</a></li>
-				<li><a href='symbolInfoPage'>Stock Look Up</a></li>
+<!-- 				<li><a href='portfolioz'>Portfolio</a></li>
+ -->				<li><a href='symbolInfoPage'>Stock Look Up</a></li>
 				<li><a href='trade'>Trade</a></li>
 				<li><a href='globalRankings'>Global Rankings</a></li>
 				<li><a href='dashboard'>Dashboard</a></li>
+				<!-- <li><a href='watchlist'>WatchList</a></li> -->
+				
 				
 				
 				<li style="float: right; display: : none;"><a id="autoBalance"></a></li>
