@@ -28,6 +28,7 @@ function drawChart() {
 		containerId : 'chart_div'
 	});
 
+
 	wrapper.draw();
 }
 
@@ -41,6 +42,9 @@ function testMethod(){
 	var symbolInputField = document.getElementById("companySymbol");
 	var stockSymbol = (document.getElementById("companySymbol").value).toUpperCase();
 	symbolInputField.value='';
+	var confirmation = document.getElementById("confirmation");
+	confirmation.innerHTML = "";
+
 	
 	$.ajax({
         url : 'getStockInfo/'+stockSymbol,
@@ -49,6 +53,11 @@ function testMethod(){
         var obj = JSON.parse(data);
         console.log("OBJECT: "+JSON.stringify(obj));
         
+        if(obj.name == "N/A"){
+        	alert("NOT REAL STOCK");
+        	myLoad.style.visibility = "hidden";
+        }
+        else{
 		var data = new google.visualization.DataTable();
 		data.addColumn('date', 'Date');
     	data.addColumn('number', obj.symbol);
@@ -96,6 +105,8 @@ function testMethod(){
         
         var myTable = document.getElementById("stockInfoTable");
         myTable.style.visibility = "visible";
+        
+    	document.getElementById("watchButton").style.visibility = "visible";
 
         
         myLoad.style.visibility = "hidden";
@@ -112,6 +123,7 @@ function testMethod(){
 
 		
 	}
+        }
 	});
 }
 

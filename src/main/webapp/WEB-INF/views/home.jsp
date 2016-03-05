@@ -60,7 +60,7 @@ td {
 	<sec:authorize access="isFullyAuthenticated()">
 		<h2># This user is login by username / password.</h2>
 	</sec:authorize>
-	 --%>
+
 	<div class="container">
 
 		<c:if test="${messageFromHome == null}">

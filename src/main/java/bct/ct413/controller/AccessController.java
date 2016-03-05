@@ -1,10 +1,15 @@
 package bct.ct413.controller;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -38,14 +43,12 @@ public class AccessController {
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 	  @RequestParam(value = "logout", required = false) String logout, 
           HttpServletRequest request) {
-
-		ModelAndView model = new ModelAndView();
+		String targetUrl = getRememberMeTargetUrlFromSession(request);
+		ModelAndView model = new ModelAndView("LoginForm");
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
 			
 			//login form for update, if login error, get the targetUrl from session again.
-			String targetUrl = getRememberMeTargetUrlFromSession(request);
-			System.out.println("Target URL: "+targetUrl);
 			if(StringUtils.hasText(targetUrl)){
 				System.out.println("IN THIS IF LOOP");
 				model.addObject("targetUrl", targetUrl);
@@ -53,15 +56,78 @@ public class AccessController {
 			}
 			
 		}
+		System.out.println("Target URL: "+targetUrl);
 
-		if (logout != null) {
+		if(targetUrl.equals("/removeUserAdmin"))
+			model.addObject("loginUpdate", true);
+
+
+		if (logout != null) 
 			model.addObject("msg", "You've been logged out successfully.");
-		}
-		model.setViewName("LoginForm");
-		User user = new User();
-		model.addObject("user", user);
+		
+
+		model.addObject("user", new User());
 		return model;
 
+	}
+	
+	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
+	public ModelAndView adminPage() {
+
+		ModelAndView model = new ModelAndView("admin");
+/*		model.addObject("title", "Spring Security Remember Me");
+		model.addObject("message", "This page is for ROLE_ADMIN only!");*/
+
+		return model;
+
+	}
+	
+	@RequestMapping(value = "/removeUserAdmin", method = RequestMethod.GET)
+	public ModelAndView updatePage(HttpServletRequest request) {
+
+		ModelAndView model = new ModelAndView();
+
+		if (isRememberMeAuthenticated()) {
+			//send login for update
+			setRememberMeTargetUrlToSession(request);
+			model.addObject("loginUpdate", true);
+			model.setViewName("redirect:/login");
+			model.addObject("user", new User());
+
+		} else {
+			model.setViewName("update");
+			List<User> allUsers = userDAO.getAllUsers();
+			model.addObject("allUsers", allUsers);
+		}
+		
+
+
+		return model;
+
+	}
+	
+	/**
+	 * If the login in from remember me cookie, refer
+	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl
+	 */
+	private boolean isRememberMeAuthenticated() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return false;
+		}
+
+		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
+	}
+	
+	/**
+	 * save targetURL in session
+	 */
+	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
+		HttpSession session = request.getSession(false);
+		if(session!=null){
+			session.setAttribute("targetUrl", "/removeUserAdmin");
+		}
 	}
 	
 	/**
@@ -127,6 +193,15 @@ public class AccessController {
 		Gson gson = new Gson();
 		String json = gson.toJson(count);
 		return json;
+    }
+    
+    
+    @RequestMapping(value = "deleteUser/{email:.+}", method = RequestMethod.GET)
+    public @ResponseBody String deleteUser(@PathVariable String email){
+    	
+    	//userDAO.removeFromUserRoles(email);
+    	
+    	return "";
     }
 
 }

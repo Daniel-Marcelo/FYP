@@ -107,7 +107,8 @@ function login(){
 					<td align="center">Remember Me <input type="checkbox"
 						name="remember-me" /></td>
 				</tr>
-		</c:if>		
+		</c:if>	
+			
 				<tr>
 
 					<td align="center"><a id="myLink" href="#" onclick="resetPassword();">Forgot Password</a></td>

@@ -60,7 +60,7 @@
 					<c:forEach var="user" items="${game.getUsersInGame()}">
 
 						<tr>
-							<td>${user.getFirstName()}${user.getLastName()}</td>
+							<td>${user.getFirstName()} ${user.getLastName()}</td>
 							<td>${user.getCountry()}</td>
 							<td>${user.getBalance()}</td>
 							<td>${user.getCurAccVal()}</td>

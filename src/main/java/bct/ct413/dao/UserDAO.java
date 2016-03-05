@@ -3,6 +3,7 @@ package bct.ct413.dao;
 
 import java.util.List;
 
+import yahoofinance.Stock;
 import bct.ct413.model.DashboardUserDetails;
 import bct.ct413.model.Game;
 import bct.ct413.model.StockOwned;
@@ -33,8 +34,15 @@ public interface UserDAO {
 	void addUserToGame(String joinCode, String email);
 	public List<UserGameAccountValHistory> getAllBalanceHistory(
 			String activeUserEmail);
-	List<String> getUsers();
-	public DashboardUserDetails getDashboardStats(String activeUserEmail,
+/*	List<String> getUsers();
+*/	public DashboardUserDetails getDashboardStats(String activeUserEmail,
 			Game g);
+	List<User> getAllUsers();
+	public void removeFromUserRoles(String email);
+	public String addToWatchList(String activeUserEmail, String symbol);
+	public List<Stock> getStocksOnWatch(String activeUserEmail);
+	public String removeFromWatchList(String symbol, String activeUserEmail);
+	public List<Game> getGamesAdmin();
+	public List<UserGameAccountValHistory> getAllBalanceHistory();
 
 }

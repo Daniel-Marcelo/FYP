@@ -8,9 +8,11 @@
 			<h2>You do not have permission to access this page!</h2>
 		</c:when>
 		<c:otherwise>
-			<h2>Username dgfdg: ${username} <br/>You do not have permission to access this page!</h2>
+			<h2>User: ${username} <br/>You do not have permission to access this page!</h2>
 		</c:otherwise>
 	</c:choose>
+	
+	<h3>Back To Home: <a href = "/FYP" >Home</a></h3>
 
 </body>
 </html>
