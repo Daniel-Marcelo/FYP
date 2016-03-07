@@ -4,7 +4,7 @@
 
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-	
+
 
 <html>
 <head>
@@ -26,8 +26,22 @@
 td {
 	padding-right: 5%;
 }
-</style>
 
+
+
+html, body, #testContainer { height: 100%; }
+body > #testContainer { height: auto; min-height: 100%; }
+
+#testFooter {
+ clear: both;
+ position: relative;
+ z-index: 10;
+ /* height: 3em; */
+ margin-top: -3em;
+}
+
+#testContent { padding-bottom: 1.5%; }
+</style>
 
 <script>
 	$(document).ready(
@@ -50,20 +64,21 @@ td {
 </head>
 
 <body>
-	<%@include file="header.jsp"%>
 
-
-	    	<sec:authorize access="isRememberMe()">
+<%-- 	<sec:authorize access="isRememberMe()">
 		<h2># This user is login by "Remember Me Cookies".</h2>
 	</sec:authorize>
 
 	<sec:authorize access="isFullyAuthenticated()">
 		<h2># This user is login by username / password.</h2>
-	</sec:authorize>
+	</sec:authorize> --%>
 
-	<div class="container">
-
-		<c:if test="${messageFromHome == null}">
+	<div id="testContainer">
+	<div id = "header">
+		<%@include file="header.jsp"%>
+	</div>
+		<div id="testContent">
+<%-- 		 <c:if test="${messageFromHome == null}">
 			<h2>No message!</h2>
 
 		</c:if>
@@ -71,50 +86,53 @@ td {
 		<c:if test="${messageFromHome != null}">
 			<h2>${messageFromHome}</h2>
 
-		</c:if>
-
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">My Account</h3>
-			</div>
-			<div class="panel-body">
-
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-					<li><a data-toggle="tab" href="#menu1">My Games</a></li>
-					<li><a data-toggle="tab" href="#menu2">Create/ Join</a></li>
-					<li><a data-toggle="tab" href="#menu3">Leave Game</a></li>
-					<li><a data-toggle="tab" href="#menu4">Edit Game</a></li>
-
-				</ul>
-
-			</div>
-
-			<div class="tab-content">
-				<div id="home" class="tab-pane fade in active">
-
-					<%@include file="include-files/myDetailsForm.jsp"%>
-
-				</div>
+		</c:if>	 --%>
+ 			<div class="container">
 
 
-				<div id="menu1" class="tab-pane fade">
-					<div align="center">
-						<div align="center" style="width: 95%">
+ 
+ 				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">My Account</h3>
+					</div>
+					<div class="panel-body">
 
-							<%@include file="include-files/myGamesTab.jsp"%>
+						<ul class="nav nav-tabs">
+							<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+							<li><a data-toggle="tab" href="#menu1">My Games</a></li>
+							<li><a data-toggle="tab" href="#menu2">Create/ Join</a></li>
+							<li><a data-toggle="tab" href="#menu3">Leave Game</a></li>
+							<li><a data-toggle="tab" href="#menu4">Edit Game</a></li>
+
+						</ul>
+
+					</div>
+
+					<div class="tab-content">
+						<div id="home" class="tab-pane fade in active">
+
+							<%@include file="include-files/myDetailsForm.jsp"%>
 
 						</div>
-					</div>
-				</div>
 
 
-				<div id="menu2" class="tab-pane fade" style="margin: 2% 5% 0 5%;">
+						<div id="menu1" class="tab-pane fade">
+							<div align="center">
+								<div align="center" style="width: 95%">
 
-					<%@include file="include-files/joinCreate.jsp"%>
+									<%@include file="include-files/myGamesTab.jsp"%>
 
-				</div>
+								</div>
+							</div>
+						</div>
 
+
+						<div id="menu2" class="tab-pane fade" style="margin: 2% 5% 0 5%;">
+
+							<%@include file="include-files/joinCreate.jsp"%>
+
+						</div>
+						
 
 				<div id="menu3" class="tab-pane fade">
 
@@ -134,10 +152,11 @@ td {
 				</div>
 
 
-			</div>
-		</div>
+					</div>
+				</div>
+ 			</div>
+ 		</div>
 	</div>
-
-	<%@include file="footer.jsp"%>
+	<div id = "testFooter"><%@include file="footer.jsp"%></div>
 </body>
 </html>

@@ -44,5 +44,8 @@ public interface UserDAO {
 	public String removeFromWatchList(String symbol, String activeUserEmail);
 	public List<Game> getGamesAdmin();
 	public List<UserGameAccountValHistory> getAllBalanceHistory();
+	public List<Integer> getGameIDsCreatedByUser(String email);
+	public void removeFromUserTable(String email);
+	public void removeFromPersistentLogin(String email);
 
 }

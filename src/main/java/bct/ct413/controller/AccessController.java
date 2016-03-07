@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import bct.ct413.dao.GameDAO;
+import bct.ct413.dao.TradeDAO;
 import bct.ct413.dao.UserDAO;
 import bct.ct413.model.User;
 
@@ -37,6 +38,9 @@ public class AccessController {
 	
 	@Autowired
 	private GameDAO gameDAO;
+	
+	@Autowired
+	private TradeDAO tradeDAO;
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -199,9 +203,27 @@ public class AccessController {
     @RequestMapping(value = "deleteUser/{email:.+}", method = RequestMethod.GET)
     public @ResponseBody String deleteUser(@PathVariable String email){
     	
-    	//userDAO.removeFromUserRoles(email);
+    	userDAO.removeFromUserRoles(email);
+    	List<Integer> gameIDs = userDAO.getGameIDsCreatedByUser(email);
     	
-    	return "";
+    	//Removing games created by user
+    	for(int gameID: gameIDs){
+	    	gameDAO.removeGameFromStockOwned(gameID);
+	    	gameDAO.removeGameTrades(gameID);
+	    	gameDAO.removeFromGameAccountHistory(gameID);
+	    	gameDAO.removeFromUserGameParticipation(gameID);
+	    	gameDAO.removeFromGameTable(gameID);
+    	}
+    	
+    	gameDAO.removeGameFromStockOwned(email);
+    	gameDAO.removeFromStocksOnWatch(email);
+    	tradeDAO.removeTrades(email);
+    	gameDAO.removeFromGameAccountHistory(email);
+    	gameDAO.removeFromUserGameParticipation(email);
+    	userDAO.removeFromUserTable(email);
+    	userDAO.removeFromPersistentLogin(email);
+    	
+    	return email+ "removed from application";
     }
 
 }

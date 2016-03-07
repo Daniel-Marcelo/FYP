@@ -183,6 +183,8 @@ td {
 					<td><form:input path="costOfTrade" id="costOfTrade"
 							class="form-field" type="number" min="1" max="100000"
 							placeholder="Desired price..." readOnly="true" step="0.01" /></td>
+							
+				
 				<tr id="durationField" style="visibility: hidden;">
 					<td class="desc">Duration</td>
 					<td><form:select disabled="true" path="durationDays"

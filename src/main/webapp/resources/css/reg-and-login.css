@@ -6,12 +6,7 @@
 	outline: none;
 	border: 2px solid #999999;
 	border-radius: 5px;
-	/*   		font-family: 'Open Sans', 'sans-serif';
- */
 	font-size: 22px;
-	/* 		background-image: url('http://www.kirupa.com/images/search.png');
-		background-position: 270px -10px;
-		background-repeat: no-repeat; */
 	padding-right: 20px;
 }
 
@@ -33,15 +28,11 @@
 }
 
 *{font-family: 'Open Sans', 'sans-serif';}
-/* .main{
-	  font-family: 'Open Sans', 'sans-serif';
-	
-} */
+
 
 .btn {
   cursor: pointer;
-/*   margin: 10px;
- */  border-radius: 5px;
+  border-radius: 5px;
   text-decoration: none;
   padding: 8px;
   font-size: 22	px;
