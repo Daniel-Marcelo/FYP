@@ -80,25 +80,23 @@ $(document).ready(function() {
 				<li class='active'><a href="home">Home</a></li>
 
 				<li><a href="javascript:formSubmit()"> Logout</a></li>
-<!-- 				<li><a href='portfolioz'>Portfolio</a></li>
- -->				<li><a href='symbolInfoPage'>Stock Look Up</a></li>
+ 				<li><a href='portfolioz'>Portfolio</a></li>
+ 				<li><a href='symbolInfoPage'>Stock Look Up</a></li>
 				<li><a href='trade'>Trade</a></li>
 				<li><a href='globalRankings'>Global Rankings</a></li>
 				<li><a href='dashboard'>Dashboard</a></li>
-				<!-- <li><a href='watchlist'>WatchList</a></li> -->
+				<li><a href='watchlist'>WatchList</a></li>
 				
 				
-				
+<%-- 				
 				<li style="float: right; display: : none;"><a id="autoBalance"></a></li>
 				
-				<li style="float: right;"><select id="gameIDHeader"
-					name="gameIDHeader" onChange="changeBalanceHeader();"
-					class="form-field"
+				<li style="float: right;"><select id="gameIDHeader"name="gameIDHeader" onChange="changeBalanceHeader();"class="form-field"
 					style="padding: 3px; width: 200px; font-size: 16px; margin: 6px 0 0 0;">
 						<c:forEach var="game" items="${gameNamesForUser}">
 							<option value="${game.getGameID()}">${game.getGameName()}</option>
 						</c:forEach>
-				</select></li>
+				</select></li> --%>
 			</c:if>
 			<c:if test="${pageContext.request.userPrincipal.name == null}">
 

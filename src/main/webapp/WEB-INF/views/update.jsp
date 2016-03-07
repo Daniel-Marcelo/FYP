@@ -48,7 +48,7 @@
 			$.ajax({
 				url : "deleteUser/"+email,
 				success: function(data){
-					console.log("DONE");
+					console.log(data);
 				}
 			});
 			}

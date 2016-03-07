@@ -999,4 +999,53 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return null;
 	}
+
+	@Override
+	public List<Integer> getGameIDsCreatedByUser(String email) {
+		List<Integer> ids = new ArrayList<Integer>();
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT game_id from fyp_game WHERE creator_email = ?");
+			stmt1.setString(1, email);
+			
+			
+			ResultSet rs = stmt1.executeQuery();
+			
+			while(rs.next())
+				ids.add(rs.getInt("game_id"));
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return ids;
+	}
+
+	@Override
+	public void removeFromUserTable(String email) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
+			stmt1.setString(1, email);
+			stmt1.execute();			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeFromPersistentLogin(String email) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM persistent_logins WHERE username = ?");
+			stmt1.setString(1, email);
+			stmt1.execute();			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

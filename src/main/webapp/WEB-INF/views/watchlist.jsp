@@ -111,13 +111,13 @@
 
 							<c:forEach var="stock" items="${stocks}">
 								<tr>
-									<td>${stock.getSymbol()}</td>
+									<td class = "even">${stock.getSymbol()}</td>
 									<td>${stock.getName()}</td>
-									<td>${stock.getQuote().getPrice()}</td>
+									<td class = "even">${stock.getQuote().getPrice()}</td>
 									<td>${stock.getQuote().getOpen()}</td>
-									<td>${stock.getQuote().getAsk()}</td>
+									<td class = "even">${stock.getQuote().getAsk()}</td>
 									<td>${stock.getQuote().getPreviousClose()}</td>
-									<td>${stock.getQuote().getDayLow()} - ${stock.getQuote().getDayHigh()}</td>
+									<td class = "even">${stock.getQuote().getDayLow()} - ${stock.getQuote().getDayHigh()}</td>
 
 								</tr>
 							</c:forEach>

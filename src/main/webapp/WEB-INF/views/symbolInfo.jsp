@@ -40,13 +40,30 @@
 		 $.ajax({
 		        url : 'watchStock/'+symbol,
 		        success : function(data) {
-				 var confirmWatch = document.getElementById("confirmation")
+				 var confirmWatch = document.getElementById("confirmation");
 				 confirmWatch.innerHTML = data;
 				 confirmWatch.style.color = "GREEN";
 				 
 			 }
 		 });
 	 }
+	 
+/* 	 function downloadHistory(){
+		 var name = document.getElementById("companyName");
+		 var symbol = String(getSymbol(name.innerHTML));
+		 var url = 'https://ichart.yahoo.com/table.csv?s='+symbol
+		 $.ajax({
+		        url : url,
+		        success : function(data) {
+				 var confirmWatch = document.getElementById("downloadCSV");
+				 confirmWatch.innerHTML = data;
+				 confirmWatch.style.color = "GREEN";
+				 
+			 }
+		 });
+	 } */
+	 
+	 
 	 
 	 function getSymbol(name){
 		 
@@ -147,6 +164,14 @@
 			
 				<br><button  onClick = "addToWatchList();" type="submit" class="btn blue-submit">Watch Stock</button>
 
+			</div>
+			
+			<div align="center" id="downloadButton" style = "visibility : hidden;">
+			<div id = "downloadCSV"></div>
+			
+			<form id = "downloadForm" action = "#" accept-charset=utf-8>
+				<br><button id = "downloadBtn" type="submit" class="btn blue-submit">Download History</button>
+</form>
 			</div>
 		</div>
 

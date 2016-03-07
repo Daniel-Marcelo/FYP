@@ -1,7 +1,10 @@
 package bct.ct413.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -9,14 +12,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
@@ -65,12 +70,6 @@ public class HomeController {
 
 	@Autowired
 	private TradeTransactionDAO tradeTransactionDAO;
-
-	
-	
-
-	
-	
 	
 	@RequestMapping(value = "watchlist", method = RequestMethod.GET)
 	public ModelAndView watchList() {
@@ -203,10 +202,36 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "games", method = RequestMethod.GET)
-	public ModelAndView gamesView() {
+	public ModelAndView gamesView() throws Exception {
 
+		 URL url = new URL("http://finance.yahoo.com/rss/headline?s=aapl");
+	        URLConnection connection = url.openConnection();
+
+	        Document doc = parseXML(connection.getInputStream());
+	        System.out.println(doc);
+			
 		return new ModelAndView("games");
 	}
+	private Document parseXML(InputStream stream)
+		    throws Exception
+		    {
+		        DocumentBuilderFactory objDocumentBuilderFactory = null;
+		        DocumentBuilder objDocumentBuilder = null;
+		        Document doc = null;
+		        try
+		        {
+		            objDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
+		            objDocumentBuilder = objDocumentBuilderFactory.newDocumentBuilder();
+		            System.out.println(stream.available());
+		            doc = objDocumentBuilder.parse(stream);
+		        }
+		        catch(Exception ex)
+		        {
+		            throw ex;
+		        }       
+
+		        return doc;
+		    }
 	
 	@RequestMapping(value = "dashboard", method = RequestMethod.GET)
 	public ModelAndView dashboardDetails(){
@@ -238,8 +263,19 @@ public class HomeController {
 		return model;
 	}
 	
+	@RequestMapping(value = "editUserEmailAdmin", method = RequestMethod.GET)
+	public ModelAndView editUserEmailAdmin(){
+		
+		ModelAndView model = new ModelAndView("editUserEmail");
+		List<User> allUsers = userDAO.getAllUsers();
+		model.addObject("allUsers", allUsers);
+		
+		return model;
+		
+	}
 	@RequestMapping(value = "removeGame", method = RequestMethod.GET)
 	public ModelAndView removeGameAdmin(){
+
 		
 		Calendar from = Calendar.getInstance();
 		Calendar to = Calendar.getInstance();
@@ -255,7 +291,6 @@ public class HomeController {
 		List<UserGameAccountValHistory> balancesForGames = userDAO.getAllBalanceHistory(getActiveUserEmail());
 		Set<Integer> gameIDs = getGameIDs(games);
 
-		
 		ModelAndView model = new ModelAndView("removegame");
 		model.addObject("myGames", games);
 		model.addObject("DOW", new Gson().toJson(dow));
@@ -266,6 +301,18 @@ public class HomeController {
 
 		return model;
 	}
+    @RequestMapping(value = "/deleteGame", method = RequestMethod.POST)
+	public ModelAndView deleteGame(@RequestParam("gameID") int gameID){
+    	System.out.println("in here");
+    	gameDAO.removeGameFromStockOwned(gameID);
+    	gameDAO.removeGameTrades(gameID);
+    	gameDAO.removeFromGameAccountHistory(gameID);
+    	gameDAO.removeFromUserGameParticipation(gameID);
+    	gameDAO.removeFromGameTable(gameID);
+		ModelAndView model = new ModelAndView("redirect:/removeGame");
+		return model;
+
+    }
 
 	private Set<Integer> getGameIDs(List<Game> games) {
 		 Set<Integer> gameIDs = new HashSet<Integer>();

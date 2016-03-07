@@ -107,6 +107,11 @@ function testMethod(){
         myTable.style.visibility = "visible";
         
     	document.getElementById("watchButton").style.visibility = "visible";
+    	document.getElementById("downloadButton").style.visibility = "visible";
+    	var url = "https://ichart.yahoo.com/table.csv?s=AAPL";
+    	console.log("URz: "+url);
+    	document.getElementById("downloadForm").action = url;
+
 
         
         myLoad.style.visibility = "hidden";

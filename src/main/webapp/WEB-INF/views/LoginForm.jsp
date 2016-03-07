@@ -22,50 +22,41 @@ body {
 <script src="resources/js/email-check.js"></script>
 
 <script>
+	function resetPassword() {
 
+		console.log("Password reset!");
+		var loginForm = document.getElementById("login");
+		loginForm.style.display = "none";
 
+		var passwordResetForm = document.getElementById("passwordReset");
+		passwordResetForm.style.display = "inline";
 
+	}
 
-function resetPassword(){
-	
-	
-	console.log("Password reset!");
-	var loginForm = document.getElementById("login");
-	loginForm.style.display = "none";
-	
-	var passwordResetForm = document.getElementById("passwordReset");
-	passwordResetForm.style.display = "inline";
-	
+	function register() {
 
-}
+		var loginForm = document.getElementById("login");
+		loginForm.style.display = "none";
 
-function register(){
-	
-	var loginForm = document.getElementById("login");
-	loginForm.style.display = "none";
-	
-	var registerForm = document.getElementById("registrationFormFill");
-	registerForm.style.display = "inline";
-	
-	var passwordResetForm = document.getElementById("passwordReset");
-	passwordResetForm.style.display = "none";
-	
-	
-}
+		var registerForm = document.getElementById("registrationFormFill");
+		registerForm.style.display = "inline";
 
-function login(){
-	
-	var loginForm = document.getElementById("login");
-	loginForm.style.display = "inline";
-	
-	var registerForm = document.getElementById("registrationFormFill");
-	registerForm.style.display = "none";
-	
-	var passwordResetForm = document.getElementById("passwordReset");
-	passwordResetForm.style.display = "none";
-}
+		var passwordResetForm = document.getElementById("passwordReset");
+		passwordResetForm.style.display = "none";
 
+	}
 
+	function login() {
+
+		var loginForm = document.getElementById("login");
+		loginForm.style.display = "inline";
+
+		var registerForm = document.getElementById("registrationFormFill");
+		registerForm.style.display = "none";
+
+		var passwordResetForm = document.getElementById("passwordReset");
+		passwordResetForm.style.display = "none";
+	}
 </script>
 </head>
 
@@ -74,132 +65,81 @@ function login(){
 		<%@include file="header.jsp"%></div>
 
 	<div align="center" id="main">
-	<div id = "login">
-		<h1>User Login</h1>
+		<div id="login">
+			<h1>User Login</h1>
 
-		<c:if test="${not empty error}">
-			<div class="errorblock">
-				Your login attempt was not successful, try again.<br /> Caused :
-				${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
-			</div>
-		</c:if>
+			<c:if test="${not empty error}">
+				<div class="errorblock">
+					Your login attempt was not successful, try again.<br /> Caused :
+					${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+				</div>
+			</c:if>
 
-		<form:form id = "loginForm" name="loginForm"
-			action="/FYP/auth/login_check?targetUrl=${targetUrl}" method="post"
-			modelAttribute="user">
-			<table>
-				<tr>
-					<!-- 				<td>email</td>
- -->
-					<td><form:input id = "email" name="email" path="email" class="form-field"
-							type="text" placeholder="Email.." /></td>
-				</tr>
+			<form:form id="loginForm" name="loginForm"
+				action="/FYP/auth/login_check?targetUrl=${targetUrl}" method="post"
+				modelAttribute="user">
+				<table>
+					<tr>
+						<td><form:input id="email" name="email" path="email"
+								class="form-field" type="text" placeholder="Email.." /></td>
+					</tr>
 
-				<tr>
-					<!-- 				<td>Password</td>
- -->
-					<td><form:input path="password" type="password"
-							class="form-field" placeholder="Password.." /></td>
-				</tr>
-<c:if test="${empty loginUpdate}">
-				<tr>
+					<tr>
+						<td><form:input path="password" type="password"
+								class="form-field" placeholder="Password.." /></td>
+					</tr>
+					
+					<c:if test="${empty loginUpdate}">
+						<tr>
+							<td align="center">Remember Me <input type="checkbox"
+								name="remember-me" /></td>
+						</tr>
+					</c:if>
 
-					<td align="center">Remember Me <input type="checkbox"
-						name="remember-me" /></td>
-				</tr>
-		</c:if>	
-			
-				<tr>
+					<tr>
 
-					<td align="center"><a id="myLink" href="#" onclick="resetPassword();">Forgot Password</a></td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center"><button type="submit"
-							class="btn blue-submit">Login</button></td>
-				</tr>
-			</table>
+						<td align="center"><a id="myLink" href="#"
+							onclick="resetPassword();">Forgot Password</a></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><button type="submit"
+								class="btn blue-submit">Login</button></td>
+					</tr>
+				</table>
 
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
-		</form:form>
-		<%-- 		
-	<h3 style= "margin-top: 15%;"> Or Register For An Account!</h3>
-	<form action="register">
-  	 	<button type="submit" class="btn blue-submit" >Register</button>
-	</form>	 --%>
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+			</form:form>
+
+		</div>
+
+		<div id="passwordReset" style="display: none;">
+			<h1>Password Reset</h1>
+			<form action="sendEmail" method="post" name="PassWordResetForm"
+				onSubmit="return checkEmailHasAccount();">
+				<table>
+					<tr>
+
+						<td align=center><input class="inputField"
+							placeholder="Your Email..." type="text" name="email"></td>
+					<tr>
+					<tr>
+
+						<td align=center><button type="submit"
+								class="btn blue-submit">Submit</button></td>
+					<tr>
+				</table>
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+
+			</form>
+		</div>
+
+		<%@include file="RegistrationForm.jsp"%>
+
+
 	</div>
-	
-	<div id = "passwordReset" style = "display: none;">
-	<h1> Password Reset </h1>
-<form action="sendEmail" method="post"  name = "PassWordResetForm" onSubmit="return checkEmailHasAccount();">
-		   <table>
-		   <tr>
-		   
-		   <td align=center><input class = "inputField" placeholder="Your Email..." type="text" name="email"	></td>
-		   
-		   <tr>
-		   
-		   
-		   <tr>
-		   
-		   <td align=center><button type="submit" class="btn blue-submit" >Submit</button></td>
-		   
-		   <tr>
-		   
-		   
-		   </table>
-		   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		   
-        </form>
-	</div>
-	
-	
-<%-- <div align="center" id="registrationFormFill" style = "display: none;">
-		<h1>Registration</h1>
-		<form:form id = "registration" name="registration" action="saveUser" method="post"
-			modelAttribute="user" onSubmit="return formValidation();">
-			<table>
-				<tr>
-					<!-- <td>Name</td> -->
-					<td><form:input path="name" class="form-field" type="text"
-							placeholder="Full Name.." /></td>
-				<tr>
-				<tr>
-					<!-- <td>Email</td> -->
-					<td><form:input path="email" class="form-field" type="text"
-							placeholder="Email.." /></td>
-				<tr>
-				<tr>
-					<!-- <td>Password</td> -->
-					<td><form:input path="password" type="password"
-							class="form-field" placeholder="Password.." /></td>
-				<tr>
-				<tr>
-					<!-- <td>Country</td> -->
-					<td><form:input path="country" class="form-field" type="text"
-							placeholder="Country.." /></td>
-				<tr>
-				<tr>
-					<td colspan="2" align="center"><button type="submit"
-							class="btn blue-submit">Register</button></td>
-				</tr>
+		<%@include file="footer.jsp"%>
 
-			</table>
-
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
-		</form:form>
-		
-		
-		
-	</div>	 --%>
-	
-		 	    <%@include file="RegistrationForm.jsp" %>
-	
-	
-	</div>
-
-	<%-- 	    <%@include file="footer.jsp" %>
- --%>
 </body>
 </html>

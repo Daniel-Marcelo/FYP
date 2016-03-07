@@ -23,6 +23,8 @@ public interface TradeDAO {
 	List<Trade> getPortfolioTransactionDetails(
 			String activeUserEmail);
 
+	void removeTrades(String email);
+
 	
 	
 }

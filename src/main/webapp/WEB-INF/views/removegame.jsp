@@ -45,6 +45,15 @@
 						}
 					});
 	
+	function displayConfirmation(gameID){
+		var confirm = document.getElementById("deleteGameForm"+gameID);
+		if (confirm.style.display == "none")
+			confirm.style.display = "inline";
+		else
+			confirm.style.display = "none";
+		
+	}
+	
 	//Function to draw blank chart
 	/* function drawChart() {
 		
@@ -187,6 +196,19 @@
 								</tr>
 							</tbody>
 						</table>
+ 				</div>
+ 				
+ 				<div>
+ 				<a id="myLink" href="#" onclick="displayConfirmation(${game.getGameID()});">Delete Game</a>
+ 				
+	 				<div align = "center" id = "deleteGameForm${game.getGameID()}" style = "display : none;">
+		 				<form action = "deleteGame" method = "POST">
+		 					<h5>Are you sure ?</h5>
+			 				<input style = "display: none;" type="text" name="gameID" value="${game.getGameID()}" />
+			 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			 				<button type="submit" class="btn blue-submit" >Yes</button>
+						</form>
+	 				</div>
  				</div>
 			</div>
 
