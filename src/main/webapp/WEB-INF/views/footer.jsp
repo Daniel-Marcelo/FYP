@@ -20,9 +20,7 @@
 <body>
 <div class="footer-distributed">
 			<div class="footer-left">
-
 				<h3>Company<span>logo</span></h3>
-
 				<p class="footer-links">
 					<a href="#">Home</a>
 					<a href="#">Blog</a>
@@ -31,7 +29,6 @@
 					<a href="#">Faq</a>
 					<a href="#">Contact</a>
 				</p>
-
 				<p class="footer-company-name">Company Name &copy; 2015</p>
 			</div>
 

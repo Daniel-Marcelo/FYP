@@ -47,5 +47,6 @@ public interface UserDAO {
 	public List<Integer> getGameIDsCreatedByUser(String email);
 	public void removeFromUserTable(String email);
 	public void removeFromPersistentLogin(String email);
+	public void updateUserEmail(String currentEmail, String newEmail);
 
 }

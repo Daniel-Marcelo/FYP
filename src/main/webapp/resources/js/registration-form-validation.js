@@ -121,6 +121,7 @@ function checkPassword(password)
 	}*/
 }
 
+
 function ValidateEmail(uemail,myCallBack)
 {
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -137,9 +138,7 @@ function ValidateEmail(uemail,myCallBack)
 	        url : 'checkIfEmailAlreadyUsed/'+uemail.value,
 	        success : myCallBack
 	    });
-		
-		
-		
+
 	}
 	else
 	{
