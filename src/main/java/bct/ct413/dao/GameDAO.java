@@ -1,5 +1,7 @@
 package bct.ct413.dao;
 
+import java.util.List;
+
 import bct.ct413.model.Game;
 
 public interface GameDAO {
@@ -25,6 +27,8 @@ public interface GameDAO {
 	public void removeFromGameAccountHistory(String email);
 
 	public void removeFromUserGameParticipation(String email);
+
+	public List<String> getAllJoinCodes();
 
 
 

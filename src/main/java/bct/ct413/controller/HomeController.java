@@ -186,8 +186,8 @@ public class HomeController {
 		User user = userDAO.getUserDetails(getActiveUserEmail());
 
 		List<Game> games = userDAO.getGamesForUser(user.getEmail());
-		List<UserGameParticipation> headerGames = userDAO
-				.getRelevantGames(getActiveUserEmail());
+		List<UserGameParticipation> headerGames = userDAO.getRelevantGames(getActiveUserEmail());
+		List<String> joinCodes = gameDAO.getAllJoinCodes();
 
 		model.setViewName("home");
 		model.addObject("existingReg", user);
@@ -197,6 +197,7 @@ public class HomeController {
 		model.addObject("dataTableGamesJSON", new Gson().toJson(games));
 		model.addObject("gameNamesForUser", headerGames);
 		model.addObject("gameBalanceHeaderJSON", new Gson().toJson(headerGames));
+		model.addObject("joinCodes", new Gson().toJson(joinCodes));
 
 		return model;
 	}
