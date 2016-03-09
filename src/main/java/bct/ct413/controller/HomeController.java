@@ -273,6 +273,31 @@ public class HomeController {
 		return model;
 		
 	}
+	
+	@RequestMapping(value = "editEmailForm/{email:.+}", method = RequestMethod.GET)
+	public ModelAndView editUserEmail(@PathVariable String email){
+		System.out.println("Email: "+email);
+		
+		ModelAndView model = new ModelAndView("editEmailForm");
+		model.addObject("currentEmail", email);
+		
+		return model;
+		
+	}
+	
+	@RequestMapping(value = "/updateEmailDB", method = RequestMethod.GET)
+	public ModelAndView joinGame(@RequestParam("currentEmail") String currentEmail, @RequestParam("newEmail") String newEmail) {
+
+		System.out.println("New Email: "+newEmail);
+		System.out.println("Current Email: "+newEmail);
+		userDAO.updateUserEmail(currentEmail,newEmail);
+		ModelAndView model = new ModelAndView("symbolInfo");
+
+		return model;
+
+	}
+	
+	
 	@RequestMapping(value = "removeGame", method = RequestMethod.GET)
 	public ModelAndView removeGameAdmin(){
 

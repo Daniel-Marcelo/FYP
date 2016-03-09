@@ -1048,4 +1048,72 @@ public class UserDAOImpl implements UserDAO {
 		}
 		
 	}
+
+	@Override
+	public void updateUserEmail(String currentEmail, String newEmail) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("Select * from fyp_user where email = ?");
+			stmt1.setString(1, currentEmail);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while(rs.next()){
+				PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO fyp_user VALUES (?,?,?,?,?,?)");
+				stmt2.setString(1, newEmail);
+				stmt2.setString(2, rs.getString("password"));
+				stmt2.setBoolean(3, true);
+				stmt2.setString(4, rs.getString("first_name"));
+				stmt2.setString(5, rs.getString("country"));
+				stmt2.setString(6, rs.getString("last_name"));
+				stmt2.execute();
+			}
+			
+			PreparedStatement stmt3 = conn.prepareStatement("UPDATE fyp_game SET creator_email = ? WHERE creator_email = ?");
+			stmt3.setString(1, newEmail);
+			stmt3.setString(2, currentEmail);
+			stmt3.execute();
+			
+			PreparedStatement stmt4 = conn.prepareStatement("UPDATE fyp_stock_owned SET email = ? WHERE email = ?");
+			stmt4.setString(1, newEmail);
+			stmt4.setString(2, currentEmail);
+			stmt4.execute();
+			
+			PreparedStatement stmt5 = conn.prepareStatement("UPDATE fyp_stocks_on_watch SET email = ? WHERE email = ?");
+			stmt5.setString(1, newEmail);
+			stmt5.setString(2, currentEmail);
+			stmt5.execute();
+			
+			PreparedStatement stmt6 = conn.prepareStatement("UPDATE fyp_trade SET email = ? WHERE email = ?");
+			stmt6.setString(1, newEmail);
+			stmt6.setString(2, currentEmail);
+			stmt6.execute();
+			
+			PreparedStatement stmt7 = conn.prepareStatement("UPDATE fyp_user_game_account_history SET email = ? WHERE email = ?");
+			stmt7.setString(1, newEmail);
+			stmt7.setString(2, currentEmail);
+			stmt7.execute();
+			
+			PreparedStatement stmt8 = conn.prepareStatement("UPDATE fyp_user_game_participation SET email = ? WHERE email = ?");
+			stmt8.setString(1, newEmail);
+			stmt8.setString(2, currentEmail);
+			stmt8.execute();
+			
+			PreparedStatement stmt9 = conn.prepareStatement("UPDATE fyp_user_roles SET email = ? WHERE email = ?");
+			stmt9.setString(1, newEmail);
+			stmt9.setString(2, currentEmail);
+			stmt9.execute();
+			
+			PreparedStatement stmt10 = conn.prepareStatement("DELETE FROM persistent_logins WHERE username = ?");
+			stmt10.setString(1, currentEmail);
+			stmt10.execute();
+			
+			PreparedStatement stmt11 = conn.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
+			stmt11.setString(1, currentEmail);
+			stmt11.execute();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
 }
