@@ -7,6 +7,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+
+<script>
+
+function validateJoinCode(){
+	var code = document.getElementById("enteredCode").value;
+	console.log("The user entered the code : "+code);
+	
+	var existingCodes = JSON.parse('${joinCodes}');
+	console.log(existingCodes);
+	
+	for(var key in existingCodes){
+		if(existingCodes.hasOwnProperty(key)){
+			
+			console.log("Comparing code: "+code +" and "+ existingCodes[key]);
+			if (code == existingCodes[key])
+				return true;
+		}
+	}
+	alert("Not a valid code");
+	return false;
+}
+
+</script>
 </head>
 <body>
 	<div style="height: 100px;">
@@ -23,11 +46,11 @@
 	<div align="center">
 		<div id="joinGameDiv" style="display: none;">
 
-			<form action="joinGame" style="display: inline-block;" method="POST">
+			<form action="joinGame" style="display: inline-block;" method="POST" onSubmit = "return validateJoinCode();">
 
-				<input class="inputField" placeholder="16 digit Code..." type="text"
-					name="joinCode" autofocus> <input type="hidden"
-					name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input id = "enteredCode" class="inputField" placeholder="16 digit Code..." type="text"name="joinCode"> 
+				
+				<input type="hidden"name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 				<button style="display: block; margin-top: 2%;" id="joinGameButton"
 					type="submit" class="btn blue-submit">Join Game</button>

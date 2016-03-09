@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -304,6 +306,25 @@ public class GameDAOImpl implements GameDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
+	}
+
+	@Override
+	public List<String> getAllJoinCodes() {
+		List<String> joinCodes = new ArrayList<String>();
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT join_code FROM fyp_game WHERE game_type = ?");
+			stmt1.setString(1, "Private");
+			ResultSet rs = stmt1.executeQuery();
+			
+			while (rs.next())
+				joinCodes.add(rs.getString("join_code"));
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return joinCodes;
 	}
 
 	
