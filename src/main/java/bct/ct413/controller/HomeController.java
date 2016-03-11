@@ -203,36 +203,17 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "games", method = RequestMethod.GET)
-	public ModelAndView gamesView() throws Exception {
+	public ModelAndView gamesView() {
 
-		 URL url = new URL("http://finance.yahoo.com/rss/headline?s=aapl");
-	        URLConnection connection = url.openConnection();
+		ModelAndView model = new ModelAndView("games");
+		
+		List<Game> games = userDAO.getGamesForUser(getActiveUserEmail());
+		model.addObject("myGames", games);
 
-	        Document doc = parseXML(connection.getInputStream());
-	        System.out.println(doc);
-			
-		return new ModelAndView("games");
+		return model;
+		
 	}
-	private Document parseXML(InputStream stream)
-		    throws Exception
-		    {
-		        DocumentBuilderFactory objDocumentBuilderFactory = null;
-		        DocumentBuilder objDocumentBuilder = null;
-		        Document doc = null;
-		        try
-		        {
-		            objDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
-		            objDocumentBuilder = objDocumentBuilderFactory.newDocumentBuilder();
-		            System.out.println(stream.available());
-		            doc = objDocumentBuilder.parse(stream);
-		        }
-		        catch(Exception ex)
-		        {
-		            throw ex;
-		        }       
 
-		        return doc;
-		    }
 	
 	@RequestMapping(value = "dashboard", method = RequestMethod.GET)
 	public ModelAndView dashboardDetails(){

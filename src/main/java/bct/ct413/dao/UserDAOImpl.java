@@ -720,7 +720,6 @@ public class UserDAOImpl implements UserDAO {
 			conn.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return gameIDs;
@@ -744,7 +743,6 @@ public class UserDAOImpl implements UserDAO {
 			conn.close();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return gameIDs;
@@ -770,7 +768,6 @@ public class UserDAOImpl implements UserDAO {
 			stmt1.execute();
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -798,7 +795,6 @@ public class UserDAOImpl implements UserDAO {
 				entries.add(entry);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return entries;
@@ -824,7 +820,6 @@ public class UserDAOImpl implements UserDAO {
 				entries.add(entry);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return entries;
@@ -925,7 +920,6 @@ public class UserDAOImpl implements UserDAO {
 			stmt1.close();
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -963,7 +957,6 @@ public class UserDAOImpl implements UserDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "Error";
