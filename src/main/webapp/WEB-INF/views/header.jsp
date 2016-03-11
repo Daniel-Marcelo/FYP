@@ -86,6 +86,8 @@ $(document).ready(function() {
 				<li><a href='globalRankings'>Global Rankings</a></li>
 				<li><a href='dashboard'>Dashboard</a></li>
 				<li><a href='watchlist'>WatchList</a></li>
+				<li><a href='games'>Games</a></li>
+				
 				
 				
 <%-- 				
