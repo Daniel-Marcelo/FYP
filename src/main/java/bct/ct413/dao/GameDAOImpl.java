@@ -80,22 +80,34 @@ public class GameDAOImpl implements GameDAO {
 
 
 	@Override
-	public void removeUserFromGame(String id, String activeUserEmail) {
+	public void removeUserFromGame(int gameID, String activeUserEmail) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM fyp_game WHERE creator_email = ? AND game_id = ?");
+			stmt2.setString(1, activeUserEmail);
+			stmt2.setInt(2, gameID);
+			stmt2.execute();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	@Override
+	public void removeUserFromUserGameParticipation(int gameID, String activeUserEmail) {
 
 		try {
 			Connection conn = dataSource.getConnection();
 			
 			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_participation WHERE email = ? AND game_id = ?");
 			stmt1.setString(1, activeUserEmail);
-			stmt1.setInt(2, Integer.parseInt(id));
+			stmt1.setInt(2, gameID);
 			stmt1.execute();
-			
-			PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM fyp_game WHERE creator_email = ? AND game_id = ?");
-			stmt2.setString(1, activeUserEmail);
-			stmt2.setInt(2, Integer.parseInt(id));
-			stmt2.execute();
-			
-			
+					
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,9 +150,9 @@ public class GameDAOImpl implements GameDAO {
 				StringBuilder str = new StringBuilder();
 				str.append("DELETE FROM fyp_limit_order_details WHERE trade_id in (");
 			
-				for(int i = 0 ; i < ids.keySet().size()-1; i++){
+				for(int i = 0 ; i < ids.keySet().size()-1; i++)
 					str.append("?, ");
-				}
+				
 				str.append("?)");
 				
 				System.out.println("QUERY: "+str.toString());
@@ -157,6 +169,74 @@ public class GameDAOImpl implements GameDAO {
 				// [3] 
 				PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM fyp_trade WHERE game_id = ?");
 				stmt2.setInt(1, gameID);
+				stmt2.execute();
+				
+				
+				// [4]
+				StringBuilder str1 = new StringBuilder();
+				str1.append("DELETE FROM fyp_trade_transaction WHERE transaction_id in (");
+			
+				for(int i = 0 ; i < ids.keySet().size()-1; i++){
+					str1.append("?, ");
+				}
+				str1.append("?)");
+				
+				System.out.println("QUERY 3: "+str.toString());
+				PreparedStatement stmt3 = conn.prepareStatement(str1.toString());
+				
+				count = 1;
+				for(int tradeID : ids.keySet()){
+					stmt3.setInt(count, ids.get(tradeID));
+					count++;
+				}
+				stmt3.execute();
+				
+				
+				
+			}
+	} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void removeTrades(int gameID, String email) {
+
+
+		// [1] First, get all trade IDs and transaction IDs for this game
+		// [2] Remove limit orders
+		// [3] Remove trades
+		// [4] Remove transactions
+
+		
+		Map<Integer, Integer> ids = getTradeAndTransactionIDs(gameID, email);
+		try {
+			Connection conn = dataSource.getConnection();
+			if(ids.keySet().size() != 0){
+
+				// [2]
+				StringBuilder str = new StringBuilder();
+				str.append("DELETE FROM fyp_limit_order_details WHERE trade_id in (");
+			
+				for(int i = 0 ; i < ids.keySet().size()-1; i++)
+					str.append("?, ");
+				
+				str.append("?)");
+				
+				System.out.println("QUERY: "+str.toString());
+				PreparedStatement stmt1 = conn.prepareStatement(str.toString());
+				
+				int count = 1;
+				for(int tradeID : ids.keySet()){
+					stmt1.setInt(count, tradeID);
+					count++;
+				}
+				stmt1.execute();
+				
+				
+				// [3] 
+				PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM fyp_trade WHERE game_id = ? AND email = ?");
+				stmt2.setInt(1, gameID);
+				stmt2.setString(2, email);
 				stmt2.execute();
 				
 				
@@ -208,6 +288,27 @@ public class GameDAOImpl implements GameDAO {
 		}
 		return ids;
 	}
+	
+	private Map<Integer, Integer> getTradeAndTransactionIDs(int gameID, String email) {
+		
+		HashMap<Integer, Integer> ids = new HashMap<Integer, Integer>();
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("Select trade_id, transaction_id FROM fyp_trade WHERE game_id = ? AND email = ?");
+			stmt1.setInt(1, gameID);		
+			stmt1.setString(2, email);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while (rs.next()){
+				System.out.println(rs.getInt("trade_id"));
+				ids.put(rs.getInt("trade_id"), rs.getInt("transaction_id"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ids;
+	}
 
 	@Override
 	public void removeFromGameAccountHistory(int gameID) {
@@ -216,6 +317,20 @@ public class GameDAOImpl implements GameDAO {
 			
 			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_account_history WHERE game_id = ?");
 			stmt1.setInt(1, gameID);
+			
+			stmt1.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void removeUserGameAccountHistory(int gameID, String email) {
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_account_history WHERE game_id = ? AND email = ?");
+			stmt1.setInt(1, gameID);
+			stmt1.setString(2, email);
 			
 			stmt1.execute();
 		} catch (SQLException e) {
@@ -325,6 +440,142 @@ public class GameDAOImpl implements GameDAO {
 			e.printStackTrace();
 		}
 		return joinCodes;
+	}
+
+	@Override
+	public Game getGameName(int gameID) {
+		Game g = new Game();
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT game_name FROM fyp_game WHERE game_id = ?");
+			stmt1.setInt(1, gameID);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while (rs.next())
+				g.setGameName(rs.getString("game_name"));
+		g.setGameID(gameID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return g;
+	}
+
+	@Override
+	public boolean hasUserCreatedGame(String email, int gameID) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT creator_email FROM fyp_game WHERE game_id = ?");
+			stmt1.setInt(1, gameID);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while (rs.next())
+				if(rs.getString("creator_email").equals(email))
+					return true;
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Game getGameDetails(int gameID) {
+		Game game = new Game();
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_game WHERE game_id = ?");
+			stmt1.setInt(1, gameID);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while (rs.next()){
+				game.setGameID(rs.getInt("game_id"));
+				game.setGameName(rs.getString("game_name"));
+				game.setGameType(rs.getString("game_type"));
+				game.setStartingCash(rs.getDouble("starting_cash"));
+				game.setCreatorEmail(rs.getString("creator_email"));
+				game.setStartDate((rs.getDate("start_date")).toString());
+				game.setEndDate(rs.getDate("end_date").toString());
+				game.setStatus(rs.getString("status"));
+
+				if (game.getGameType().equals("Private")) {
+					game.setJoinCode(rs.getString("join_code"));
+				}
+
+			}
+			
+		game.setGameID(gameID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return game;			}
+
+	@Override
+	public void updateGameDetails(Game game) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("UPDATE fyp_game SET game_name = ?, game_type = ?, starting_cash = ?, start_date = ?, end_date = ? WHERE game_id = ?");
+			stmt1.setString(1, game.getGameName());		
+			stmt1.setString(2, game.getGameType());		
+			stmt1.setDouble(3, game.getStartingCash());		
+			stmt1.setString(4, game.getStartDate());
+			stmt1.setString(5, game.getEndDate());
+			stmt1.setInt(6,game.getGameID());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeFromStockOwned(int gameID, String email) {
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_stock_owned WHERE game_id = ? AND email = ?");
+			stmt1.setInt(1, gameID);
+			stmt1.setString(2, email);
+			
+			stmt1.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public List<Game> getPublicGames() {
+		List<Game> publicGames = new ArrayList<Game>();
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_game WHERE game_type = ?");
+			stmt1.setString(1, "Public");
+			
+			ResultSet rs = stmt1.executeQuery();
+			
+			while(rs.next()){
+				Game game = new Game();
+				game.setGameID(rs.getInt("game_id"));
+				System.out.println("id: "+game.getGameID());
+				game.setGameName(rs.getString("game_name"));
+				game.setGameType(rs.getString("game_type"));
+				game.setStartingCash(rs.getDouble("starting_cash"));
+			//	game.setCreatorEmail(rs.getString("creator_email"));
+				game.setStartDate((rs.getDate("start_date")).toString());
+				game.setEndDate(rs.getDate("end_date").toString());
+				game.setStatus(rs.getString("status"));
+				game.printGameDetails();
+				publicGames.add(game);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return publicGames;
 	}
 
 

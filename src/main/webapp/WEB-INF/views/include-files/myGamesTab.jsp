@@ -8,12 +8,50 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 
+
+<style>
+.btnz {
+	cursor: pointer;
+	/*   margin: 10px;
+ */
+	border-radius: 5px;
+	text-decoration: none;
+	padding: 11px;
+	margin-bottom: 4px;
+	font-size: 22 px;
+	transition: .3s;
+	-webkit-transition: .3s;
+	-moz-transition: .3s;
+	-o-transition: .3s;
+	display: inline-block;
+}
+
+.green-submit {
+	color: green;
+	border: 2px green solid;
+	background-color: #fff;
+}
+
+.green-submit:hover {
+	background-color: green;
+	color: #fff
+}
+
+.red-submit {
+	color: red;
+	border: 2px red solid;
+	background-color: #fff;
+}
+
+.red-submit:hover {
+	background-color: red;
+	color: #fff
+}
+</style>
 </head>
 
 <body>
 
-	<!-- <div id = "gameButtons" align = "center" >
- -->
 	<h4 style="color: green;">ACTIVE</h4>
 	<h4 style="color: red;">ENDED</h4>
 	<c:forEach var="game" items="${myGames}">
@@ -21,19 +59,19 @@
 
 		<c:if test="${game.getStatus() == 'Active'}">
 
-			<button
-				style="display: block; width: 100%; color: green; border: 2px green solid;"
-				type="submit" class="btn blue-submit" id="game${game.getGameID()}"
+			<button style="display: block; width: 20%;" type="submit"
+				class="btnz green-submit" id="game${game.getGameID()}"
 				onClick="getRankings(${game.getGameID()});">${game.getGameName()}</button>
 		</c:if>
 
 		<c:if test="${game.getStatus() == 'Ended'}">
 
-			<button
-				style="display: block; width: 100%; color: red; border: 2px red solid;"
-				type="submit" class="btn blue-submit" id="game${game.getGameID()}"
+			<button style="display: block; width: 20%;" type="submit"
+				class="btnz red-submit" id="game${game.getGameID()}"
 				onClick="getRankings(${game.getGameID()});">${game.getGameName()}</button>
 		</c:if>
+		
+		
 		<div style="display: none; padding: 5px;"
 			id="rankingsTableDiv${game.getGameID()}">
 
@@ -45,35 +83,33 @@
 			</c:if>
 
 
-			<table id="myTable${game.getGameID()}" class="display" width="100%">
+			<div align="center">
+				<div style="width: 80%;">
+					<table id="myTable${game.getGameID()}" class="display" width="100%">
 
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Country</th>
-						<th>Balance</th>
-						<th>Acc. Value</th>
-						
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="user" items="${game.getUsersInGame()}">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Country</th>
+								<th>Balance</th>
+								<th>Acc. Value</th>
 
-						<tr>
-							<td>${user.getFirstName()} ${user.getLastName()}</td>
-							<td>${user.getCountry()}</td>
-							<td>${user.getBalance()}</td>
-							<td>${user.getCurAccVal()}</td>
-							
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="user" items="${game.getUsersInGame()}">
 
-
-						</tr>
-					</c:forEach>
-
-
-
-				</tbody>
-			</table>
+								<tr>
+									<td>${user.getFirstName()}${user.getLastName()}</td>
+									<td>${user.getCountry()}</td>
+									<td>${user.getBalance()}</td>
+									<td>${user.getCurAccVal()}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 
 	</c:forEach>

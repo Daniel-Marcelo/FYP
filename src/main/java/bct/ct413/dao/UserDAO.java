@@ -48,5 +48,7 @@ public interface UserDAO {
 	public void removeFromUserTable(String email);
 	public void removeFromPersistentLogin(String email);
 	public void updateUserEmail(String currentEmail, String newEmail);
+	List<User> getListOfUsersInThisGame(int gameID);
+	void addUserToPublicGame(int gameID, String email);
 
 }

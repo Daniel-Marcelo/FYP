@@ -54,7 +54,7 @@ function testMethod(){
         console.log("OBJECT: "+JSON.stringify(obj));
         
         if(obj.name == "N/A"){
-        	alert("NOT REAL STOCK");
+        	alert("Please Enter a Valid Symbol");
         	myLoad.style.visibility = "hidden";
         }
         else{
@@ -107,10 +107,7 @@ function testMethod(){
         myTable.style.visibility = "visible";
         
     	document.getElementById("watchButton").style.visibility = "visible";
-    	document.getElementById("downloadButton").style.visibility = "visible";
-    	var url = "https://ichart.yahoo.com/table.csv?s=AAPL";
-    	console.log("URz: "+url);
-    	document.getElementById("downloadForm").action = url;
+    	
 
 
         

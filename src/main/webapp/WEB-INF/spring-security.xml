@@ -9,59 +9,60 @@
 		/> <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/loginfailed" 
 		/> <logout logout-success-url="/logout" /> </http> -->
 
-<!-- 	<http auto-config="true">
-		<intercept-url pattern="/home*" access="ROLE_USER" />
-		<form-login login-page="/login" default-target-url="/home" authentication-failure-url="/loginfailed" />
-		<logout logout-success-url="/logout" />
-		<http-basic />
-	</http> -->
-	
-	
+	<!-- <http auto-config="true"> <intercept-url pattern="/home*" access="ROLE_USER" 
+		/> <form-login login-page="/login" default-target-url="/home" authentication-failure-url="/loginfailed" 
+		/> <logout logout-success-url="/logout" /> <http-basic /> </http> -->
+
+
 	<http auto-config="true" use-expressions="true">
- 		<intercept-url pattern="/home**" access="hasRole('ROLE_USER')" />
-  		<intercept-url pattern="/symbolInfoPage**" access="hasRole('ROLE_USER')" />
-  		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
-  		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
-  		<intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" />
-  		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
-  		<intercept-url pattern="/removeUserAdmin**" access="hasRole('ROLE_ADMIN')" />
-  		
-  		
-  		
+		<intercept-url pattern="/home**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/symbolInfoPage**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/removeUserAdmin**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/games**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/join**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/create**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/rankings/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/editGameRules/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/viewGameRules/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/leaveGame/**" access="hasRole('ROLE_USER')" />
+
+
+
+
+
+
+
+
+
 		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
-		
+
 		<access-denied-handler error-page="/403" />
-		
-		<form-login 
-		    login-page="/login" 
-		    default-target-url="/home" 
-			authentication-failure-url="/login?error" 
-			username-parameter="email"
-			password-parameter="password" 
-			login-processing-url="/auth/login_check"
+
+		<form-login login-page="/login" default-target-url="/home"
+			authentication-failure-url="/login?error" username-parameter="email"
+			password-parameter="password" login-processing-url="/auth/login_check"
 			authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />
-		<logout logout-success-url="/login?logout" delete-cookies="JSESSIONID"  />
+		<logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
 		<!-- enable csrf protection -->
-		<csrf/>
-		
-		<remember-me 
-        token-validity-seconds="1209600"
-	remember-me-parameter="remember-me" 
-	data-source-ref="dataSource" />
-	
-	
+		<csrf />
+
+		<remember-me token-validity-seconds="1209600"
+			remember-me-parameter="remember-me" data-source-ref="dataSource" />
+
+
 	</http>
 
 	<authentication-manager>
 		<authentication-provider>
-<!-- 			<user-service>
-				<user name="mkyong" password="123456" authorities="ROLE_USER" />
-			</user-service> -->
-<jdbc-user-service data-source-ref="dataSource"
-		  users-by-username-query=
-		    "select email, password, enabled from fyp_user where email = ?"
-		  authorities-by-username-query=
-		    "select email, role from fyp_user_roles where email =?  " />
+			<!-- <user-service> <user name="mkyong" password="123456" authorities="ROLE_USER" 
+				/> </user-service> -->
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select email, password, enabled from fyp_user where email = ?"
+				authorities-by-username-query="select email, role from fyp_user_roles where email =?  " />
 		</authentication-provider>
 	</authentication-manager>
 

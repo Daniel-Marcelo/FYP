@@ -26,8 +26,6 @@ function displayEditForm(gameID){
 </script>
 </head>
 <body>
-
-	<h1>Select a game to edit</h1>
 	
 	<c:forEach var="game" items="${myGames}">
 	

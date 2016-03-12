@@ -20,14 +20,38 @@ function showLeaveMessage(gameID){
 
 
 function getRankings(gameID){
+	
 	var stringV = String("rankingsTableDiv"+gameID);
 	var tableDiv = document.getElementById(stringV);
-	var display = tableDiv.style.display;
+	var active =  document.getElementsByClassName("viewActive");
 	
-	if(display == "none")
-		tableDiv.style.display = "inline";
-	else
-		tableDiv.style.display = "none";
+	console.log("Table: "+stringV+" was clicked");
+	console.log("There are (before the button was pressed) "+active.length+" tables");
+	if(active[0] == undefined){
+		console.log("NO active tables");
+		tableDiv.className += 'viewActive';
+		var display = tableDiv.style.display;
+		
+		if(display == "none")
+			tableDiv.style.display = "inline";
+		else
+			tableDiv.style.display = "none";
+	} else{
+		var currentTable = active[0];
+		console.log("ID of table alreaday shown: "+currentTable.id);
+		currentTable.style.display	 = "none";
+		$('#'+currentTable.id).removeClass('viewActive');	
+		if(currentTable.id != tableDiv.id){
+			tableDiv.className += 'viewActive';
+			var display = tableDiv.style.display;
+			
+			if(display == "none")
+				tableDiv.style.display = "inline";
+			else
+				tableDiv.style.display = "none";
+		}
+	}
+
 }
 	
 	function validateTheDates(){
@@ -68,11 +92,11 @@ function getRankings(gameID){
 			    var gameID = gamesJSON[key].gameID;
 
 				$("#myTable"+gameID).DataTable({
-					
 			        "paging":   true,
 			        "ordering": true,
 			        "info":     true,
 			        "order": [[ 2, "desc" ]]
+				
 				});			  
 			}
 		}
