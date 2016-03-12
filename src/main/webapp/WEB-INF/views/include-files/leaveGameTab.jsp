@@ -13,9 +13,6 @@
 
 <h3 align="center">Select A Game To Leave</h3>
 
-
-
-
 					<div align="center">
 						<div align="center" style="width: 95%">
 
@@ -26,17 +23,19 @@
 									onClick="showLeaveMessage(${game.getGameID()});">${game.getGameName()}</button>
 
 								<div id="leaveOption${game.getGameID()}" style="display: none;">
+								
 									<h4>Are you sure you want to leave ${game.getGameName()}?</h4>
-									<form action="leaveGame" style="display: inline-block;"
-										method="POST">
-										<input type="hidden" id="gameToLeaveID${game.getGameID()}"
-											name="gameToLeaveID" value="${game.getGameID()}"> <input
-											type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" />
+									
+									<form action="leaveGame" style="display: inline-block;" method="POST">
+									
+										<input type="hidden" id="gameToLeaveID${game.getGameID()}" name="gameToLeaveID" value="${game.getGameID()}"> 
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 										<button id="sendingSymbolButton" type="submit"
 											class="btn blue-submit">Leave</button>
+											
 									</form>
+									
 								</div>
 
 							</c:forEach>

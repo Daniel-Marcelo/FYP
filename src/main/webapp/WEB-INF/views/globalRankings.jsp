@@ -47,13 +47,7 @@
 						<th>Balance</th>
 					</tr>
 				</thead>
-				<tfoot>
-					<tr>
-						<th>Name</th>
-						<th>Country</th>
-						<th>Balance</th>
-					</tr>
-				</tfoot>
+
 				<tbody>
 					<c:forEach var="user" items="${allUsers}">
 						<tr>

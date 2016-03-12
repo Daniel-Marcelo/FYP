@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="resources/js/jquery.js" type="text/javascript"></script>
 <link rel="stylesheet" href="resources/css/bootstrap.css">
-<link rel="stylesheet" href="resources/css/reg-and-login.css">
+<link rel="stylesheet" href="resources/css/reg-and-login.css">			<!-- Form CSS -->
 <script src="resources/js/registration-form-validation.js"></script>
 <script src="resources/js/bootstrap.min.js"></script>
 <link rel="stylesheet"

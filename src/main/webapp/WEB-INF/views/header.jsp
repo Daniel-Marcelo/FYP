@@ -8,11 +8,11 @@
 <title>Insert title here</title>
 <!-- <script src="resources/js/jquery.js"
 	type="text/javascript"></script> -->
-<script src="resources/js/header.js"></script>
-<script src="resources/js/numeral.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
 
 
-<link rel="stylesheet" type="text/css" href="resources/css/header.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css">
 
 
 <script>
@@ -66,7 +66,7 @@ $(document).ready(function() {
 
 
 <body>
-	<c:url value="j_spring_security_logout" var="logoutUrl" />
+	<c:url value="/j_spring_security_logout" var="logoutUrl" />
 	<form action="${logoutUrl}" method="post" id="logoutForm">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
@@ -77,16 +77,16 @@ $(document).ready(function() {
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
-				<li class='active'><a href="home">Home</a></li>
+				<li class='active'><a href="${pageContext.request.contextPath}/home">Home</a></li>
 
 				<li><a href="javascript:formSubmit()"> Logout</a></li>
- 				<li><a href='portfolioz'>Portfolio</a></li>
- 				<li><a href='symbolInfoPage'>Stock Look Up</a></li>
-				<li><a href='trade'>Trade</a></li>
-				<li><a href='globalRankings'>Global Rankings</a></li>
-				<li><a href='dashboard'>Dashboard</a></li>
-				<li><a href='watchlist'>WatchList</a></li>
-				<li><a href='games'>Games</a></li>
+ 				<li><a href='${pageContext.request.contextPath}/portfolioz'>Portfolio</a></li>
+ 				<li><a href='${pageContext.request.contextPath}/symbolInfoPage'>Stock Look Up</a></li>
+				<li><a href='${pageContext.request.contextPath}/trade'>Trade</a></li>
+				<li><a href='${pageContext.request.contextPath}/globalRankings'>Global Rankings</a></li>
+				<li><a href='${pageContext.request.contextPath}/dashboard'>Dashboard</a></li>
+				<li><a href='${pageContext.request.contextPath}/watchlist'>WatchList</a></li>
+				<li><a href='${pageContext.request.contextPath}/games'>Games</a></li>
 				
 				
 				

@@ -28,7 +28,6 @@ function updateStockTableForGame(gameID){
 	for ( var index in stocks) {
 		if (stocks.hasOwnProperty(index)) {
 
-			var rowNum = 1;
 			//1  = Default global game that every usr is included in
 			if (stocks[index].gameID == gameID) {
 					table.row.add([
@@ -40,9 +39,6 @@ function updateStockTableForGame(gameID){
 										numeral(stocks[index].total).format('$0,0.00'),
 										numeral(stocks[index].gainOrLoss).format('$0,0.00')
 								]).draw(false); 
-					
-
-
 			}
 		}
 	}
@@ -53,8 +49,6 @@ function updateTransactionTable(gameID){
 	var table2 = $('#myTransactionTable').DataTable();
 	var myTransactions = JSON.parse('${myTransactions}');
 	table2.rows().remove().draw();
-
-
 	
 	for ( var index in myTransactions) {
 		if (myTransactions.hasOwnProperty(index)) {

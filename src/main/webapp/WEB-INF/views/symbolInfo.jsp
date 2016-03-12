@@ -166,13 +166,7 @@
 
 			</div>
 			
-			<div align="center" id="downloadButton" style = "visibility : hidden;">
-			<div id = "downloadCSV"></div>
 			
-			<form id = "downloadForm" action = "#" accept-charset=utf-8>
-				<br><button id = "downloadBtn" type="submit" class="btn blue-submit">Download History</button>
-</form>
-			</div>
 		</div>
 
 

@@ -208,12 +208,105 @@ public class HomeController {
 		ModelAndView model = new ModelAndView("games");
 		
 		List<Game> games = userDAO.getGamesForUser(getActiveUserEmail());
-		model.addObject("myGames", games);
+		
+		model.addObject("myGames",games);
 
 		return model;
 		
 	}
+	
+	
+	@RequestMapping(value = "leaveGame/{gameID}", method = RequestMethod.GET)
+	public ModelAndView leavingGame(@PathVariable int gameID) {
+		
+		System.out.println(gameID);
+		ModelAndView model = new ModelAndView("/leaveConfirmation");
+		Game game = gameDAO.getGameName(gameID);
+		model.addObject("game", game);
+		return model;
+		
+	
+	}
+	
+	@RequestMapping(value = "joinPublicGame/{gameID}", method = RequestMethod.GET)
+	public ModelAndView joinGame(@PathVariable int gameID) {
+		
+		ModelAndView model = new ModelAndView("redirect:/games");
+		Game game = gameDAO.getGameName(gameID);
+		userDAO.addUserToPublicGame(gameID, getActiveUserEmail());
+		model.addObject("game", game);
+		return model;
+		
+	
+	}
+	
+	@RequestMapping(value = "rankings/{gameID}", method = RequestMethod.GET)
+	public ModelAndView gameRankings(@PathVariable int gameID) {
+		
+		System.out.println(gameID);
+		ModelAndView model = new ModelAndView("/gameRankings");
+		List<User> usersInGame = userDAO.getListOfUsersInThisGame(gameID);
+		Game game = gameDAO.getGameName(gameID);
+		model.addObject(usersInGame);
+		model.addObject(game);
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "editGameRules/{gameID}", method = RequestMethod.GET)
+	public ModelAndView gameRules(@PathVariable int gameID) {
+		
+		Game game = gameDAO.getGameDetails(gameID);
+		ModelAndView model;
+		if(getActiveUserEmail().equals(game.getCreatorEmail())){
+			model = new ModelAndView("/editGameRules");
+			model.addObject(game);
 
+		}
+		else{
+			model = new ModelAndView("/403");
+			model.addObject("errorMsg", "You do not have permission to edit the rules for this game, only the creator can do so.");
+		}
+
+		return model;
+	}
+	
+	@RequestMapping(value = "viewGameRules/{gameID}", method = RequestMethod.GET)
+	public ModelAndView viewRules(@PathVariable int gameID) {
+		
+		Game game = gameDAO.getGameDetails(gameID);
+		ModelAndView model;
+			model = new ModelAndView("/viewGameRules");
+			model.addObject(game);
+
+
+			return model;
+	}
+	
+	@RequestMapping(value = "joinPrivateGame", method = RequestMethod.GET)
+	public ModelAndView joinPrivateGame() {
+		
+			ModelAndView model = new ModelAndView("joinPrivateGame");
+			return model;
+	}
+	
+	@RequestMapping(value = "createNewGame", method = RequestMethod.GET)
+	public ModelAndView createNewGame() {
+		
+			ModelAndView model = new ModelAndView("createNewGame");
+			model.addObject("newGame", new Game());
+			return model;
+	}
+	
+	@RequestMapping(value = "joinPublicGame", method = RequestMethod.GET)
+	public ModelAndView joinPublicGame() {
+		
+			ModelAndView model = new ModelAndView("joinPublicGame");
+			List<Game> publicGames = gameDAO.getPublicGames();
+			System.out.println("Size: "+publicGames.get(0).getGameName());
+			model.addObject("publicGames",publicGames);
+			return model;
+	}
 	
 	@RequestMapping(value = "dashboard", method = RequestMethod.GET)
 	public ModelAndView dashboardDetails(){
@@ -392,13 +485,11 @@ public class HomeController {
 
 		if (tradeDetails.getTradeType().equals("Market")) {
 
-			TradeTransaction tradeTransaction = tradeDetails
-					.getRelevantTradeTransactionDetails();
-			int transactionID = tradeTransactionDAO
-					.addNewTransaction(tradeTransaction);
+			System.out.println("Executing market order: "+tradeDetails.getSymbol());
+			TradeTransaction tradeTransaction = tradeDetails.getRelevantTradeTransactionDetails();
+			int transactionID = tradeTransactionDAO.addNewTransaction(tradeTransaction);
 
-			Trade trade = tradeDetails.getRelevantTradeDetails(email,
-					transactionID);
+			Trade trade = tradeDetails.getRelevantTradeDetails(email,transactionID);
 			tradeDAO.addNewOrder(trade);
 
 			if (trade.getBuyOrSell().equals("Sell")) {
@@ -431,11 +522,36 @@ public class HomeController {
 
 		return model;
 	}
+	@RequestMapping(value = "/editGame", method = RequestMethod.POST)
+	public ModelAndView editGame(@ModelAttribute Game game) {
+
+		gameDAO.updateGameDetails(game);
+		ModelAndView model = new ModelAndView("games");
+
+
+		return model;
+	}
 
 	@RequestMapping(value = "/leaveGame", method = RequestMethod.POST)
 	public ModelAndView leave(@RequestParam("gameToLeaveID") String id) {
 
-		gameDAO.removeUserFromGame(id, getActiveUserEmail());
+		int gameID = Integer.parseInt(id);
+		gameDAO.removeFromStockOwned(gameID, getActiveUserEmail());
+		gameDAO.removeTrades(gameID, getActiveUserEmail());
+		gameDAO.removeUserGameAccountHistory(gameID, getActiveUserEmail());
+		gameDAO.removeUserFromUserGameParticipation(gameID, getActiveUserEmail());
+		//gameDAO.removeUserFromGame(gameID, getActiveUserEmail());
+		
+		if(gameDAO.hasUserCreatedGame(getActiveUserEmail(), gameID)){
+			
+			System.out.println("User created this game");
+	    	gameDAO.removeGameFromStockOwned(gameID);
+	    	gameDAO.removeGameTrades(gameID);
+	    	gameDAO.removeFromGameAccountHistory(gameID);
+	    	gameDAO.removeFromUserGameParticipation(gameID);
+	    	gameDAO.removeFromGameTable(gameID);
+		}
+		//Check if user owns game, if so, remove all data from game
 		return new ModelAndView("redirect:/home");
 	}
 

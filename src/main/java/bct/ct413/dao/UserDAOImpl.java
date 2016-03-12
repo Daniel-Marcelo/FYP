@@ -207,15 +207,17 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void updateStocksOwned(Trade trade, int quantity) {
 
+		System.out.println(trade.getGameID()+ " New trade: "+quantity+ ", "+trade.getSymbol()+" "+trade.getEmail());
 		Connection conn;
 		try {
 			double avgPurchasePrice = updateAvgPurchasePrice(trade);
 
 			conn = dataSource.getConnection();
 			PreparedStatement stmt1 = conn
-					.prepareStatement("Select quantity FROM fyp_stock_owned WHERE email = ? AND symbol = ? ");
+					.prepareStatement("Select quantity FROM fyp_stock_owned WHERE email = ? AND symbol = ? AND game_id = ?");
 			stmt1.setString(1, trade.getEmail());
 			stmt1.setString(2, trade.getSymbol());
+			stmt1.setInt(3, trade.getGameID());
 
 			ResultSet rs = stmt1.executeQuery();
 
@@ -349,6 +351,59 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 	}
+	
+	@Override
+	public void addUserToPublicGame(int gameID, String email) {
+
+		double startingCash = 0;
+		int count = 0;
+
+		// First check if user is already in the game
+		// If they are, do nothing
+
+		try {
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt3 = conn
+					.prepareStatement("SELECT COUNT(*) FROM fyp_user_game_participation WHERE email = ? AND game_id = ?");
+			stmt3.setString(1, email);
+			stmt3.setInt(2, gameID);
+
+			ResultSet rs3 = stmt3.executeQuery();
+			while (rs3.next())
+				count = rs3.getInt("COUNT(*)");
+
+			System.out.println("Countis: " + count);
+
+			//If user is not already in game
+			if (count == 0) {
+
+				PreparedStatement stmt1 = conn
+						.prepareStatement("SELECT starting_cash FROM fyp_game WHERE game_id = ?");
+				stmt1.setInt(1, gameID);
+
+				ResultSet rs = stmt1.executeQuery();
+				while (rs.next()) {
+					startingCash = rs.getDouble("starting_cash");
+				}
+
+				PreparedStatement stmt2 = conn
+						.prepareStatement("INSERT INTO fyp_user_game_participation VALUES (?, ?, ?)");
+				stmt2.setInt(1, gameID);
+				stmt2.setString(2, email);
+				stmt2.setDouble(3, startingCash);
+
+				stmt2.execute();
+				stmt1.close();
+				stmt2.close();
+
+				addToAccValHistory(gameID, startingCash, email);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	@Override
 	public void addToDefaultGame(User newUser) {
@@ -462,7 +517,7 @@ public class UserDAOImpl implements UserDAO {
 					System.out.println("Join Code: " + game.getJoinCode());
 					games.add(game);
 
-					List<User> usersInGame = getListOfUsersInThisGame(game);
+					List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
 					game.setUsersInGame(usersInGame);
 					game.setBoard(getDashboardStats(email, game));
 				}
@@ -513,7 +568,7 @@ public class UserDAOImpl implements UserDAO {
 					System.out.println("Join Code: " + game.getJoinCode());
 					games.add(game);
 
-					List<User> usersInGame = getListOfUsersInThisGame(game);
+					List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
 					game.setUsersInGame(usersInGame);
 					game.setBoard(getDashboardStatsAdmin(game));
 				}
@@ -528,15 +583,15 @@ public class UserDAOImpl implements UserDAO {
 
 		return games;
 	}
-
-	private List<User> getListOfUsersInThisGame(Game game) {
+	@Override
+	public List<User> getListOfUsersInThisGame(int gameID) {
 
 		List<User> users = new ArrayList<User>();
 		try {
 			Connection conn = dataSource.getConnection();
 			PreparedStatement stmt1 = conn
 					.prepareStatement("SELECT email, balance FROM fyp_user_game_participation WHERE game_id = ?");
-			stmt1.setInt(1, game.getGameID());
+			stmt1.setInt(1, gameID);
 
 			ResultSet rs = stmt1.executeQuery();
 
@@ -545,7 +600,7 @@ public class UserDAOImpl implements UserDAO {
 				String email = rs.getString("email");
 				User user = getPersonalDetais(email);
 				user.setBalance(rs.getDouble("balance"));
-				double toBeAdded = getAccValForUserInGame(game.getGameID(),
+				double toBeAdded = getAccValForUserInGame(gameID,
 						email);
 				user.setCurAccVal(toBeAdded + user.getBalance());
 				users.add(user);
