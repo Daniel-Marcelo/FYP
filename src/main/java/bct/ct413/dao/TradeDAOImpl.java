@@ -382,13 +382,11 @@ public class TradeDAOImpl implements TradeDAO {
 	}
 
 	@Override
-	public List<Trade> getPortfolioTransactionDetails(
-			String activeUserEmail) {
-		Connection conn;
+	public List<Trade> getPortfolioTradeDetails(String activeUserEmail) {
 		
-		List<Trade> myTransactions = new ArrayList<Trade>();
+		List<Trade> myTrades = new ArrayList<Trade>();
 		try {
-			conn = dataSource.getConnection();
+			Connection conn = dataSource.getConnection();
 			PreparedStatement stmt1 = conn
 					.prepareStatement("SELECT email,  symbol, date, buy_or_sell, trade_type, fyp_trade.transaction_id, status, game_id, share_price, quantity, total "
 							+ "FROM fyp_trade INNER JOIN  fyp_trade_transaction ON fyp_trade.transaction_id = fyp_trade_transaction.transaction_id "
@@ -414,14 +412,35 @@ public class TradeDAOImpl implements TradeDAO {
 				transaction.setQuantity(rs.getInt("quantity"));
 				transaction.setSharePrice(rs.getDouble("share_price"));
 				transaction.setTotal(rs.getDouble("total"));
-				myTransactions.add(trade);
+				myTrades.add(trade);
 				
 			}
+			
+			rs.close();
+			stmt1.close();
+			conn.close();
+			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
-		
-		return myTransactions;
+		return myTrades;
+	}
 
+	@Override
+	public void update(String currentEmail, String newEmail) {
+		try{
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt6 = conn.prepareStatement("UPDATE fyp_trade SET email = ? WHERE email = ?");
+			stmt6.setString(1, newEmail);
+			stmt6.setString(2, currentEmail);
+			stmt6.execute();
+			
+			stmt6.close();
+			conn.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 }

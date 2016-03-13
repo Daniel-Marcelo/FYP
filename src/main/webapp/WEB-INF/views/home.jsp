@@ -45,12 +45,12 @@ body > #testContainer { height: auto; min-height: 100%; }
 
 <script>
 	$(document).ready(
-			function() {
+			function() {	
 
 				document.getElementById("retypedPassword").value = document
 						.getElementById("password").value;
 
-				$("#startDateGame").datepicker({
+/* 				$("#startDateGame").datepicker({
 					dateFormat : 'yy/mm/dd'
 				});
 				$("#endDateGame").datepicker({
@@ -58,7 +58,7 @@ body > #testContainer { height: auto; min-height: 100%; }
 				});
 
 				var gamesJSON = JSON.parse('${dataTableGamesJSON}');
-				drawDataTable(gamesJSON);
+				drawDataTable(gamesJSON); */
 			});
 </script>
 </head>
@@ -87,7 +87,10 @@ body > #testContainer { height: auto; min-height: 100%; }
 			<h2>${messageFromHome}</h2>
 
 		</c:if>	 --%>
- 			<div class="container">
+		
+									<%@include file="include-files/myDetailsForm.jsp"%>
+		
+<%--  			<div class="container">
 
 
  
@@ -111,7 +114,6 @@ body > #testContainer { height: auto; min-height: 100%; }
 					<div class="tab-content">
 						<div id="home" class="tab-pane fade in active">
 
-							<%@include file="include-files/myDetailsForm.jsp"%>
 
 						</div>
 
@@ -154,7 +156,7 @@ body > #testContainer { height: auto; min-height: 100%; }
 
 					</div>
 				</div>
- 			</div>
+ 			</div> --%>
  		</div>
 	</div>
 	<div id = "testFooter"><%@include file="footer.jsp"%></div>

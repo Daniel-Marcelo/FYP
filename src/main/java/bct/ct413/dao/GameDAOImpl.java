@@ -78,6 +78,52 @@ public class GameDAOImpl implements GameDAO {
 	// [1] Get starting balance for this game
 	// [2] Using balance, insert the user into the participation table
 
+	@Override
+	public List<Game> getGames(String email) {
+
+		List<Game> games = new ArrayList<Game>();
+		try {
+			Connection conn = dataSource.getConnection();
+
+				PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_game WHERE game_id IN "
+						+ "(SELECT game_id FROM fyp_user_game_participation WHERE email = ?)");
+
+				stmt1.setString(1, email);
+				ResultSet rs = stmt1.executeQuery();
+
+				while (rs.next()) {
+
+					Game game = new Game();
+					game.setGameID(rs.getInt("game_id"));
+					game.setGameName(rs.getString("game_name"));
+					game.setGameType(rs.getString("game_type"));
+					game.setStartingCash(rs.getDouble("starting_cash"));
+					game.setCreatorEmail(rs.getString("creator_email"));
+					game.setStartDate((rs.getDate("start_date")).toString());
+					game.setEndDate(rs.getDate("end_date").toString());
+					game.setStatus(rs.getString("status"));
+
+					if (game.getGameType().equals("Private")) 
+						game.setJoinCode(rs.getString("join_code"));
+					
+					games.add(game);
+
+					//List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
+					//game.setUsersInGame(usersInGame);
+					//game.setBoard(getDashboardStats(email, game));
+				}
+				rs.close();
+				stmt1.close();
+
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return games;
+	}
+	
+	
 
 	@Override
 	public void removeUserFromGame(int gameID, String activeUserEmail) {
@@ -507,11 +553,41 @@ public class GameDAOImpl implements GameDAO {
 
 			}
 			
+			
+			
 		game.setGameID(gameID);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return game;			}
+		return game;			
+	}
+	
+	@Override
+	public Game getGameDetails(String joinCode) {
+		Game game = new Game();
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_game WHERE  join_code = ?");
+			stmt1.setString(1, joinCode);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while (rs.next()){
+				game.setGameID(rs.getInt("game_id"));
+				game.setGameName(rs.getString("game_name"));
+				game.setGameType(rs.getString("game_type"));
+				game.setStartingCash(rs.getDouble("starting_cash"));
+				game.setCreatorEmail(rs.getString("creator_email"));
+				game.setStartDate((rs.getDate("start_date")).toString());
+				game.setEndDate(rs.getDate("end_date").toString());
+				game.setStatus(rs.getString("status"));
+				game.setJoinCode(rs.getString("join_code"));
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return game;			
+	}
 
 	@Override
 	public void updateGameDetails(Game game) {
@@ -560,7 +636,6 @@ public class GameDAOImpl implements GameDAO {
 			while(rs.next()){
 				Game game = new Game();
 				game.setGameID(rs.getInt("game_id"));
-				System.out.println("id: "+game.getGameID());
 				game.setGameName(rs.getString("game_name"));
 				game.setGameType(rs.getString("game_type"));
 				game.setStartingCash(rs.getDouble("starting_cash"));
@@ -568,7 +643,7 @@ public class GameDAOImpl implements GameDAO {
 				game.setStartDate((rs.getDate("start_date")).toString());
 				game.setEndDate(rs.getDate("end_date").toString());
 				game.setStatus(rs.getString("status"));
-				game.printGameDetails();
+
 				publicGames.add(game);
 
 			}
@@ -576,6 +651,24 @@ public class GameDAOImpl implements GameDAO {
 			e.printStackTrace();
 		}
 		return publicGames;
+	}
+
+	@Override
+	public void updateCreatorEmail(String currentEmail, String newEmail) {
+
+		try{
+			Connection conn = dataSource.getConnection();
+	
+			PreparedStatement stmt3 = conn.prepareStatement("UPDATE fyp_game SET creator_email = ? WHERE creator_email = ?");
+			stmt3.setString(1, newEmail);
+			stmt3.setString(2, currentEmail);
+			stmt3.execute();
+			
+			stmt3.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 

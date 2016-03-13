@@ -83,7 +83,7 @@ $(document).ready(function() {
  				<li><a href='${pageContext.request.contextPath}/portfolioz'>Portfolio</a></li>
  				<li><a href='${pageContext.request.contextPath}/symbolInfoPage'>Stock Look Up</a></li>
 				<li><a href='${pageContext.request.contextPath}/trade'>Trade</a></li>
-				<li><a href='${pageContext.request.contextPath}/globalRankings'>Global Rankings</a></li>
+				<li><a href='${pageContext.request.contextPath}/rankings/1'>Global Rankings</a></li>
 				<li><a href='${pageContext.request.contextPath}/dashboard'>Dashboard</a></li>
 				<li><a href='${pageContext.request.contextPath}/watchlist'>WatchList</a></li>
 				<li><a href='${pageContext.request.contextPath}/games'>Games</a></li>

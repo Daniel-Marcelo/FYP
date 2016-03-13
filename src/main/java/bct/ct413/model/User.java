@@ -89,5 +89,16 @@ public class User implements Comparable<User> {
 		else
 			return 0;
 	}
+	
+	public void print(){
+		System.out.println("\n\nFIRST NAME: "+firstName);
+		System.out.println("LAST NAME: "+lastName);
+		System.out.println("EMAIL: "+email);
+		System.out.println("COUNTRY: "+country);
+		System.out.println("ACC VAL: "+curAccVal);
+		System.out.println("BALANCE: "+balance);
+
+
+	}
 
 }

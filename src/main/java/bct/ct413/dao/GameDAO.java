@@ -48,6 +48,13 @@ public interface GameDAO {
 
 	public List<Game> getPublicGames();
 
+	List<Game> getGames(String email);
+
+	Game getGameDetails(String joinCode);
+
+	public void updateCreatorEmail(String currentEmail, String newEmail);
+
+
 
 
 

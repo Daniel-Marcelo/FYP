@@ -6,6 +6,7 @@ public class DashboardUserDetails {
 	private double userAccVal, curBal, percentChangeInLastDay;
 	private int userPosition, daysLeft;
 	private String joinDate;
+	
 	public String getTopPlayerName() {
 		return topPlayerName;
 	}

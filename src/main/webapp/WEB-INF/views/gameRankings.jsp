@@ -61,10 +61,9 @@ body>#testContainer {
 			
 			<div style="margin: 0 auto; width: 70%; margin-top: 7%;">
 
-				<h1 align = "center">Rankings For ${game.getGameName()}</h1>
+				<h1 align = "center">Rankings For ${gameName}</h1>
 				<div>
-					<table id="rankingsTable"
-						class="table table-striped table-bordered" width="100%">
+					<table id="rankingsTable" class="table table-striped table-bordered" width="100%">
 
 						<thead>
 							<tr>
@@ -79,7 +78,7 @@ body>#testContainer {
 							<c:forEach var="user" items="${usersInGame}">
 
 								<tr>
-									<td>${user.getFirstName()}${user.getLastName()}</td>
+									<td>${user.getFirstName()} ${user.getLastName()}</td>
 									<td>${user.getCountry()}</td>
 									<td>${user.getBalance()}</td>
 									<td>${user.getCurAccVal()}</td>
