@@ -28,9 +28,25 @@
   
  <!-- declare beans -->  
  <bean id="userDAO" class="bct.ct413.dao.UserDAOImpl" />  
+ <bean id="userRolesDAO" class="bct.ct413.dao.UserRolesDAOImpl" /> 
+ <bean id="persistentLoginsDAO" class="bct.ct413.dao.PersistentLoginsDAOImpl" />  
+   
+ 
  <bean id = "tradeDAO" class = "bct.ct413.dao.TradeDAOImpl"/> 
  <bean id = "tradeTransactionDAO" class = "bct.ct413.dao.TradeTransactionDAOImpl"/> 
-  <bean id = "gameDAO" class = "bct.ct413.dao.GameDAOImpl"/> 
+ <bean id = "gameDAO" class = "bct.ct413.dao.GameDAOImpl"/> 
+ <bean id = "stockOwnedDAO" class = "bct.ct413.dao.StockOwnedDAOImpl"/>
+ <bean id = "userGameParticipationDAO" class = "bct.ct413.dao.UserGameParticipationDAOImpl"/>
+ <bean id = "stockOnWatchDAO" class = "bct.ct413.dao.StockOnWatchDAOImpl"/>
+ <bean id = "userGameAccountValHistoryDAO" class = "bct.ct413.dao.UserGameAccountValHistoryDAOImpl"/>
+  <bean id = "gameService" class = "bct.ct413.service.GameServiceImpl"/>
+ 
+  
+ <bean id = "UserGameParticipationService" class = "bct.ct413.service.UserGameParticipationServiceImpl"/> 
+ 
+ <bean id = "stockOwnedService" class = "bct.ct413.service.StockOwnedServiceImpl"/> 
+ 
+  
  
  
    
@@ -63,7 +79,7 @@
     <property name="host" value="smtp.gmail.com." />
     <property name="port" value="587" />
     <property name="username" value="danielm.mckee@gmail.com" />
-    <property name="password" value="tommypr28" />
+    <property name="password" value="" />
  
     <property name="javaMailProperties">
         <!-- additional properties specific to JavaMail -->

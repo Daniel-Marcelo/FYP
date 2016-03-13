@@ -20,10 +20,12 @@ public interface TradeDAO {
 
 	void addLimitOrderDetails(LimitOrder limitOrder);
 
-	List<Trade> getPortfolioTransactionDetails(
+	List<Trade> getPortfolioTradeDetails(
 			String activeUserEmail);
 
 	void removeTrades(String email);
+
+	void update(String currentEmail, String newEmail);
 
 	
 	

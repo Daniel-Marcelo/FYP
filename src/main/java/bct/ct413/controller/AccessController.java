@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import bct.ct413.dao.GameDAO;
 import bct.ct413.dao.TradeDAO;
 import bct.ct413.dao.UserDAO;
+import bct.ct413.dao.UserRolesDAO;
 import bct.ct413.model.User;
 
 import com.google.gson.Gson;
@@ -41,6 +42,9 @@ public class AccessController {
 	
 	@Autowired
 	private TradeDAO tradeDAO;
+	
+	@Autowired
+	private UserRolesDAO userRolesDAO;
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -100,7 +104,7 @@ public class AccessController {
 
 		} else {
 			model.setViewName("update");
-			List<User> allUsers = userDAO.getAllUsers();
+			List<User> allUsers = userDAO.get();
 			model.addObject("allUsers", allUsers);
 		}
 		
@@ -183,7 +187,8 @@ public class AccessController {
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User newUser) {
-		userDAO.saveNewUser(newUser);
+		userDAO.insert(newUser);
+		userRolesDAO.insert(newUser);
 		userDAO.addToDefaultGame(newUser);
 				
 		return new ModelAndView("redirect:/home");

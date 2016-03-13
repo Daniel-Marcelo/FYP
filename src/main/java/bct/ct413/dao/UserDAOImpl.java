@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -19,7 +20,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
-import bct.ct413.jdbc.UserRowMapper;
 import bct.ct413.model.DashboardUserDetails;
 import bct.ct413.model.Game;
 import bct.ct413.model.StockOwned;
@@ -44,7 +44,7 @@ public class UserDAOImpl implements UserDAO {
 	 */
 
 	@Override
-	public List<User> getAllUsers() {
+	public List<User> get() {
 
 		List<User> allUsers = new ArrayList<User>();
 
@@ -125,15 +125,31 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void saveNewUser(User user) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
+	public void insert(User user) {
+/*		jdbcTemplate = new JdbcTemplate(dataSource);
 
 		String sql1 = "INSERT INTO fyp_user (email, password, enabled, first_name, last_name, country) VALUES( ?, ?, ?, ?, ?, ?)";
 		jdbcTemplate.update(sql1, user.getEmail(), user.getPassword(), true,
 				user.getFirstName(), user.getLastName(), user.getCountry());
 
 		String sql2 = "INSERT INTO fyp_user_roles (email, role) VALUES (?, ?)";
-		jdbcTemplate.update(sql2, user.getEmail(), "ROLE_USER");
+		jdbcTemplate.update(sql2, user.getEmail(), "ROLE_USER");*/
+		
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO fyp_user (email, password, enabled, first_name, last_name, country) VALUES( ?, ?, ?, ?, ?, ?)");
+			stmt1.setString(1, user.getEmail());
+			stmt1.setString(2, user.getPassword());
+			stmt1.setBoolean(3, true);
+			stmt1.setString(4, user.getFirstName());
+			stmt1.setString(5, user.getLastName());
+			stmt1.setString(6, user.getCountry());
+			
+			stmt1.execute();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -149,14 +165,25 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User getUserDetails(String email) {
-
-		jdbcTemplate = new JdbcTemplate(dataSource);
-
-		String sql = "Select * FROM fyp_user WHERE email = ?";
-		User user = (User) jdbcTemplate.queryForObject(sql,
-				new Object[] { email }, new UserRowMapper());
-		return user;
+	public User getUser(String email) {
+		User u = new User();
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_user WHERE email = ?");
+			stmt1.setString(1, email);
+			ResultSet rs = stmt1.executeQuery();
+			
+			while(rs.next()){
+				u.setEmail(rs.getString("email"));
+				u.setPassword(rs.getString("password"));
+				u.setFirstName(rs.getString("first_name"));
+				u.setLastName(rs.getString("last_name"));
+				u.setCountry(rs.getString("country"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
 	}
 
 	@Override
@@ -170,7 +197,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void updateUserPassword(String emailAddress, String newPass) {
+	public void update(String emailAddress, String newPass) {
 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 
@@ -298,112 +325,9 @@ public class UserDAOImpl implements UserDAO {
 		return 0;
 	}
 
-	@Override
-	public void addUserToGame(String joinCode, String email) {
-
-		double startingCash = 0;
-		int gameID = 0;
-		int count = 0;
-
-		// First check if user is already in the game
-		// If they are, do nothing
-
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt3 = conn
-					.prepareStatement("SELECT COUNT(*) FROM fyp_user_game_participation WHERE email = ? AND game_id = (SELECT game_id FROM fyp_game WHERE join_code = ?)");
-			stmt3.setString(1, email);
-			stmt3.setString(2, joinCode);
-
-			ResultSet rs3 = stmt3.executeQuery();
-			while (rs3.next())
-				count = rs3.getInt("COUNT(*)");
-
-			System.out.println("Countis: " + count);
-
-			if (count == 0) {
-
-				PreparedStatement stmt1 = conn
-						.prepareStatement("SELECT starting_cash, game_id FROM fyp_game WHERE join_code = ?");
-				stmt1.setString(1, joinCode);
-
-				ResultSet rs = stmt1.executeQuery();
-				while (rs.next()) {
-					startingCash = rs.getDouble("starting_cash");
-					gameID = rs.getInt("game_id");
-				}
-
-				PreparedStatement stmt2 = conn
-						.prepareStatement("INSERT INTO fyp_user_game_participation VALUES (?, ?, ?)");
-				stmt2.setInt(1, gameID);
-				stmt2.setString(2, email);
-				stmt2.setDouble(3, startingCash);
-
-				stmt2.execute();
-				stmt1.close();
-				stmt2.close();
-
-				addToAccValHistory(gameID, startingCash, email);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
 	
-	@Override
-	public void addUserToPublicGame(int gameID, String email) {
-
-		double startingCash = 0;
-		int count = 0;
-
-		// First check if user is already in the game
-		// If they are, do nothing
-
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt3 = conn
-					.prepareStatement("SELECT COUNT(*) FROM fyp_user_game_participation WHERE email = ? AND game_id = ?");
-			stmt3.setString(1, email);
-			stmt3.setInt(2, gameID);
-
-			ResultSet rs3 = stmt3.executeQuery();
-			while (rs3.next())
-				count = rs3.getInt("COUNT(*)");
-
-			System.out.println("Countis: " + count);
-
-			//If user is not already in game
-			if (count == 0) {
-
-				PreparedStatement stmt1 = conn
-						.prepareStatement("SELECT starting_cash FROM fyp_game WHERE game_id = ?");
-				stmt1.setInt(1, gameID);
-
-				ResultSet rs = stmt1.executeQuery();
-				while (rs.next()) {
-					startingCash = rs.getDouble("starting_cash");
-				}
-
-				PreparedStatement stmt2 = conn
-						.prepareStatement("INSERT INTO fyp_user_game_participation VALUES (?, ?, ?)");
-				stmt2.setInt(1, gameID);
-				stmt2.setString(2, email);
-				stmt2.setDouble(3, startingCash);
-
-				stmt2.execute();
-				stmt1.close();
-				stmt2.close();
-
-				addToAccValHistory(gameID, startingCash, email);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
+	
+	
 
 	@Override
 	public void addToDefaultGame(User newUser) {
@@ -482,21 +406,44 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return list;
 	}
+	
+	/*@Override
+	public List<Integer> getGameIDsForUser(String activeUserEmail) {
+		List<Integer> gameIDs = new ArrayList<Integer>();
+		try {
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt2 = conn
+					.prepareStatement("SELECT game_id FROM fyp_user_game_participation WHERE email = ?");
+			stmt2.setString(1, activeUserEmail);
+
+			ResultSet rs2 = stmt2.executeQuery();
+
+			while (rs2.next())
+				gameIDs.add(rs2.getInt("game_id"));
+
+			rs2.close();
+			stmt2.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return gameIDs;
+	}*/
 
 	@Override
 	public List<Game> getGamesForUser(String email) {
 
 		List<Game> games = new ArrayList<Game>();
 		try {
-			List<Integer> gameIDs = getGameIDsForUser(email);
+			//List<Integer> gameIDs = getGameIDsForUser(email);
 			Connection conn = dataSource.getConnection();
 
-			for (int gameID : gameIDs) {
+				PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_game WHERE game_id IN "
+						+ "(SELECT game_id FROM fyp_user_game_participation WHERE email = ?)");
 
-				PreparedStatement stmt1 = conn
-						.prepareStatement("SELECT * FROM fyp_game WHERE game_id = ?");
-				stmt1.setInt(1, gameID);
-
+				stmt1.setString(1, email);
 				ResultSet rs = stmt1.executeQuery();
 
 				while (rs.next()) {
@@ -511,19 +458,17 @@ public class UserDAOImpl implements UserDAO {
 					game.setEndDate(rs.getDate("end_date").toString());
 					game.setStatus(rs.getString("status"));
 
-					if (game.getGameType().equals("Private")) {
+					if (game.getGameType().equals("Private")) 
 						game.setJoinCode(rs.getString("join_code"));
-					}
-					System.out.println("Join Code: " + game.getJoinCode());
+					
 					games.add(game);
 
-					List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
-					game.setUsersInGame(usersInGame);
-					game.setBoard(getDashboardStats(email, game));
+					//List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
+					//game.setUsersInGame(usersInGame);
+					//game.setBoard(getDashboardStats(email, game));
 				}
 				rs.close();
 				stmt1.close();
-			}
 
 			conn.close();
 		} catch (SQLException e) {
@@ -568,8 +513,8 @@ public class UserDAOImpl implements UserDAO {
 					System.out.println("Join Code: " + game.getJoinCode());
 					games.add(game);
 
-					List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
-					game.setUsersInGame(usersInGame);
+					//List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
+					//game.setUsersInGame(usersInGame);
 					game.setBoard(getDashboardStatsAdmin(game));
 				}
 				rs.close();
@@ -583,66 +528,7 @@ public class UserDAOImpl implements UserDAO {
 
 		return games;
 	}
-	@Override
-	public List<User> getListOfUsersInThisGame(int gameID) {
 
-		List<User> users = new ArrayList<User>();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT email, balance FROM fyp_user_game_participation WHERE game_id = ?");
-			stmt1.setInt(1, gameID);
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-
-				String email = rs.getString("email");
-				User user = getPersonalDetais(email);
-				user.setBalance(rs.getDouble("balance"));
-				double toBeAdded = getAccValForUserInGame(gameID,
-						email);
-				user.setCurAccVal(toBeAdded + user.getBalance());
-				users.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return users;
-	}
-
-	private double getAccValForUserInGame(int gameID, String email) {
-		List<StockOwned> stocksOwned = getStocksOwnedForThisGame(gameID, email);
-		double totalToBeAdded = 0;
-
-		for (StockOwned s : stocksOwned)
-			totalToBeAdded += s.getTotal();
-
-		return totalToBeAdded;
-	}
-
-	private User getPersonalDetais(String email) {
-		User user = new User();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT first_name, last_name, country FROM fyp_user WHERE email = ?");
-			stmt1.setString(1, email);
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				user.setEmail(email);
-				user.setFirstName(rs.getString("first_name"));
-				user.setLastName(rs.getString("last_name"));
-				user.setCountry(rs.getString("country"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return user;
-	}
 
 	@Override
 	public List<User> getGlobalRankings() {
@@ -661,7 +547,7 @@ public class UserDAOImpl implements UserDAO {
 				User user = new User();
 				user.setEmail(rs.getString("email"));
 
-				user = getPersonalDetais(user.getEmail());
+				user = getUser(user.getEmail());
 				user.setBalance(rs.getDouble("balance"));
 				allUsers.add(user);
 			}
@@ -714,71 +600,9 @@ public class UserDAOImpl implements UserDAO {
 		return stocksOwned;
 	}
 
-	@Override
-	public List<StockOwned> getStocksOwned(String activeUserEmail) {
+	
 
-		List<StockOwned> stocksOwned = new ArrayList<StockOwned>();
 
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT game_id, symbol, quantity, avg_purch_price FROM fyp_stock_owned WHERE email = ?");
-			stmt1.setString(1, activeUserEmail);
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				StockOwned stockOwned = new StockOwned();
-				stockOwned.setEmail(activeUserEmail);
-				stockOwned.setQuantity(rs.getInt("quantity"));
-				stockOwned.setSymbol(rs.getString("symbol"));
-				stockOwned.setAvgPurchPrice(rs.getDouble("avg_purch_price"));
-				stockOwned.setGameID(rs.getInt("game_id"));
-
-				yahoofinance.Stock stock = YahooFinance.get(stockOwned
-						.getSymbol());
-
-				stockOwned.setCurrentPrice(stock.getQuote().getPrice()
-						.doubleValue());
-				stockOwned.setTotal(stockOwned.getCurrentPrice()
-						* (double) stockOwned.getQuantity());
-				stockOwned.setGainOrLoss(stockOwned.getTotal()
-						- (stockOwned.getAvgPurchPrice() * (double) stockOwned
-								.getQuantity()));
-				stockOwned.setCompanyName(stock.getName());
-
-				stocksOwned.add(stockOwned);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return stocksOwned;
-	}
-
-	@Override
-	public List<Integer> getGameIDsForUser(String activeUserEmail) {
-		List<Integer> gameIDs = new ArrayList<Integer>();
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT game_id FROM fyp_user_game_participation WHERE email = ?");
-			stmt2.setString(1, activeUserEmail);
-
-			ResultSet rs2 = stmt2.executeQuery();
-
-			while (rs2.next())
-				gameIDs.add(rs2.getInt("game_id"));
-
-			rs2.close();
-			stmt2.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return gameIDs;
-	}
 
 	public List<Integer> getGameIDsAdmin() {
 		List<Integer> gameIDs = new ArrayList<Integer>();
@@ -827,33 +651,7 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 
-	@Override
-	public List<UserGameAccountValHistory> getAllBalanceHistory(
 
-	String email) {
-
-		List<UserGameAccountValHistory> entries = new ArrayList<UserGameAccountValHistory>();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT * FROM fyp_user_game_account_history WHERE email = ?");
-			stmt1.setString(1, email);
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				UserGameAccountValHistory entry = new UserGameAccountValHistory();
-				entry.setGameID(rs.getInt("game_id"));
-				entry.setDate(rs.getString("date"));
-				entry.setClosingAccVal(rs.getDouble("closing_acc_value"));
-				entry.setPercentChange(rs.getDouble("percent_change"));
-				entries.add(entry);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return entries;
-	}
 
 	@Override
 	public List<UserGameAccountValHistory> getAllBalanceHistory() {
@@ -880,46 +678,7 @@ public class UserDAOImpl implements UserDAO {
 		return entries;
 	}
 
-	@Override
-	public DashboardUserDetails getDashboardStats(String email, Game g) {
-
-		int index = 0;
-		Collections.sort(g.getUsersInGame());
-
-		DashboardUserDetails board = new DashboardUserDetails();
-		String name = null;
-		double myAccVal = 0;
-		double highestAccVal = 0;
-		for (User u : g.getUsersInGame()) {
-			if (u.getCurAccVal() > highestAccVal) {
-				highestAccVal = u.getCurAccVal();
-				name = u.getFirstName() + " " + u.getLastName();
-			}
-			if (u.getEmail().equals(email)) {
-				System.out.println(email + " was found at index: " + index);
-				myAccVal = u.getCurAccVal();
-				board.setUserPosition(index + 1);
-				board.setCurBal(u.getBalance());
-
-			}
-			index++;
-
-		}
-		board.setTopPlayerName(name);
-		board.setUserAccVal(myAccVal);
-
-		DateTime today = new DateTime();
-
-		System.out.println("GAME:" + g.getGameName() + " Today Date: " + today);
-		DateTime end = new DateTime(g.getEndDate());
-
-		System.out.println("GAME:" + g.getGameName() + " End Date: " + end);
-		int days = Days.daysBetween(today, end).getDays();
-
-		board.setDaysLeft(days);
-
-		return board;
-	}
+	
 
 	public DashboardUserDetails getDashboardStatsAdmin(Game g) {
 
@@ -979,89 +738,11 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 
-	@Override
-	public String addToWatchList(String email, String symbol) {
+	
 
-		int count = 0;
-		try {
-			Connection conn = dataSource.getConnection();
+	
 
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT count(*) FROM fyp_stocks_on_watch where email = ?  AND symbol = ?");
-			stmt2.setString(1, email);
-			stmt2.setString(2, symbol);
-			ResultSet rs = stmt2.executeQuery();
 
-			while (rs.next())
-				count = rs.getInt("count(*)");
-
-			if (count != 0) {
-				return "You're Already Watching " + symbol;
-			} else {
-
-				PreparedStatement stmt1 = conn
-						.prepareStatement("INSERT INTO fyp_stocks_on_watch (email, symbol) VALUES(?,?)");
-				stmt1.setString(1, email);
-				stmt1.setString(2, symbol);
-
-				stmt1.execute();
-
-				stmt1.close();
-				conn.close();
-				return symbol + " added to your watch list";
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return "Error";
-	}
-
-	@Override
-	public List<Stock> getStocksOnWatch(String email) {
-		List<Stock> stocks = new ArrayList<Stock>();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT symbol from fyp_stocks_on_watch where email = ?");
-			stmt2.setString(1, email);
-			ResultSet rs = stmt2.executeQuery();
-
-			while (rs.next()) {
-
-				Stock s = YahooFinance.get(rs.getString("symbol"));
-				stocks.add(s);
-			}
-
-			stmt2.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return stocks;
-	}
-
-	@Override
-	public String removeFromWatchList(String symbol, String email) {
-
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt2 = conn
-					.prepareStatement("DELETE from fyp_stocks_on_watch where email = ? AND symbol = ?");
-			stmt2.setString(1, email);
-			stmt2.setString(2, symbol);
-
-			stmt2.execute();
-			stmt2.close();
-			conn.close();
-
-			return symbol + " removed from watchlist";
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	public List<Integer> getGameIDsCreatedByUser(String email) {
@@ -1114,80 +795,63 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void updateUserEmail(String currentEmail, String newEmail) {
+	public List<User> getList(List<String> emails) {
+		List<User> users = new ArrayList<User>();
 		try {
+			
 			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("Select * from fyp_user where email = ?");
-			stmt1.setString(1, currentEmail);
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				PreparedStatement stmt2 = conn
-						.prepareStatement("INSERT INTO fyp_user VALUES (?,?,?,?,?,?)");
-				stmt2.setString(1, newEmail);
-				stmt2.setString(2, rs.getString("password"));
-				stmt2.setBoolean(3, true);
-				stmt2.setString(4, rs.getString("first_name"));
-				stmt2.setString(5, rs.getString("country"));
-				stmt2.setString(6, rs.getString("last_name"));
-				stmt2.execute();
+			StringBuilder str = new StringBuilder();
+			str.append("SELECT * FROM fyp_user WHERE email in (");
+		
+			for(int i = 0 ; i < emails.size()-1; i++)
+				str.append("?, ");
+			
+			str.append("?)");
+			
+			System.out.println("QUERY: "+str.toString());
+			PreparedStatement stmt1 = conn.prepareStatement(str.toString());
+			
+			int count = 1;
+			for(String email : emails){
+				stmt1.setString(count, email);
+				count++;
 			}
-
-			PreparedStatement stmt3 = conn
-					.prepareStatement("UPDATE fyp_game SET creator_email = ? WHERE creator_email = ?");
-			stmt3.setString(1, newEmail);
-			stmt3.setString(2, currentEmail);
-			stmt3.execute();
-
-			PreparedStatement stmt4 = conn
-					.prepareStatement("UPDATE fyp_stock_owned SET email = ? WHERE email = ?");
-			stmt4.setString(1, newEmail);
-			stmt4.setString(2, currentEmail);
-			stmt4.execute();
-
-			PreparedStatement stmt5 = conn
-					.prepareStatement("UPDATE fyp_stocks_on_watch SET email = ? WHERE email = ?");
-			stmt5.setString(1, newEmail);
-			stmt5.setString(2, currentEmail);
-			stmt5.execute();
-
-			PreparedStatement stmt6 = conn
-					.prepareStatement("UPDATE fyp_trade SET email = ? WHERE email = ?");
-			stmt6.setString(1, newEmail);
-			stmt6.setString(2, currentEmail);
-			stmt6.execute();
-
-			PreparedStatement stmt7 = conn
-					.prepareStatement("UPDATE fyp_user_game_account_history SET email = ? WHERE email = ?");
-			stmt7.setString(1, newEmail);
-			stmt7.setString(2, currentEmail);
-			stmt7.execute();
-
-			PreparedStatement stmt8 = conn
-					.prepareStatement("UPDATE fyp_user_game_participation SET email = ? WHERE email = ?");
-			stmt8.setString(1, newEmail);
-			stmt8.setString(2, currentEmail);
-			stmt8.execute();
-
-			PreparedStatement stmt9 = conn
-					.prepareStatement("UPDATE fyp_user_roles SET email = ? WHERE email = ?");
-			stmt9.setString(1, newEmail);
-			stmt9.setString(2, currentEmail);
-			stmt9.execute();
-
-			PreparedStatement stmt10 = conn
-					.prepareStatement("DELETE FROM persistent_logins WHERE username = ?");
-			stmt10.setString(1, currentEmail);
-			stmt10.execute();
-
-			PreparedStatement stmt11 = conn
-					.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
-			stmt11.setString(1, currentEmail);
-			stmt11.execute();
-
+			ResultSet rs = stmt1.executeQuery();
+			
+			while(rs.next()){
+				User u = new User();
+				u.setEmail(rs.getString("email"));
+				u.setPassword(rs.getString("password"));
+				u.setFirstName(rs.getString("first_name"));
+				u.setLastName(rs.getString("last_name"));
+				u.setCountry(rs.getString("country"));
+				
+				users.add(u);
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return users;
+	}
+
+	@Override
+	public void delete(String currentEmail) {
+		
+		try{
+
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt11 = conn.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
+			stmt11.setString(1, currentEmail);
+			stmt11.execute();
+			
+			stmt11.close();
+			conn.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }
