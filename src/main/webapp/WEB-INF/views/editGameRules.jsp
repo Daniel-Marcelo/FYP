@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+
 <script src="${pageContext.request.contextPath}/resources/js/jquery.js"
 	type="text/javascript"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
@@ -20,10 +21,10 @@
 
 $(document).ready(
 		function() {
-
+/* 
 			$("#startDateGame").datepicker({
 				dateFormat : 'yy/mm/dd'
-			});
+			}); */
 			$("#endDateGame").datepicker({
 				dateFormat : 'yy/mm/dd'
 			});
@@ -38,19 +39,19 @@ function validateTheDates(){
 	var endDate = new Date(endString);
 	
 
-	if(todaysDate > startDate){
+/* 	if(todaysDate > startDate){
 		errorMsg("Start Date Must Be In The Future.");
 		return false;
 	
 	}else{								//If start date is valid, check end date
 		errorMsg.style.display = "none";
-	
-		if(todaysDate > endDate){
+	 */
+		if(startDate > endDate){
 			errorMsg("End Date Must Be In The Future");
 			return false;
 		}
 		return true;
-	}		
+	//}		
 }
 
 function errorMsg(msg){
@@ -103,7 +104,7 @@ body>#testContainer {
 			
 			<h1 >Edit Game Rules For ${game.getGameName()}</h1>
 	
-				<form:form action="editGame" method="POST" modelAttribute="game" onSubmit="return validateTheDates();">
+				<form:form action="${pageContext.request.contextPath}/editGame/${game.getGameID()}" method="post" modelAttribute="game" onSubmit="return validateTheDates();">
 		
 		
 					<h3 id="gameCreationErrorMessage"></h3>

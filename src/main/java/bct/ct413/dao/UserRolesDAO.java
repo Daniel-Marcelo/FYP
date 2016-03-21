@@ -8,4 +8,6 @@ public interface UserRolesDAO {
 
 	void update(String currentEmail, String newEmail);
 
+	void remove(String email);
+
 }

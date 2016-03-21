@@ -89,4 +89,52 @@ public class UserGameAccountValHistoryDAOImpl implements UserGameAccountValHisto
 			e.printStackTrace();
 		}		
 	}
+
+	@Override
+	public void remove(int gameID) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_account_history WHERE game_id = ?");
+			stmt1.setInt(1, gameID);
+			
+			stmt1.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void remove(int gameID, String email) {
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_account_history WHERE game_id = ? AND email = ?");
+			stmt1.setInt(1, gameID);
+			stmt1.setString(2, email);
+			
+			stmt1.execute();
+			
+			stmt1.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public void remove(String email) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_account_history WHERE email = ?");
+			stmt1.setString(1, email);
+			
+			stmt1.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
 }

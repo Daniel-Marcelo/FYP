@@ -225,14 +225,15 @@ function displayPriceField() {
 function allowOrDisallowSelling(stocksOwnedJSON){
 	
 	var stockSymbol = document.getElementById("StockBuySymbol").value.toUpperCase();
+	var gameID = document.getElementById("gameID").value;
+
 	var numberSharesOwned = 0;
 	console.log("Stock symbol: "+stockSymbol);
 	
-	for(var key in stocksOwnedJSON){
-		console.log("KEY: "+key);
+	for(var key in stocksOwnedJSON){	
 		//If the symbol entered is owned by the user 
-		if(key == stockSymbol){
-				numberSharesOwned = stocksOwnedJSON[stockSymbol];
+		if(stocksOwnedJSON[key].symbol == stockSymbol && stocksOwnedJSON[key].gameID == gameID){
+				numberSharesOwned = stocksOwnedJSON[key].quantity;
 				console.log("Stock found: "+numberSharesOwned);
 
 		}
@@ -247,6 +248,7 @@ function allowOrDisallowSelling(stocksOwnedJSON){
 		buyOnly.value = "Buy";
 		
 	}else{
+		
 		var buyOnly = document.getElementById("buyOrSell");
 		buyOnly.disabled = false;
 		buyOnly.value = "Buy";
@@ -265,9 +267,9 @@ function setSellLimit(stocksOwnedJSON){
 		
 		for(var key in stocksOwnedJSON){
 			
-			if(key == stockSymbol){
-					numberSharesOwned = stocksOwnedJSON[stockSymbol];
-					alert("Stock found: "+numberSharesOwned);
+			if(stocksOwnedJSON[key].symbol == stockSymbol){
+					numberSharesOwned = stocksOwnedJSON[key].quantity;
+					console.log("Stock found: "+numberSharesOwned);
 			}
 		}
 		

@@ -46,10 +46,10 @@ td {
 
 		$("#startDateGame").datepicker({
 			dateFormat : 'yy/mm/dd'
-		});
+		}).datepicker("setDate", new Date());
 		$("#endDateGame").datepicker({
 			dateFormat : 'yy/mm/dd'
-		});
+		}).datepicker("setDate", new Date());
 
 	});
 	function validateTheDates() {
@@ -115,14 +115,14 @@ td {
 							<tr>
 								<td>Start Date</td>
 								<td><form:input path="startDate" name="startDate"
-										id="startDateGame" class="form-field" type="date"
+										id="startDateGame" class="form-field" type="text"
 										readOnly="true" /></td>
 							</tr>
 
 							<tr>
 								<td>End Date</td>
 								<td><form:input path="endDate" id="endDateGame"
-										class="form-field" type="date" readOnly="true" /></td>
+										class="form-field" type="text" readOnly="true" /></td>
 							</tr>
 
 							<tr>

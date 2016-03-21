@@ -127,4 +127,21 @@ public class StockOnWatchDAOImpl implements StockOnWatchDAO {
 		}		
 	}
 
+	@Override
+	public void remove(String email) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt2 = conn
+					.prepareStatement("DELETE from fyp_stocks_on_watch where email = ?");
+			stmt2.setString(1, email);
+
+			stmt2.execute();
+			stmt2.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
 }

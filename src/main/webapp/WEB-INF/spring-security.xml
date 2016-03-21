@@ -30,14 +30,6 @@
 		<intercept-url pattern="/viewGameRules/**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/leaveGame/**" access="hasRole('ROLE_USER')" />
 
-
-
-
-
-
-
-
-
 		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
 
 		<access-denied-handler error-page="/403" />

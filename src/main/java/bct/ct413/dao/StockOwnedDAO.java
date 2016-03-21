@@ -3,13 +3,20 @@ package bct.ct413.dao;
 import java.util.List;
 
 import bct.ct413.model.StockOwned;
+import bct.ct413.model.Trade;
 
 public interface StockOwnedDAO {
 
-	public List<StockOwned> getStocksOwned(String activeUserEmail);
+	void insert(StockOwned so);
 
-	public List<StockOwned> getStocksOwned(int gameID, String email);
+	List<StockOwned> getList();
 
-	public void update(String currentEmail, String newEmail);
+	void updateEmail(String currentEmail, String newEmail);
+	void update(StockOwned so);
+
+	void remove(int gameID);
+	void remove(int gameID, String email);
+
+	void remove(String email);
 
 }

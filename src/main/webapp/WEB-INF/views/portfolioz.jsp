@@ -126,8 +126,8 @@ color: BLACK;
 	<%@include file="header.jsp"%>
 
 	<select id="currID" onChange="changeTable();">
-		<c:forEach var="game" items="${gamesForUser}">
-			<option value="${game.getGameID()}">${game.getGameName()}</option>
+		<c:forEach var="userParticipation" items="${participatingGames}">
+			<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
 		</c:forEach>
 	</select>
 

@@ -49,5 +49,22 @@ public class UserRolesDAOImpl implements UserRolesDAO {
 			e.printStackTrace();
 		}		
 	}
+	
+	@Override
+	public void remove(String email) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn
+					.prepareStatement("DELETE FROM fyp_user_roles WHERE email = ?");
+			stmt1.setString(1, email);
+			stmt1.execute();
+
+			stmt1.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

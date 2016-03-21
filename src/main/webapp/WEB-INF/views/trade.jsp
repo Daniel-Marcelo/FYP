@@ -20,14 +20,14 @@
 
 		isStockMarketOpen();
 		changeBalance();
-		var e1 = document.getElementById("duration");
-		console.log("7 Days: " + duration.value);
 
 		var e1 = document.getElementById("StockBuySymbol");
 		e1.addEventListener("blur", function(event) {
 
-			updateStockPrice();
-			allowOrDisallowSelling(sharesAndStocksOwned);
+			if(e1.value !=''){
+				updateStockPrice();
+				allowOrDisallowSelling(sharesAndStocksOwned);
+			}
 
 		}, true);
 
@@ -66,16 +66,14 @@
 	function changeBalance() {
 
 		var gameID = document.getElementById("gameID").value;
-		console.log("GAME ID: " + gameID.value);
-		var games = JSON.parse('${gameBalanceHeaderJSON}');
-		console.log("GAMES: " + JSON.stringify(games));
-		for (i = 0; i < games.length; i++) {
-			console.log("Comparing: " + games[i].gameID + " and " + gameID);
-			if (games[i].gameID == gameID) {
-				console.log("HIT: " + games[i].balance);
-				setBalance(games[i].balance);
+		var participations = JSON.parse('${gameParticipationsJSON}');
+
+		
+		for (i = 0; i < participations.length; i++) {
+			if (participations[i].gameID == gameID) {
+				setBalance(participations[i].balance);
 			} else {
-				console.log("No hit");
+				console.log("No ID MATCH");
 			}
 
 		}
@@ -117,8 +115,8 @@ td {
 					<td><form:select path="gameID" id="gameID" name="gameID"
 						onChange="changeBalance();" class="form-field"
 						style="margin-top: 2%;">
-						<c:forEach var="game" items="${gamesForUser}">
-							<option value="${game.getGameID()}">${game.getGameName()}</option>
+						<c:forEach var="userParticipation" items="${participatingGames}">
+							<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
 						</c:forEach>
 					</form:select></td>
 

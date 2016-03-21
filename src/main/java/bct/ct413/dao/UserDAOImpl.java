@@ -30,18 +30,8 @@ import bct.ct413.model.UserGameParticipation;
 
 public class UserDAOImpl implements UserDAO {
 
-	private JdbcTemplate jdbcTemplate;
-
 	@Autowired
 	DataSource dataSource;
-
-	/*
-	 * public UserDAOImpl() { jdbcTemplate = new JdbcTemplate(dataSource); }
-	 */
-
-	/*
-	 * private JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-	 */
 
 	@Override
 	public List<User> get() {
@@ -72,68 +62,9 @@ public class UserDAOImpl implements UserDAO {
 		return allUsers;
 	}
 
-	/*
-	 * @Override public List<String> getUsers() { List<String> emails = new
-	 * ArrayList<String>(); try { Connection conn = dataSource.getConnection();
-	 * 
-	 * PreparedStatement stmt1 = conn
-	 * .prepareStatement("SELECT DISTINCT email FROM fyp_user"); ResultSet rs =
-	 * stmt1.executeQuery();
-	 * 
-	 * while (rs.next()) emails.add(rs.getString("email"));
-	 * 
-	 * } catch (SQLException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } System.out.println("Number of emails: " +
-	 * emails.size()); return emails; }
-	 */
-
-	@Override
-	public void updateBalance(String email, double total, int gameID) {
-
-		// [1] Get existing balance
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT balance FROM fyp_user_game_participation WHERE email = ? and game_id = ?");
-			stmt1.setString(1, email);
-			stmt1.setInt(2, gameID);
-			ResultSet rs = stmt1.executeQuery();
-			rs.next();
-			double balance = rs.getDouble("balance");
-			System.out.println("Existing balance: " + balance + " - " + total);
-
-			double newBal = balance - total;
-			System.out.println("New Balance: " + newBal);
-
-			PreparedStatement stmt2 = conn
-					.prepareStatement("UPDATE fyp_user_game_participation SET balance = ? WHERE email = ? AND game_id = ?");
-			stmt2.setDouble(1, newBal);
-			stmt2.setString(2, email);
-			stmt2.setInt(3, gameID);
-
-			stmt2.executeUpdate();
-
-			stmt1.close();
-			stmt2.close();
-			rs.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	@Override
 	public void insert(User user) {
-/*		jdbcTemplate = new JdbcTemplate(dataSource);
 
-		String sql1 = "INSERT INTO fyp_user (email, password, enabled, first_name, last_name, country) VALUES( ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql1, user.getEmail(), user.getPassword(), true,
-				user.getFirstName(), user.getLastName(), user.getCountry());
-
-		String sql2 = "INSERT INTO fyp_user_roles (email, role) VALUES (?, ?)";
-		jdbcTemplate.update(sql2, user.getEmail(), "ROLE_USER");*/
 		
 		try {
 			Connection conn = dataSource.getConnection();
@@ -154,18 +85,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public int isEmailAlreadyInUse(String email) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
-
-		String sql = "SELECT count(*) FROM fyp_user WHERE email = ?";
-		int count = jdbcTemplate.queryForObject(sql, new Object[] { email },
-				Integer.class);
-
-		return count;
-	}
-
-	@Override
-	public User getUser(String email) {
+	public User get(String email) {
 		User u = new User();
 		try {
 			Connection conn = dataSource.getConnection();
@@ -187,22 +107,42 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void updateDetails(User user) {
-		jdbcTemplate = new JdbcTemplate(dataSource);
-
-		String sql = "UPDATE fyp_user SET email = ?, password = ?, first_name = ?, last_name = ?,  country=? WHERE email = ?";
-		jdbcTemplate.update(sql, user.getEmail(), user.getPassword(),
-				user.getFirstName(), user.getLastName(), user.getCountry(),
-				user.getEmail());
+	public void update(User user) {
+		
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("UPDATE fyp_user SET email = ?, password = ?, first_name = ?, last_name = ?, country=? WHERE email = ?");
+			stmt1.setString(1, user.getEmail());
+			stmt1.setString(2, user.getPassword());
+			stmt1.setString(3, user.getFirstName());
+			stmt1.setString(4, user.getLastName());
+			stmt1.setString(5, user.getCountry());
+			stmt1.setString(6, user.getEmail());
+			stmt1.execute();
+			
+			stmt1.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void update(String emailAddress, String newPass) {
-
-		jdbcTemplate = new JdbcTemplate(dataSource);
-
-		String sql = "UPDATE fyp_user SET password = ? WHERE email = ?";
-		jdbcTemplate.update(sql, newPass, emailAddress);
+	public void update(String email, String newPass) {
+	
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("UPDATE fyp_user SET password = ? WHERE email = ?");
+			stmt1.setString(1, newPass);
+			stmt1.setString(2, email);
+			stmt1.execute();
+			
+			stmt1.close();
+			conn.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	@Override
@@ -232,544 +172,10 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void updateStocksOwned(Trade trade, int quantity) {
-
-		System.out.println(trade.getGameID()+ " New trade: "+quantity+ ", "+trade.getSymbol()+" "+trade.getEmail());
-		Connection conn;
-		try {
-			double avgPurchasePrice = updateAvgPurchasePrice(trade);
-
-			conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("Select quantity FROM fyp_stock_owned WHERE email = ? AND symbol = ? AND game_id = ?");
-			stmt1.setString(1, trade.getEmail());
-			stmt1.setString(2, trade.getSymbol());
-			stmt1.setInt(3, trade.getGameID());
-
-			ResultSet rs = stmt1.executeQuery();
-
-			if (rs.next() == false) {
-
-				PreparedStatement stmt2 = conn
-						.prepareStatement("INSERT INTO fyp_stock_owned VALUES (?, ?, ?, ?, ?)");
-				stmt2.setInt(1, trade.getGameID());
-				stmt2.setString(2, trade.getEmail());
-				stmt2.setString(3, trade.getSymbol());
-				stmt2.setInt(4, quantity);
-				stmt2.setDouble(5, avgPurchasePrice);
-				stmt2.execute();
-				stmt2.close();
-				conn.close();
-
-			} else {
-				int oldQuantity = rs.getInt("quantity");
-
-				PreparedStatement stmt2 = conn
-						.prepareStatement("UPDATE fyp_stock_owned SET quantity = ?, avg_purch_price = ? WHERE email = ? AND symbol = ? AND game_id = ?");
-				stmt2.setInt(1, (oldQuantity + quantity));
-				stmt2.setDouble(2, avgPurchasePrice);
-				stmt2.setString(3, trade.getEmail());
-				stmt2.setString(4, trade.getSymbol());
-				stmt2.setInt(5, trade.getGameID());
-				stmt2.executeUpdate();
-				stmt2.close();
-				conn.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private double updateAvgPurchasePrice(Trade trade) {
-
-		List<Integer> transactionIDs = new ArrayList<Integer>();
-		double total = 0;
-		int quantity = 0;
-
+	public void remove(String email) {
 		try {
 			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT transaction_id FROM fyp_trade WHERE email = ? AND symbol = ? AND game_id = ?");
-			stmt1.setString(1, trade.getEmail());
-			stmt1.setString(2, trade.getSymbol());
-			stmt1.setInt(3, trade.getGameID());
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next())
-				transactionIDs.add(rs.getInt("transaction_id"));
-
-			for (int tID : transactionIDs) {
-
-				PreparedStatement stmt2 = conn
-						.prepareStatement("SELECT quantity, total FROM fyp_trade_transaction WHERE transaction_id = ?");
-				stmt2.setInt(1, tID);
-
-				ResultSet rs2 = stmt2.executeQuery();
-
-				while (rs2.next()) {
-					quantity += rs2.getInt("quantity");
-					total += rs2.getDouble("total");
-				}
-			}
-			System.out.println("Quantity: " + quantity);
-			System.out.println("total: " + total);
-
-			double avgPurchPrice = total / (double) quantity;
-
-			return avgPurchPrice;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	
-	
-	
-
-	@Override
-	public void addToDefaultGame(User newUser) {
-
-		int defaultGameID = 1;
-		double startingCash = 0;
-		Connection conn;
-		try {
-			conn = dataSource.getConnection();
-
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT starting_cash FROM fyp_game WHERE game_id = ?");
-			stmt2.setInt(1, 1); // Default Game ID for global game
-
-			ResultSet rs = stmt2.executeQuery();
-			while (rs.next())
-				startingCash = rs.getDouble("starting_cash");
-
-			PreparedStatement stmt1 = conn
-					.prepareStatement("INSERT INTO fyp_user_game_participation VALUES (?, ?, ?)");
-			stmt1.setInt(1, defaultGameID);
-			stmt1.setString(2, newUser.getEmail());
-			stmt1.setDouble(3, startingCash);
-
-			stmt1.execute();
-			stmt1.close();
-			conn.close();
-
-			addToAccValHistory(1, startingCash, newUser.getEmail());
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public List<UserGameParticipation> getRelevantGames(String email) {
-
-		List<UserGameParticipation> list = new ArrayList<UserGameParticipation>();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT * FROM fyp_user_game_participation WHERE email = ?");
-			stmt1.setString(1, email);
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				UserGameParticipation details = new UserGameParticipation();
-				details.setBalance(rs.getDouble("balance"));
-				details.setEmail(rs.getString("email"));
-				details.setGameID(rs.getInt("game_id"));
-
-				System.out.println("GAME ID: " + details.getGameID());
-
-				PreparedStatement stmt2 = conn
-						.prepareStatement("SELECT game_name, status FROM fyp_game WHERE game_id = ?");
-				stmt2.setInt(1, details.getGameID());
-
-				ResultSet rs2 = stmt2.executeQuery();
-				rs2.next();
-				System.out.println("STATUS: " + rs2.getString("status"));
-				if (!rs2.getString("status").equals("Ended")) {
-
-					details.setGameName(rs2.getString("game_name"));
-					System.out.println("GAME NAME: " + details.getGameName());
-					list.add(details);
-				}
-			}
-
-			System.out.println("Number of games for user: " + email + ": "
-					+ list.size());
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	/*@Override
-	public List<Integer> getGameIDsForUser(String activeUserEmail) {
-		List<Integer> gameIDs = new ArrayList<Integer>();
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT game_id FROM fyp_user_game_participation WHERE email = ?");
-			stmt2.setString(1, activeUserEmail);
-
-			ResultSet rs2 = stmt2.executeQuery();
-
-			while (rs2.next())
-				gameIDs.add(rs2.getInt("game_id"));
-
-			rs2.close();
-			stmt2.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return gameIDs;
-	}*/
-
-	@Override
-	public List<Game> getGamesForUser(String email) {
-
-		List<Game> games = new ArrayList<Game>();
-		try {
-			//List<Integer> gameIDs = getGameIDsForUser(email);
-			Connection conn = dataSource.getConnection();
-
-				PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_game WHERE game_id IN "
-						+ "(SELECT game_id FROM fyp_user_game_participation WHERE email = ?)");
-
-				stmt1.setString(1, email);
-				ResultSet rs = stmt1.executeQuery();
-
-				while (rs.next()) {
-
-					Game game = new Game();
-					game.setGameID(rs.getInt("game_id"));
-					game.setGameName(rs.getString("game_name"));
-					game.setGameType(rs.getString("game_type"));
-					game.setStartingCash(rs.getDouble("starting_cash"));
-					game.setCreatorEmail(rs.getString("creator_email"));
-					game.setStartDate((rs.getDate("start_date")).toString());
-					game.setEndDate(rs.getDate("end_date").toString());
-					game.setStatus(rs.getString("status"));
-
-					if (game.getGameType().equals("Private")) 
-						game.setJoinCode(rs.getString("join_code"));
-					
-					games.add(game);
-
-					//List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
-					//game.setUsersInGame(usersInGame);
-					//game.setBoard(getDashboardStats(email, game));
-				}
-				rs.close();
-				stmt1.close();
-
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return games;
-	}
-
-	@Override
-	public List<Game> getGamesAdmin() {
-
-		List<Game> games = new ArrayList<Game>();
-		try {
-			List<Integer> gameIDs = getGameIDsAdmin();
-			System.out.println(gameIDs);
-			Connection conn = dataSource.getConnection();
-
-			for (int gameID : gameIDs) {
-
-				PreparedStatement stmt1 = conn
-						.prepareStatement("SELECT * FROM fyp_game WHERE game_id = ?");
-				stmt1.setInt(1, gameID);
-
-				ResultSet rs = stmt1.executeQuery();
-
-				while (rs.next()) {
-
-					Game game = new Game();
-					game.setGameID(rs.getInt("game_id"));
-					game.setGameName(rs.getString("game_name"));
-					game.setGameType(rs.getString("game_type"));
-					game.setStartingCash(rs.getDouble("starting_cash"));
-					game.setCreatorEmail(rs.getString("creator_email"));
-					game.setStartDate((rs.getDate("start_date")).toString());
-					game.setEndDate(rs.getDate("end_date").toString());
-					game.setStatus(rs.getString("status"));
-
-					if (game.getGameType().equals("Private")) {
-						game.setJoinCode(rs.getString("join_code"));
-					}
-					System.out.println("Join Code: " + game.getJoinCode());
-					games.add(game);
-
-					//List<User> usersInGame = getListOfUsersInThisGame(game.getGameID());
-					//game.setUsersInGame(usersInGame);
-					game.setBoard(getDashboardStatsAdmin(game));
-				}
-				rs.close();
-				stmt1.close();
-			}
-
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return games;
-	}
-
-
-	@Override
-	public List<User> getGlobalRankings() {
-		List<User> allUsers = new ArrayList<User>();
-		Connection conn;
-		try {
-			conn = dataSource.getConnection();
-
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT email, balance FROM fyp_user_game_participation WHERE game_id = ?");
-			stmt1.setInt(1, 1);
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-
-				User user = new User();
-				user.setEmail(rs.getString("email"));
-
-				user = getUser(user.getEmail());
-				user.setBalance(rs.getDouble("balance"));
-				allUsers.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return allUsers;
-	}
-
-	public List<StockOwned> getStocksOwnedForThisGame(int gameID,
-			String activeUserEmail) {
-
-		List<StockOwned> stocksOwned = new ArrayList<StockOwned>();
-
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT symbol, quantity, avg_purch_price FROM fyp_stock_owned WHERE email = ? AND game_id = ?");
-			stmt1.setString(1, activeUserEmail);
-			stmt1.setInt(2, gameID);
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				StockOwned stockOwned = new StockOwned();
-				stockOwned.setEmail(activeUserEmail);
-				stockOwned.setQuantity(rs.getInt("quantity"));
-				stockOwned.setSymbol(rs.getString("symbol"));
-				stockOwned.setAvgPurchPrice(rs.getDouble("avg_purch_price"));
-				stockOwned.setGameID(gameID);
-
-				yahoofinance.Stock stock = YahooFinance.get(stockOwned
-						.getSymbol());
-
-				stockOwned.setCurrentPrice(stock.getQuote().getPrice()
-						.doubleValue());
-				stockOwned.setTotal(stockOwned.getCurrentPrice()
-						* (double) stockOwned.getQuantity());
-				stockOwned.setGainOrLoss(stockOwned.getTotal()
-						- (stockOwned.getAvgPurchPrice() * (double) stockOwned
-								.getQuantity()));
-				stockOwned.setCompanyName(stock.getName());
-
-				stocksOwned.add(stockOwned);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return stocksOwned;
-	}
-
-	
-
-
-
-	public List<Integer> getGameIDsAdmin() {
-		List<Integer> gameIDs = new ArrayList<Integer>();
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt2 = conn
-					.prepareStatement("SELECT DISTINCT game_id FROM fyp_game");
-
-			ResultSet rs2 = stmt2.executeQuery();
-
-			while (rs2.next())
-				gameIDs.add(rs2.getInt("game_id"));
-
-			rs2.close();
-			stmt2.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return gameIDs;
-	}
-
-	@Override
-	public void addToAccValHistory(int gameID, double startingCash, String email) {
-
-		SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-		String date = DATE_FORMAT.format(new Date());
-
-		try {
-			Connection conn = dataSource.getConnection();
-
-			PreparedStatement stmt1 = conn
-					.prepareStatement("INSERT INTO fyp_user_game_account_history(game_id, email, date, closing_acc_value, percent_change) VALUES(?,?,?,?,?)");
-			stmt1.setInt(1, gameID);
-			stmt1.setString(2, email);
-			stmt1.setString(3, date);
-			stmt1.setDouble(4, startingCash);
-			stmt1.setDouble(5, 0);
-
-			stmt1.execute();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-
-
-	@Override
-	public List<UserGameAccountValHistory> getAllBalanceHistory() {
-
-		List<UserGameAccountValHistory> entries = new ArrayList<UserGameAccountValHistory>();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT * FROM fyp_user_game_account_history");
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next()) {
-				UserGameAccountValHistory entry = new UserGameAccountValHistory();
-				entry.setGameID(rs.getInt("game_id"));
-				entry.setDate(rs.getString("date"));
-				entry.setClosingAccVal(rs.getDouble("closing_acc_value"));
-				entry.setPercentChange(rs.getDouble("percent_change"));
-				entries.add(entry);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return entries;
-	}
-
-	
-
-	public DashboardUserDetails getDashboardStatsAdmin(Game g) {
-
-		int index = 0;
-		Collections.sort(g.getUsersInGame());
-
-		DashboardUserDetails board = new DashboardUserDetails();
-		String name = null;
-		double myAccVal = 0;
-		double highestAccVal = 0;
-		for (User u : g.getUsersInGame()) {
-			if (u.getCurAccVal() > highestAccVal) {
-				highestAccVal = u.getCurAccVal();
-				name = u.getFirstName() + " " + u.getLastName();
-			}
-			/*
-			 * if(u.getEmail().equals(email)){
-			 * System.out.println(email+" was found at index: "+index); myAccVal
-			 * = u.getCurAccVal(); board.setUserPosition(index+1);
-			 * board.setCurBal(u.getBalance());
-			 * 
-			 * }
-			 */
-			index++;
-
-		}
-		board.setTopPlayerName(name);
-		board.setUserAccVal(myAccVal);
-
-		DateTime today = new DateTime();
-
-		System.out.println("GAME:" + g.getGameName() + " Today Date: " + today);
-		DateTime end = new DateTime(g.getEndDate());
-
-		System.out.println("GAME:" + g.getGameName() + " End Date: " + end);
-		int days = Days.daysBetween(today, end).getDays();
-
-		board.setDaysLeft(days);
-
-		return board;
-	}
-
-	@Override
-	public void removeFromUserRoles(String email) {
-
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("DELETE FROM fyp_user_roles WHERE email = ?");
-			stmt1.setString(1, email);
-			stmt1.execute();
-
-			stmt1.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	
-
-	
-
-
-
-	@Override
-	public List<Integer> getGameIDsCreatedByUser(String email) {
-		List<Integer> ids = new ArrayList<Integer>();
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("SELECT game_id from fyp_game WHERE creator_email = ?");
-			stmt1.setString(1, email);
-
-			ResultSet rs = stmt1.executeQuery();
-
-			while (rs.next())
-				ids.add(rs.getInt("game_id"));
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ids;
-	}
-
-	@Override
-	public void removeFromUserTable(String email) {
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
 			stmt1.setString(1, email);
 			stmt1.execute();
 
@@ -778,21 +184,6 @@ public class UserDAOImpl implements UserDAO {
 		}
 	}
 
-	@Override
-	public void removeFromPersistentLogin(String email) {
-
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn
-					.prepareStatement("DELETE FROM persistent_logins WHERE username = ?");
-			stmt1.setString(1, email);
-			stmt1.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	@Override
 	public List<User> getList(List<String> emails) {
@@ -839,7 +230,6 @@ public class UserDAOImpl implements UserDAO {
 	public void delete(String currentEmail) {
 		
 		try{
-
 			Connection conn = dataSource.getConnection();
 
 			PreparedStatement stmt11 = conn.prepareStatement("DELETE FROM fyp_user WHERE email = ?");
@@ -852,6 +242,5 @@ public class UserDAOImpl implements UserDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }
