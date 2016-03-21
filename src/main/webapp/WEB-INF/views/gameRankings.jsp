@@ -23,7 +23,7 @@
 
 <style>
 html, body, #testContainer {
-	height: 86.3%;
+	height: 100%;
 }
 
 body>#testContainer {
