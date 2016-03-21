@@ -7,18 +7,14 @@
 
 <html>
 <head>
-<style>
-body {
-	margin: 0;
-}
-</style>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>New/Edit Contact</title>
-<script src="resources/js/registration-form-validation.js"></script>
-<script src="resources/js/jquery-1.12.0.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/registration-form-validation.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer-placement.css">
 
-
-<link rel="stylesheet" href="resources/css/reg-and-login.css">
 <script src="resources/js/email-check.js"></script>
 
 <script>
@@ -61,8 +57,10 @@ body {
 </head>
 
 <body onload="document.loginForm.email.focus();">
-	<div>
-		<%@include file="header.jsp"%></div>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
 
 	<div align="center" id="main">
 		<div id="login">
@@ -143,7 +141,9 @@ body {
 
 
 	</div>
-		<%@include file="footer.jsp"%>
+	</div>
+	</div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 
 </body>
 </html>

@@ -1,0 +1,9 @@
+@CHARSET "ISO-8859-1";
+html, body, #main-container {
+	margin: 0;
+	height: 100%;
+}
+
+#main-container {
+	min-height: 100%;
+}
