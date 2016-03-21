@@ -100,24 +100,24 @@ body>#testContainer {
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="game" items="${myGames}">
+						<c:forEach var="userParticipation" items="${participatingGames}">
 							<tr>
 
-								<td>${game.getGameName()}</td>
-								<td>${game.getStatus()}</td>
-								<td>${game.getGameType()}</td>
-								<td><a href="leaveGame/${game.getGameID()}">Leave</a></td>
-								<td><a href="rankings/${game.getGameID()}">Rankings</a></td>
+								<td>${userParticipation.getGame().getGameName()}</td>
+								<td>${userParticipation.getGame().getStatus()}</td>
+								<td>${userParticipation.getGame().getGameType()}</td>
+								<td><a href="leaveGame/${userParticipation.getGame().getGameID()}">Leave</a></td>
+								<td><a href="rankings/${userParticipation.getGame().getGameID()}">Rankings</a></td>
 
 								<c:if
-									test="${pageContext.request.userPrincipal.name == game.getCreatorEmail()}">
-									<td><a href="editGameRules/${game.getGameID()}">Edit
+									test="${pageContext.request.userPrincipal.name == userParticipation.getGame().getCreatorEmail()}">
+									<td><a href="editGameRules/${userParticipation.getGame().getGameID()}">Edit
 											Rules</a></td>
 								</c:if>
 
 								<c:if
-									test="${pageContext.request.userPrincipal.name != game.getCreatorEmail()}">
-									<td><a href="viewGameRules/${game.getGameID()}">Game
+									test="${pageContext.request.userPrincipal.name != userParticipation.getGame().getCreatorEmail()}">
+									<td><a href="viewGameRules/${userParticipation.getGame().getGameID()}">Game
 											Rules</a></td>
 								</c:if>
 							</tr>

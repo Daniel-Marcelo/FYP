@@ -15,27 +15,16 @@ import bct.ct413.model.UserGameParticipation;
 
 public interface UserDAO {
 
-	public void insert(User user);
-	public int isEmailAlreadyInUse(String email);
-	public User getUser(String email);
-	public void updateDetails(User existingUser);
-	public void update(String emailAddress, String newPass);
-	public double getBalance(String email, int gameID);
-	public void updateBalance(String email, double total, int gameID);
-	public void updateStocksOwned(Trade trade, int quantity);
-	public void addToDefaultGame(User newUser);
-	public List<UserGameParticipation> getRelevantGames(String email);
-	public List<Game> getGamesForUser(String email);
-	public List<User> getGlobalRankings();
-	public void addToAccValHistory(int gameID, double startingCash,String activeUserEmail);
+	void insert(User user);
 	List<User> get();
-	public void removeFromUserRoles(String email);
-	public List<Game> getGamesAdmin();
-	public List<UserGameAccountValHistory> getAllBalanceHistory();
-	public List<Integer> getGameIDsCreatedByUser(String email);
-	public void removeFromUserTable(String email);
-	public void removeFromPersistentLogin(String email);
-	public List<User> getList(List<String> emails);
-	public void delete(String currentEmail);
+	User get(String email);
+	void update(User existingUser);
+	void update(String emailAddress, String newPass);
+	void remove(String email);
+	List<User> getList(List<String> emails);
+	void delete(String currentEmail);
+	
+	double getBalance(String email, int gameID);
+
 
 }

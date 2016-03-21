@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 
 
-<script src="//code.jquery.com/jquery-1.12.0.min.js"
-	type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
+
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 <script
 	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>

@@ -5,10 +5,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery.js" type="text/javascript"></script>
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
-
-
 
 <style>
 td {

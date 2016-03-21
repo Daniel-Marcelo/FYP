@@ -25,7 +25,7 @@ public class UserGameParticipationDAOImpl implements UserGameParticipationDAO {
 		List<UserGameParticipation> users = new ArrayList<UserGameParticipation>();
 		try {
 			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn.prepareStatement("SELECT email, balance FROM fyp_user_game_participation WHERE game_id = ?");
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT game_id, email, balance FROM fyp_user_game_participation WHERE game_id = ?");
 			stmt1.setInt(1, gameID);
 			ResultSet rs = stmt1.executeQuery();
 
@@ -33,6 +33,8 @@ public class UserGameParticipationDAOImpl implements UserGameParticipationDAO {
 				UserGameParticipation user = new UserGameParticipation();
 				user.setEmail(rs.getString("email"));
 				user.setBalance(rs.getDouble("balance"));
+				user.setGameID(rs.getInt("game_id"));
+
 				System.out.println("BALANCE: "+user.getBalance());
 /*				User user = getPersonalDetais(email);
 				double toBeAdded = getAccValForUserInGame(gameID, email);
@@ -116,5 +118,136 @@ public class UserGameParticipationDAOImpl implements UserGameParticipationDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
+	}
+
+	@Override
+	public void remove(int gameID) {
+			try {
+				Connection conn = dataSource.getConnection();
+				
+				PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_participation WHERE game_id = ?");
+				stmt1.setInt(1, gameID);
+				
+				stmt1.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}		
+	}
+
+	@Override
+	public List<UserGameParticipation> get(String email) {
+
+		List<UserGameParticipation> list = new ArrayList<UserGameParticipation>();
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn
+					.prepareStatement("SELECT * FROM fyp_user_game_participation WHERE email = ?");
+			stmt1.setString(1, email);
+
+			ResultSet rs = stmt1.executeQuery();
+
+			while (rs.next()) {
+				UserGameParticipation UGP = new UserGameParticipation();
+				UGP.setBalance(rs.getDouble("balance"));
+				UGP.setEmail(rs.getString("email"));
+				UGP.setGameID(rs.getInt("game_id"));
+				list.add(UGP);
+
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	@Override
+	public void updateBalance(String email, double total, int gameID) {
+
+		double balance = 0;
+		// [1] Get existing balance
+		try {
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT balance FROM fyp_user_game_participation WHERE email = ? and game_id = ?");
+			stmt1.setString(1, email);
+			stmt1.setInt(2, gameID);
+			ResultSet rs = stmt1.executeQuery();
+			while(rs.next())
+				balance = rs.getDouble("balance");
+
+			double newBal = balance - total;
+
+			PreparedStatement stmt2 = conn.prepareStatement("UPDATE fyp_user_game_participation SET balance = ? WHERE email = ? AND game_id = ?");
+			stmt2.setDouble(1, newBal);
+			stmt2.setString(2, email);
+			stmt2.setInt(3, gameID);
+
+			stmt2.executeUpdate();
+
+			stmt1.close();
+			stmt2.close();
+			//rs.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void remove(int gameID, String email) {
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_participation WHERE game_id = ? AND email = ?");
+			stmt1.setInt(1, gameID);
+			stmt1.setString(2, email);
+			
+			stmt1.execute();
+			stmt1.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	public void remove(String email) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM fyp_user_game_participation WHERE email = ?");
+			stmt1.setString(1, email);
+			
+			stmt1.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+	}
+
+	@Override
+	public List<UserGameParticipation> getList() {
+
+		List<UserGameParticipation> users = new ArrayList<UserGameParticipation>();
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT game_id, email, balance FROM fyp_user_game_participation");
+			ResultSet rs = stmt1.executeQuery();
+
+			while (rs.next()) {
+				UserGameParticipation user = new UserGameParticipation();
+				user.setEmail(rs.getString("email"));
+				user.setBalance(rs.getDouble("balance"));
+				user.setGameID(rs.getInt("game_id"));
+				
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return users;
 	}
 }

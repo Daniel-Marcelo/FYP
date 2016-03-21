@@ -15,4 +15,16 @@ public interface UserGameParticipationDAO {
 
 	void update(String currentEmail, String newEmail);
 
+	void remove(int gameID);
+
+	List<UserGameParticipation> get(String email);
+
+	void updateBalance(String email, double total, int gameID);
+
+	void remove(int gameID, String email);
+
+	void remove(String email);
+	
+	List<UserGameParticipation> getList();
+
 }

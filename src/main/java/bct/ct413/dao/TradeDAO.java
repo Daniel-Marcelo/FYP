@@ -2,6 +2,7 @@ package bct.ct413.dao;
 
 
 import java.util.List;
+import java.util.Map;
 
 import bct.ct413.model.LimitOrder;
 import bct.ct413.model.Trade;
@@ -9,24 +10,20 @@ import bct.ct413.model.Trade;
 
 public interface TradeDAO {
 
-	int addNewOrder(Trade trade);
+	List<Trade> getList();
 
-	//This needs to be gotten rid of, already in userDAO
-	String getSharesOwned(String email);
+	void insert(Trade trade);
 
-	List<Trade> getActiveLimitOrdersForUser(String email);
-
-	double updateLimitOrders(List<Trade> ordersToExecute);
-
-	void addLimitOrderDetails(LimitOrder limitOrder);
-
-	List<Trade> getPortfolioTradeDetails(
-			String activeUserEmail);
-
-	void removeTrades(String email);
+	List<Trade> getPortfolioTradeDetails(String activeUserEmail);
 
 	void update(String currentEmail, String newEmail);
 
+	void remove(int gameID);
+
+	int getLastTradeID(String email, int gameID);
+
+	void remove(int gameID, String email);
 	
-	
+	void remove(String email);
+
 }

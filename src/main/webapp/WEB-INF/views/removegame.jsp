@@ -124,16 +124,16 @@
 
 	<%@include file="header.jsp"%>
 	<div style="overflow: hidden;">
-		<c:forEach var="game" items="${myGames}">
+		<c:forEach var="userParticipation" items="${participatingGames}">
 
 			<div
 				style="float: left; margin-right: 5%; height: 400px; width: 500px;font-size: 11px;">
 				<div style=" margin-bottom:3%;">
 					<div align="center">
-						<h3>${game.getGameName()}</h3>
+						<h3>${userParticipation.getGame().getGameName()}</h3>
 					</div>
 
-					<table id="myTable${game.getGameID()}"
+					<table id="myTable${userParticipation.getGame().getGameID()}"
 						class="table table-striped table-bordered" width="100%">
 						<thead>
 							<tr>
@@ -144,10 +144,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="user" items="${game.getUsersInGame()}">
+							<c:forEach var="user" items="${userParticipation.getGame().getUsersInGame()}">
 
 								<tr>
-									<td>${user.getFirstName()}${user.getLastName()}</td>
+									<td>${user.getFirstName()} ${user.getLastName()}</td>
 									<td>${user.getCountry()}</td>
 									<td>${user.getBalance()}</td>
 									<td>${user.getCurAccVal()}</td>
@@ -164,7 +164,7 @@
 
   				<div
 					style="width: 100%; font-size: 11px;"> 
-						<table id="myStatsTable${game.getGameID()}"
+						<table id="myStatsTable${userParticipation.getGame().getGameID()}"
 							class="table table-striped table-bordered" width="100%">
 						<thead style = "display: none;">
 							<tr>
@@ -177,7 +177,7 @@
 
 								<tr>
 									<td><b>Top Player</b></td>
-									<td>${game.getBoard().getTopPlayerName()}</td>
+									<td>${userParticipation.getGame().getBoard().getTopPlayerName()}</td>
 <%-- 									<td><b>Current Position</b></td>
 									<td>${game.getBoard().getUserPosition()}</td> --%>
 <%-- 									<td><b>Acc. Value</b></td>
@@ -187,7 +187,7 @@
 
 								<tr>
 									<td><b>Days Left In Game</b></td>
-									<td>${game.getBoard().getDaysLeft()}</td>
+									<td>${userParticipation.getGame().getBoard().getDaysLeft()}</td>
 <%-- 									<td><b>Current Balance</b></td>
 									<td class="currAccVal">${game.getBoard().getCurBal()}</td> --%>
 <!-- 									<td><b>Acc. Value Change</b></td>
@@ -199,12 +199,12 @@
  				</div>
  				
  				<div>
- 				<a id="myLink" href="#" onclick="displayConfirmation(${game.getGameID()});">Delete Game</a>
+ 				<a id="myLink" href="#" onClick="displayConfirmation(${userParticipation.getGame().getGameID()});">Delete Game</a>
  				
-	 				<div align = "center" id = "deleteGameForm${game.getGameID()}" style = "display : none;">
+	 				<div align = "center" id = "deleteGameForm${userParticipation.getGame().getGameID()}" style = "display : none;">
 		 				<form action = "deleteGame" method = "POST">
 		 					<h5>Are you sure ?</h5>
-			 				<input style = "display: none;" type="text" name="gameID" value="${game.getGameID()}" />
+			 				<input style = "display: none;" type="text" name="gameID" value="${userParticipation.getGame().getGameID()}" />
 			 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			 				<button type="submit" class="btn blue-submit" >Yes</button>
 						</form>

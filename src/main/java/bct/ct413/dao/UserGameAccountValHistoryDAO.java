@@ -12,4 +12,10 @@ public interface UserGameAccountValHistoryDAO {
 
 	void update(String currentEmail, String newEmail);
 
+	void remove(int gameID);
+
+	void remove(int gameID, String email);
+
+	void remove(String email);
+
 }

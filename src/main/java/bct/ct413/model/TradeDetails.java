@@ -4,6 +4,9 @@ package bct.ct413.model;
 import java.sql.Date;
 import java.util.Calendar;
 
+/*
+ * Not an entity in the database
+ */
 public class TradeDetails {
 	
 	/*	
@@ -96,14 +99,15 @@ public class TradeDetails {
 	public void setTradeID(int tradeID) {
 		this.tradeID = tradeID;
 	}
-	public Trade getRelevantTradeDetails(String email, int transactionID) {
+	
+	public Trade getTradeObject(String email, int transactionID) {
 		Trade trade = new Trade();
 		trade.setEmail(userEmail);
 		trade.setSymbol(symbol);
 		trade.setDate(date);
 		trade.setBuyOrSell(buyOrSell);
 		trade.setTradeType(tradeType);
-		//trade.setTransactionID(transactionID);
+		trade.setTransactionID(transactionID);
 		trade.setStatus("Executed");
 		trade.setGameID(gameID);
 
@@ -117,14 +121,12 @@ public class TradeDetails {
 		trade.setEmail(email);
 		trade.setTransactionID(transactionID);
 
-		trade.printDetails();
+		//trade.printDetails();
 		return trade;
 	}
-	public TradeTransaction getRelevantTradeTransactionDetails() {
+	public TradeTransaction getTransactionObject() {
 		
 		TradeTransaction tradeTransaction = new TradeTransaction();
-		
-		System.out.println("Assigning: "+sharePrice);
 		tradeTransaction.setSharePrice(sharePrice);
 		tradeTransaction.setQuantity(quantity);
 		tradeTransaction.setTotal(costOfTrade);
@@ -142,7 +144,7 @@ public class TradeDetails {
 	public void setDurationDays(int duration) {
 		this.durationDays = duration;
 	}
-	public LimitOrder getRelevantLimitOrderDetails() {
+	public LimitOrder getLimitOrderObject() {
 
 		LimitOrder lo = new LimitOrder();
 		lo.setTradeID(tradeID);

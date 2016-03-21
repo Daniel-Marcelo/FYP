@@ -10,7 +10,8 @@ public class UserGameParticipation {
 	/*
 	 * Not fields in DB
 	 */
-	private String gameName;
+	//private String gameName;
+	private Game game;
 	
 	public String getEmail() {
 		return email;
@@ -30,11 +31,12 @@ public class UserGameParticipation {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	public String getGameName() {
-		return gameName;
+/*w*/
+	public Game getGame() {
+		return game;
 	}
-	public void setGameName(String gameName) {
-		this.gameName = gameName;
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }
