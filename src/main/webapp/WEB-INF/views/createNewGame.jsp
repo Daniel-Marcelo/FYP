@@ -6,36 +6,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<script src="resources/js/jquery.js" type="text/javascript"></script>
+<title>Create New Game</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
 
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
 <style>
-html, body, #testContainer {
-	height: 86.3%;
-}
-
-body>#testContainer {
-	height: auto;
-	min-height: 100%;
-}
-
-#testFooter {
-	clear: both;
-	position: relative;
-	z-index: 10;
-	/* height: 3em; */
-	margin-top: -3em;
-}
-
-#testContent {
-	padding-bottom: 1.5%;
-}
 td {
 	padding-right: 5%;
 }
@@ -50,7 +27,6 @@ td {
 		$("#endDateGame").datepicker({
 			dateFormat : 'yy/mm/dd'
 		}).datepicker("setDate", new Date());
-
 	});
 	function validateTheDates() {
 
@@ -88,11 +64,9 @@ td {
 </head>
 <body>
 
-	<div id="testContainer">
-		<div id="header">
-			<%@include file="header.jsp"%>
-		</div>
-		<div id="testContent">
+	<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+		<div id="main-content">
 			<div align="center">
 				<h1>Create a Game</h1>
 				<h3 id="gameCreationErrorMessage"></h3>
@@ -156,7 +130,7 @@ td {
 		</div>
 
 	</div>
-	<div id="testFooter"><%@include file="footer.jsp"%></div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 
 </body>
 </html>

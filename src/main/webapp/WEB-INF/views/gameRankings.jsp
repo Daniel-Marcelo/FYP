@@ -6,43 +6,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.js"
-	type="text/javascript"></script>
-<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
-	type="text/javascript"></script>
-<script
-	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"
-	type="text/javascript"></script>
-
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-
-
-<style>
-html, body, #testContainer {
-	height: 100%;
-}
-
-body>#testContainer {
-	height: auto;
-	min-height: 100%;
-}
-
-#testFooter {
-	clear: both;
-	position: relative;
-	z-index: 10;
-	/* height: 3em; */
-	margin-top: -3em;
-}
-
-#testContent {
-	padding-bottom: 1.5%;
-}
-</style>
+<title>Game Rankings</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
 <script>
 	$(document).ready(function() {
@@ -51,13 +20,12 @@ body>#testContainer {
 </script>
 </head>
 <body>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
 
-	<div id="testContainer">
-		<div id="header">
-			<%@include file="header.jsp"%>
-		</div>
+		<div id="main-content">
 
-		<div id="testContent">
+
 			
 			<div style="margin: 0 auto; width: 70%; margin-top: 7%;">
 
@@ -90,7 +58,7 @@ body>#testContainer {
 			</div>
 		</div>
 	</div>
-	<div id="testFooter"><%@include file="footer.jsp"%></div>
 
+	<div id="footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

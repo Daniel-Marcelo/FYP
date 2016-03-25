@@ -5,15 +5,10 @@
 <head>
 
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<!-- <script src="resources/js/jquery.js"
-	type="text/javascript"></script> -->
 <script src="${pageContext.request.contextPath}/resources/js/header.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
-
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer-placement.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/header.css">
-
 
 <script>
 

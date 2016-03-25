@@ -9,38 +9,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script src="resources/js/jquery.js" type="text/javascript"></script>
-<link rel="stylesheet" href="resources/css/bootstrap.css">
-<link rel="stylesheet" href="resources/css/reg-and-login.css">			<!-- Form CSS -->
-<script src="resources/js/registration-form-validation.js"></script>
-<script src="resources/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<link rel="stylesheet" href="resources/css/dataTables.css">
-<script src="resources/js/dataTables.js"></script>
-<script src="resources/js/gameFunctionality.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">			<!-- Form CSS -->
+<script src="${pageContext.request.contextPath}/resources/js/registration-form-validation.js"></script>
 
 
 <style>
 td {
 	padding-right: 5%;
 }
-
-
-
-html, body, #testContainer { height: 100%; }
-body > #testContainer { height: auto; min-height: 100%; }
-
-#testFooter {
- clear: both;
- position: relative;
- z-index: 10;
- /* height: 3em; */
- margin-top: -3em;
-}
-
-#testContent { padding-bottom: 1.5%; }
 </style>
 
 <script>
@@ -73,11 +50,10 @@ body > #testContainer { height: auto; min-height: 100%; }
 		<h2># This user is login by username / password.</h2>
 	</sec:authorize> --%>
 
-	<div id="testContainer">
-	<div id = "header">
-		<%@include file="header.jsp"%>
-	</div>
-		<div id="testContent">
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
 <%-- 		 <c:if test="${messageFromHome == null}">
 			<h2>No message!</h2>
 
@@ -159,6 +135,6 @@ body > #testContainer { height: auto; min-height: 100%; }
  			</div> --%>
  		</div>
 	</div>
-	<div id = "testFooter"><%@include file="footer.jsp"%></div>
+	<div id = "footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

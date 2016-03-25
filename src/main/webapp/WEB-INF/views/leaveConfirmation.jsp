@@ -5,38 +5,15 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.js"
-	type="text/javascript"></script>
-<style>
-html, body, #testContainer {
-	height: 86.3%;
-}
-
-body>#testContainer {
-	height: auto;
-	min-height: 100%;
-}
-
-#testFooter {
-	clear: both;
-	position: relative;
-	z-index: 10;
-	/* height: 3em; */
-	margin-top: -3em;
-}
-
-#testContent {
-	padding-bottom: 1.5%;
-}
-</style>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
 </head>
 <body>
 
-	<div id="testContainer">
-		<div id="header">
-			<%@include file="header.jsp"%>
-		</div>
-		<div id="testContent">
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
+
 
 			<div align="center">
 				<div style="margin-top: 7%;">
@@ -68,6 +45,6 @@ body>#testContainer {
 			</div>
 		</div>
 		</div>
-	<div id = "testFooter"><%@include file="footer.jsp"%></div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

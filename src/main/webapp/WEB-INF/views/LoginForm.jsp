@@ -13,9 +13,9 @@
 <script src="${pageContext.request.contextPath}/resources/js/registration-form-validation.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer-placement.css">
 
-<script src="resources/js/email-check.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer-placement.css">
+<script src="${pageContext.request.contextPath}/resources/js/email-check.js"></script>
 
 <script>
 	function resetPassword() {
@@ -57,10 +57,17 @@
 </head>
 
 <body onload="document.loginForm.email.focus();">
+
+
+
 <div id="main-container">
 		<div id="header"><%@include file="header.jsp"%></div>
 
 		<div id="main-content">
+
+
+
+
 
 	<div align="center" id="main">
 		<div id="login">

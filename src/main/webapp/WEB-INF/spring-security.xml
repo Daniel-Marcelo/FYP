@@ -16,8 +16,8 @@
 
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/home**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/symbolInfoPage**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
+ 		<intercept-url pattern="/symbolInfoPage**" access="hasRole('ROLE_USER')" />
+ 		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
@@ -34,8 +34,7 @@
 
 		<access-denied-handler error-page="/403" />
 
-		<form-login login-page="/login" default-target-url="/home"
-			authentication-failure-url="/login?error" username-parameter="email"
+		<form-login login-page="/login" default-target-url="/home" authentication-failure-url="/login?error" username-parameter="email"
 			password-parameter="password" login-processing-url="/auth/login_check"
 			authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />
 		<logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
@@ -52,10 +51,15 @@
 		<authentication-provider>
 			<!-- <user-service> <user name="mkyong" password="123456" authorities="ROLE_USER" 
 				/> </user-service> -->
+			<password-encoder ref="encoder" />
 			<jdbc-user-service data-source-ref="dataSource"
 				users-by-username-query="select email, password, enabled from fyp_user where email = ?"
 				authorities-by-username-query="select email, role from fyp_user_roles where email =?  " />
 		</authentication-provider>
 	</authentication-manager>
+	
+		<beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<beans:constructor-arg name="strength" value="10" />
+	</beans:bean>
 
 </beans:beans>

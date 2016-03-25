@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -94,6 +95,7 @@ public class AccessController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 	  @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+		
 		
 		String targetUrl = getRememberMeTargetUrlFromSession(request);
 		ModelAndView model = new ModelAndView("LoginForm");
@@ -216,6 +218,13 @@ public class AccessController {
 	public ModelAndView saveUser(@ModelAttribute User newUser) {
 		
 		Game game = gameDAO.get(1);
+		
+		String password = newUser.getPassword();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(password);
+		
+		newUser.setPassword(hashedPassword);
+		System.out.println(hashedPassword+": "+hashedPassword.length());
 
 		userDAO.insert(newUser);
 		userRolesDAO.insert(newUser);

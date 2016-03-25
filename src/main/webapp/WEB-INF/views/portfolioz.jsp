@@ -5,16 +5,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
-	type="text/javascript"></script>
-<link rel="stylesheet"
-	href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
-	<script src="resources/js/numeral.min.js"
-	type="text/javascript"></script>
+<title>Portfolio</title>
+<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+<script src="${pageContext.request.contextPath}/resources/js/numeral.min.js" type="text/javascript"></script>
 <script>
 
 function updateStockTableForGame(gameID){
@@ -123,7 +120,11 @@ color: BLACK;
 
 </head>
 <body>
-	<%@include file="header.jsp"%>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
+
 
 	<select id="currID" onChange="changeTable();">
 		<c:forEach var="userParticipation" items="${participatingGames}">
@@ -135,7 +136,7 @@ color: BLACK;
 			<div id="gameInfo">
 				<div id="portfolioTables">
 
-					<table id="myTable" class="display" width="100%">
+					<table id="myTable" class="display responsive no-wrap" width="100%">
 						<thead>
 							<tr>
 								<th>Symbol</th>
@@ -149,7 +150,7 @@ color: BLACK;
 						</thead>
 					</table>
 
-					<table id="myTransactionTable" class="display" width="100%">
+					<table id="myTransactionTable" class="display responsive no-wrap" width="100%">
 						<thead>
 							<tr>
 								<th>Symbol</th>
@@ -166,6 +167,8 @@ color: BLACK;
 				</div>
 			</div>
 		</div>
-	<%@include file="footer.jsp"%>
+				</div>
+		</div>	
+	<div id="footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

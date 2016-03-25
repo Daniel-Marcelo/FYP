@@ -9,15 +9,16 @@
 <title>Insert title here</title>
 
 
-<script src="resources/js/jquery.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
 
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src="resources/js/numeral.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
+
+
 
 <script>
 	$(document)
@@ -170,7 +171,10 @@
 </head>
 <body>
 
-	<%@include file="header.jsp"%>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
 	<div style="overflow: hidden;">
 		<c:forEach var="userParticipation" items="${participatingGames}">
 
@@ -253,7 +257,9 @@
 		</c:forEach>
 	</div>
 
-	<%@include file="footer.jsp"%>
+	</div>
+	</div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 
 </body>
 </html>

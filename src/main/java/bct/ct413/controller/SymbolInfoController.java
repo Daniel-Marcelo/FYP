@@ -1,6 +1,7 @@
 package bct.ct413.controller;
 
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -44,16 +45,23 @@ public class SymbolInfoController {
 		Calendar from = Calendar.getInstance();
 		Calendar to = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");		
-		from.add(Calendar.YEAR, -20); 
+		from.add(Calendar.YEAR, -6); 
 		System.out.println("FROM: "+sdf.format(from.getTime()));
 		System.out.println("TO: "+sdf.format(to.getTime()));
 		
-		Stock stock = YahooFinance.get(value, from, to,Interval.DAILY);
+			Stock stock = YahooFinance.get(value, from, to,Interval.DAILY);
+			System.out.println("SIZE OF OBJECT: "+stock.getHistory().size());
+			System.out.println("CURRENCY: "+stock.getCurrency());
+
+			for(HistoricalQuote quote : stock.getHistory())
+				System.out.println(quote);
+			
+			if(stock.getName().equals("N/A"))
+				return "Not valid";
+			else
+				return new Gson().toJson(stock);
 		
-		System.out.println("SIZE OF OBJECT: "+stock.getHistory().size());
-		for(HistoricalQuote quote : stock.getHistory())
-			System.out.println(quote);
 		
-		return new Gson().toJson(stock);
+
 	}
 }

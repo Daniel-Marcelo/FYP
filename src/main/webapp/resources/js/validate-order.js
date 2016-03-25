@@ -61,10 +61,10 @@ function isStockMarketOpen() {
 
 		console.log("Stock market is not open - current time (EST): " + ESTHour
 				+ ":" + currentMinute + " - " + days[currentDay]);
-		var error = document.getElementById('errorTag');
+/*		var error = document.getElementById('errorTag');
 		error.innerHTML = "Stock market is not open. A trade cannot be performed."+"<br>";
 		error.style.display = "inline";
-		error.style.color = "RED";
+		error.style.color = "RED";*/
 
 		var tradeForm = document.getElementById("trade");
 		trade.style.display = "inline";
@@ -258,9 +258,9 @@ function allowOrDisallowSelling(stocksOwnedJSON){
 function setSellLimit(stocksOwnedJSON){
 	
 	console.log("In this method");
-	var buyOrSell =document.getElementById("buyOrSell").value;
+	var buyOrSell = document.getElementById("buyOrSell").value;
 	
-	if(buyOrSell = "Sell"){
+	if(buyOrSell == "Sell"){
 		
 		var stockSymbol = (document.getElementById("StockBuySymbol").value).toUpperCase();
 		var numberSharesOwned = 0;
@@ -278,6 +278,7 @@ function setSellLimit(stocksOwnedJSON){
 		x.max = numberSharesOwned;
 	}else{
 		var x = document.getElementById("quantity");
+		console.log("Current Max: "+x.max);
 		x.max = 100000;
 	}
 	

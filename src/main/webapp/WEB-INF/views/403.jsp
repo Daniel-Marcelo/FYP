@@ -1,6 +1,17 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
+<head>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
+
+
+</head>
 <body>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content" align = "center" style = "margin-top: 4%;">
+
+
 	<h1>HTTP Status 403 - Access is denied</h1>
 
 	<c:choose>
@@ -17,6 +28,10 @@
 	
 	
 	<h3>Back To Home: <a href = "/FYP" >Home</a></h3>
+	
+		</div>
+	</div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 
 </body>
 </html>

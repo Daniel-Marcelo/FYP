@@ -6,16 +6,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-
-
+<title>Global</title>
 <script src="//code.jquery.com/jquery-1.12.0.min.js" type="text/javascript"></script>
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-
-
-<!-- <link rel="stylesheet" href="resources/css/dataTables.css">
- -->
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 

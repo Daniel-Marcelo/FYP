@@ -8,9 +8,17 @@
 
 <body onload="timer=setTimeout(function(){ window.location='removeUserAdmin';}, 3000)">
 
-<%@include file = "header.jsp" %>
-<h2 align = "center"><br>You are now entering the administration section of the application. You will be redirected in 3 seconds.</h2>
-<%@include file = "footer.jsp" %>
+	<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
 
+		<div id="main-content">
+
+			<h2 align="center">
+				<br>You are now entering the administration section of the
+				application. You will be redirected in 3 seconds.
+			</h2>
+		</div>
+	</div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>
