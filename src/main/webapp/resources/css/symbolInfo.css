@@ -1,28 +1,15 @@
 @CHARSET "ISO-8859-1";
 
-#marketStatus{
-	width: 40%;
-	height: 2%;
-/*  background-color: red;
- */ text-align: center;
-	vertical-align: middle;
-	line-height: 50px;
-/*  margin: 5.3% 20% 0 0;
- */ position: relative; 
-	display: inline-block; 
-	float: right;
-/*  visibility: hidden;
- */
- }
+.float-right{
+	float : right;
+}
  
+
 #circularG{
 	position: relative;
 	width:58px;
 	height:58px;
-	float: right;
-	visibility: hidden;
-/* 	//margin: auto;
- */}
+}
 
 .circularG{
 	position:absolute;
@@ -195,23 +182,25 @@
 
 body{
 font-family: 'Open Sans', 'sans-serif';
-background-color: 	#dff2fa;
+margin:0;
+}
+
+#main-content{
+
+	margin:5%;
+	width: 90%; 
+	height: 85%; 
 
 }
-#parent{
-
-	padding: 2% 0 0 5%;
-	width: 1900px; 
-	height: 1900px; 
-/* 	background-color: blue;
- */	overflow:auto;
-}
-.searchBox{
+#searchBox{
 
 	width: 50%; 
-	height: 3%; 
-/*   	background-color: yellow;  
- */	position: relative;
+	height: 10%; 
+	display: inline-block;
+	float:left;
+ }
+ 
+#load-animation{
 	display: inline-block;
 }
 
@@ -219,33 +208,40 @@ background-color: 	#dff2fa;
 
 	height: 100%;
 	width: 50%;
-/* 	background-color: purple;
- */	float: left;
-	
-
-
-}
-
-#chart_div{
-
-padding-top: 4%;
-padding-left: 0;	
-width: 100%; 
-height: 30%;
-/* background-color: yellow; 
- */position: relative; 
-display: inline-block; 
-visibility: visible;
+	float: left;
+	display:inline-block;
 }
 
 #stockInfoArea{
 
-width: 20%; 
-height: 40%;
-margin: 5.3% 20% 0 0;
-position: relative; 
+	
+width: 50%; 
+height: 100%;
 display: inline-block; 
-float: right;
-visibility: visible;
-
 }
+
+#chart_div{
+
+width: 100%; 
+height: 70%;
+display: inline-block; 
+padding: 0;
+}
+
+#stockInfoTable{
+	margin-top:10%;
+	padding: 0 30% 0 30%;
+}
+
+
+#marketStatus{
+	width: 40%;
+	height: 10%;
+  	text-align: center;
+	vertical-align: middle;
+	line-height: 50px;
+	position: relative; 
+	display: inline-block; 
+	float: right;
+
+ }

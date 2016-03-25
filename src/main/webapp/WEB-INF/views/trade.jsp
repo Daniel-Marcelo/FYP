@@ -6,11 +6,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<link rel="stylesheet" href="resources/css/reg-and-login.css">
-<script src="resources/js/jquery-1.12.0.min.js"></script>
-<script src="resources/js/validate-order.js"></script>
-<script src="resources/js/numeral.min.js"></script>
+<title>Trade</title>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/validate-order.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
 
 
 <script>
@@ -24,7 +28,7 @@
 		var e1 = document.getElementById("StockBuySymbol");
 		e1.addEventListener("blur", function(event) {
 
-			if(e1.value !=''){
+			if (e1.value != '') {
 				updateStockPrice();
 				allowOrDisallowSelling(sharesAndStocksOwned);
 			}
@@ -68,7 +72,6 @@
 		var gameID = document.getElementById("gameID").value;
 		var participations = JSON.parse('${gameParticipationsJSON}');
 
-		
 		for (i = 0; i < participations.length; i++) {
 			if (participations[i].gameID == gameID) {
 				setBalance(participations[i].balance);
@@ -79,16 +82,9 @@
 		}
 
 	}
-	
 </script>
 
 <style>
-
-/* #orderType {
-
-	width: 300px;
-
-} */
 td {
 	padding-right: 5%;
 }
@@ -96,121 +92,125 @@ td {
 
 </head>
 <body onload="document.trade.symbol.focus();">
-	<%@include file="header.jsp"%>
+
+	<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
+
+			<div align="center">
+				<h1>Stock Order</h1>
+				<h3 id="errorTag" style="display: none;"></h3>
+				<h4 id="errorTag2" style="display: none;"></h4>
+
+				<form:form name="trade" id="trade" action="executeTrade"
+					method="POST" modelAttribute="trade"
+					onSubmit="return enableBuyOrSell();">
+
+					<table>
+
+						<tr>
+							<td>Game</td>
+
+							<td><form:select path="gameID" id="gameID" name="gameID"
+									onChange="changeBalance();" class="form-field"
+									style="margin-top: 2%;">
+									<c:forEach var="userParticipation"
+										items="${participatingGames}">
+										<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
+									</c:forEach>
+								</form:select></td>
 
 
-	<div align="center">
-		<h1>Stock Order</h1>
-		<h3 id="errorTag" style="display: none;"></h3>
-		<h4 id="errorTag2" style="display: none;"></h4>
+						</tr>
 
-		<form:form name="trade" id="trade" action="executeTrade" method="POST"
-			modelAttribute="trade" onSubmit="return enableBuyOrSell();">
+						<tr>
+							<td>Balance</td>
+							<td id="userBalance" style="font-size: 24px; color: green;"></td>
 
-			<table>
+						</tr>
+						<tr>
+							<td>Stock Symbol</td>
+							<td><form:input id="StockBuySymbol" path="symbol"
+									class="form-field" type="text" placeholder="Stock Symbol..." /></td>
+							<td id="symbolError"
+								style="padding-left: 50px; padding-top: 50px;"></td>
+						</tr>
 
-				<tr>
-					<td>Game</td>
+						<tr>
+							<td class="desc">Buy/Sell</td>
 
-					<td><form:select path="gameID" id="gameID" name="gameID"
-						onChange="changeBalance();" class="form-field"
-						style="margin-top: 2%;">
-						<c:forEach var="userParticipation" items="${participatingGames}">
-							<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
-						</c:forEach>
-					</form:select></td>
+							<td><form:select path="buyOrSell" id="buyOrSell"
+									name="buyOrSell" onChange="setLimit();" class="form-field"
+									style="margin-top: 2%;">
+									<option value="Buy">Buy</option>
+									<option value="Sell">Sell</option>
+								</form:select></td>
+						</tr>
 
-
-				</tr>
-
-				<tr>
-					<td>Balance</td>
-					<td id="userBalance" style="font-size: 24px; color: green;"></td>
-
-				</tr>
-				<tr>
-					<td>Stock Symbol</td>
-					<td><form:input id="StockBuySymbol" path="symbol"
-							class="form-field" type="text" placeholder="Stock Symbol..." /></td>
-					<td id="symbolError" style="padding-left: 50px; padding-top: 50px;"></td>
-				</tr>
-
-				<tr>
-					<td class="desc">Buy/Sell</td>
-
-					<td><form:select path="buyOrSell" id="buyOrSell"
-							name="buyOrSell" onChange="setLimit();" class="form-field"
-							style="margin-top: 2%;">
-							<option value="Buy">Buy</option>
-							<option value="Sell">Sell</option>
-						</form:select></td>
-				</tr>
-
-				<tr>
-					<td>Quantity</td>
-					<td><form:input id="quantity" path="quantity"
-							class="form-field" type="number" min="1" max="100,000"
-							placeholder="Number of stocks..." /></td>
-				</tr>
+						<tr>
+							<td>Quantity</td>
+							<td><form:input id="quantity" path="quantity"
+									class="form-field" type="number" min="1" max="100,000"
+									placeholder="Number of stocks..." /></td>
+						</tr>
 
 
 
-				<tr>
-					<td class="desc">Order</td>
+						<tr>
+							<td class="desc">Order</td>
 
-					<td><form:select path="tradeType" id="orderType"
-							name="orderType" onChange="displayPriceField();"
-							class="form-field" style="margin-top: 2%;">
-							<option value="Market">Market Order</option>
-							<option value="Limit">Limit Order</option>
-							<!-- 			  <option value="Stop - Limit">Stop Limit Order</option>
+							<td><form:select path="tradeType" id="orderType"
+									name="orderType" onChange="displayPriceField();"
+									class="form-field" style="margin-top: 2%;">
+									<option value="Market">Market Order</option>
+									<option value="Limit">Limit Order</option>
+									<!-- 			  <option value="Stop - Limit">Stop Limit Order</option>
  -->
-						</form:select></td>
-				</tr>
+								</form:select></td>
+						</tr>
 
 
-				<tr>
-					<td>Price</td>
-					<td><form:input path="sharePrice" id="sharePrice"
-							class="form-field" type="number" min="1" max="100000"
-							placeholder="Desired price..." readOnly="true" step="0.01" /></td>
-				</tr>
+						<tr>
+							<td>Price</td>
+							<td><form:input path="sharePrice" id="sharePrice"
+									class="form-field" type="number" min="1" max="100000"
+									placeholder="Desired price..." readOnly="true" step="0.01" /></td>
+						</tr>
 
-				<tr>
-					<td>Total</td>
-					<td><form:input path="costOfTrade" id="costOfTrade"
-							class="form-field" type="number" min="1" max="100000"
-							placeholder="Desired price..." readOnly="true" step="0.01" /></td>
-							
-				
-				<tr id="durationField" style="visibility: hidden;">
-					<td class="desc">Duration</td>
-					<td><form:select disabled="true" path="durationDays"
-							id="duration" name="duration" class="form-field"
-							style="margin-top: 2%;">
+						<tr>
+							<td>Total</td>
+							<td><form:input path="costOfTrade" id="costOfTrade"
+									class="form-field" type="number" min="1" max="100000"
+									placeholder="Desired price..." readOnly="true" step="0.01" /></td>
+						<tr id="durationField" style="visibility: hidden;">
+							<td class="desc">Duration</td>
+							<td><form:select disabled="true" path="durationDays"
+									id="duration" name="duration" class="form-field"
+									style="margin-top: 2%;">
 
-							<option value="7">7 Days</option>
-							<option value="14">14 Days</option>
-							<option value="30">30 Days</option>
-						</form:select></td>
-				</tr>
+									<option value="7">7 Days</option>
+									<option value="14">14 Days</option>
+									<option value="30">30 Days</option>
+								</form:select></td>
+						</tr>
 
 
 
-				<tr>
-					<td colspan="2" align="center"><button id="orderButton"
-							type="submit" class="btn blue-submit">Place Order</button></td>
-				</tr>
+						<tr>
+							<td colspan="2" align="center"><button id="orderButton"
+									type="submit" class="btn blue-submit">Place Order</button></td>
+						</tr>
 
 
-			</table>
-		</form:form>
+					</table>
+				</form:form>
 
+			</div>
+
+		</div>
 	</div>
-
-
-
-	<%@include file="footer.jsp"%>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 
 
 </body>

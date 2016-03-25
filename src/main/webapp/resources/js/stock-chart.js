@@ -6,7 +6,7 @@
 var dt;
 var intervalID = 0;
 
-google.charts.load('43', {'packages':['annotationchart']});
+google.charts.load('current', {'packages':['annotationchart']});
 google.charts.setOnLoadCallback(drawChart);
 		
 
@@ -35,7 +35,7 @@ function drawChart() {
 //Draws chart of a symbol entered from user, then updates the information table
 function testMethod(){
 	
-    var myLoad = document.getElementById("circularG");
+    var myLoad = document.getElementById("load-animation");
     myLoad.style.visibility = "visible";
 	window.clearInterval(intervalID);
 	
@@ -51,13 +51,14 @@ function testMethod(){
         success : function(data) {
 
         var obj = JSON.parse(data);
-        console.log("OBJECT: "+JSON.stringify(obj));
+
         
         if(obj.name == "N/A"){
-        	alert("Please Enter a Valid Symbol");
         	myLoad.style.visibility = "hidden";
+        	alert("Please Enter a Valid Symbol");
         }
         else{
+        	
 		var data = new google.visualization.DataTable();
 		data.addColumn('date', 'Date');
     	data.addColumn('number', obj.symbol);
@@ -99,18 +100,12 @@ function testMethod(){
         $('#EPSChanging').html(obj.stats.eps);
         $('#capChanging').html((numeral(obj.stats.marketCap).format('0.00a')).toUpperCase());
         
-        var myChart = document.getElementById("chart_div");
         dt.getChart().setVisibleChartRange(null, null);
-        myChart.style.visibility = "visible";
-        
-        var myTable = document.getElementById("stockInfoTable");
-        myTable.style.visibility = "visible";
-        
-    	document.getElementById("watchButton").style.visibility = "visible";
-    	
+        document.getElementById("chart_div").style.visibility = "visible";
+        document.getElementById("stockInfoArea").style.visibility = "visible";
+        document.getElementById("watch-div").style.visibility = "visible";
 
-
-        
+             
         myLoad.style.visibility = "hidden";
 
         if (isStockMarketOpen()){
@@ -134,32 +129,27 @@ function isStockMarketOpen(){
     var currentDate = new Date();
     var currentDay = currentDate.getDay();
    	var currentHour = currentDate.getHours();
-   	var currentMinute = String(currentDate.getMinutes()-5);
-/*	var ESTHour = (currentHour-5);
-*/	
-   	var ESTHour = -3;
+   	var currentMinute = String(currentDate.getMinutes());
+	var ESTHour = (currentHour-5);
+	
+   	//var ESTHour = -3;
 	if(ESTHour <=0 ){
 		ESTHour = 24+ESTHour;
-	}
-	
-	console.log("THIS: "+currentMinute);
+	}	
 	
 	if(currentMinute.length==1){
 		currentMinute = "0" +currentMinute;
-		console.log("NOW: "+currentMinute);
-
 	}
-
+	if(String(ESTHour).length==1){
+		ESTHour = "0" +ESTHour;
+	}
 		
-
 	//If current time is before 9:30 EST or after 4:30 EST or it is a Saturday or Sunday, the stock market is closed.
    	if(currentHour < 14 || (currentHour == 14 && currentMinute < 30) 
    			|| currentHour > 21 || (currentHour == 21 && currentMinute >= 0) || currentDay == 0 || currentDay == 7){
    		
-   		console.log("Stock market is not open - current time (EST): "+ESTHour+":"+currentMinute+" - "+ days[currentDay]);
         $('#marketStatus').html("Stock Market Not Open -	 " + days[currentDay] + " " + ESTHour+ ":"+currentMinute+ " EST");
    	    
-
    		return false;
    		
    	}
@@ -176,7 +166,6 @@ function updateStockPrice(stockSymbol) {
     $.ajax({
         url : 'getStockPrice/'+stockSymbol,
         success : function(data) {
-        	console.log("Got it - "+data);
         	
         	var c = document.getElementById("stockPriceChanging");
         	var str = c.innerHTML.split(" ");

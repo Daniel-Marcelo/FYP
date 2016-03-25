@@ -15,8 +15,8 @@ td {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>New/Edit Contact</title>
-<script src="resources/js/registration-form-validation.js"></script>
-<link rel="stylesheet" href="resources/css/reg-and-login.css">
+<script src="${pageContext.request.contextPath}/resources/js/registration-form-validation.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
 </head>
 
 <body onload="document.registration.name.focus();">

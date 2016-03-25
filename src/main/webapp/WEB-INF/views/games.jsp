@@ -8,40 +8,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<script src="${pageContext.request.contextPath}/resources/js/jquery.js"
-	type="text/javascript"></script>
-<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
-	type="text/javascript"></script>
-<script
-	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"
-	type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-<style>
-html, body, #testContainer {
-	height: 86.3%;
-}
-
-body>#testContainer {
-	height: auto;
-	min-height: 100%;
-}
-
-#testFooter {
-	clear: both;
-	position: relative;
-	z-index: 10;
-	/* height: 3em; */
-	margin-top: -3em;
-}
-
-#testContent {
-	padding-bottom: 1.5%;
-}
-</style>
 <script>
 	$(document).ready(function() {
 		var table = $('#example').DataTable({
@@ -58,12 +30,10 @@ body>#testContainer {
 </head>
 <body>
 
-	<div id="testContainer">
-		<div id="header">
-			<%@include file="header.jsp"%>
-		</div>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
 
-		<div id="testContent">
+		<div id="main-content">
 
 		<div align = "center">
 			<div style="margin: 2% 6%; height: 6%;">
@@ -127,6 +97,6 @@ body>#testContainer {
 			</div>
 		</div>
 	</div>
-	<div id="testFooter"><%@include file="footer.jsp"%></div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

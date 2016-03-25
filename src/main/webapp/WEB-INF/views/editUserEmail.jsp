@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<script src="resources/js/jquery.js" type="text/javascript"></script>
-<script src="resources/js/dataTables.js" type="text/javascript"></script>
-<link rel="stylesheet" href="resources/css/dataTables.css">
+<title>Edit User Email</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
 
 <script>
 	$(document).ready(function() {

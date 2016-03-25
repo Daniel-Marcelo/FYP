@@ -407,7 +407,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/updateEmailDB", method = RequestMethod.GET)
-	public ModelAndView updatingEmail(@RequestParam("currentEmail") String currentEmail, @RequestParam("newEmail") String newEmail) {
+	public ModelAndView updatingEmail(@RequestParam("currentEmail") String currentEmail, @RequestParam("newEmail") String newEmail, HttpServletRequest request) {
 
 		User user = userDAO.get(currentEmail);
 		user.setEmail(newEmail);
@@ -422,7 +422,13 @@ public class HomeController {
 		persistentLoginsDAO.delete(currentEmail);
 		userDAO.delete(currentEmail);
 		
-		ModelAndView model = new ModelAndView("symbolInfo");
+		if(currentEmail.equals(getActiveUserEmail())){
+			System.out.println("A user has edited their own details");
+			new SecurityContextLogoutHandler().logout(request, null, null);
+
+		}
+		
+		ModelAndView model = new ModelAndView("redirect:/");
 
 		return model;
 	}

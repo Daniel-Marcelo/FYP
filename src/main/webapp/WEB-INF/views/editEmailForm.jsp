@@ -5,8 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<script src="../resources/js/jquery-1.12.0.min.js"></script>
-<link rel="stylesheet" href="../resources/css/reg-and-login.css">
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
 
 
 <script>
@@ -51,6 +51,11 @@
 </script>
 </head>
 <body>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
+
 	<%-- <%@include file = "header.jsp" %> --%>
 	<div align="center">
 		<h2>Enter new email for user:</h2>
@@ -89,7 +94,8 @@
 		</form>
 	</div>
 
-	<%-- <%@include file = "footer.jsp" %>
- --%>
+	</div>
+	</div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

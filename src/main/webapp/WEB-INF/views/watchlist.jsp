@@ -4,22 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-
-
-<script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
-
+<title>WatchList</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-<script
-	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-
-
-<!-- <link rel="stylesheet" href="resources/css/dataTables.css">
- -->
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
+<script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
 
 <script>
@@ -77,8 +67,11 @@
 <body>
 
 
-	<%@ include file="header.jsp"%>
-	<div>
+<div id="main-container">
+		<div id="header"><%@include file="header.jsp"%></div>
+
+		<div id="main-content">
+			<div>
 		<div>
 			<div align="center">
 				<div>
@@ -127,10 +120,9 @@
 			</div>
 		</div>
 	</div>
-	
-	
-
-	<%@ include file="footer.jsp"%>
+	</div>
+	</div>
+	<div id="footer"><%@include file="footer.jsp"%></div>
 
 </body>
 </html>
