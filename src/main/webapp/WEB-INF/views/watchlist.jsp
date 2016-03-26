@@ -8,7 +8,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
 
@@ -43,10 +43,11 @@
 
 				table.row('.active').remove().draw(false);
 
-				if (error.style.display == "inline")
+				document.getElementById("symbol-field").value = symbol;
+/* 				if (error.style.display == "inline")
 					error.style.display = "none";
 
-				removeStockFromWatchlist(symbol);
+				removeStockFromWatchlist(symbol); */
 
 			}
 		});
@@ -76,8 +77,14 @@
 			<div align="center">
 				<div>
 					<h3 id="errorMsg"></h3>
+					
+				<form method="post" action="delete-stock">
+					<input id = "symbol-field" type="hidden" name="symbol"/>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<button id="removeStockButton" class="btn blue-submit">Remove
 						Stock</button>
+				</form>
+
 
 				</div>
 			</div>
@@ -118,7 +125,7 @@
 					</table>
 				</div>
 			</div>
-		</div>
+		</div>z
 	</div>
 	</div>
 	</div>

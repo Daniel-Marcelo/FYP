@@ -135,7 +135,7 @@ function ValidateEmail(uemail,myCallBack)
 		
 		$.ajax({
 			async: false,
-	        url : 'checkIfEmailAlreadyUsed/'+uemail.value,
+	        url : 'is-email-free/'+uemail.value,
 	        success : myCallBack
 	    });
 

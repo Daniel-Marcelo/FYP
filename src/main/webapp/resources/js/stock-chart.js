@@ -47,7 +47,7 @@ function testMethod(){
 
 	
 	$.ajax({
-        url : 'getStockInfo/'+stockSymbol,
+        url : 'stock-info/'+stockSymbol,
         success : function(data) {
 
         var obj = JSON.parse(data);
@@ -74,6 +74,7 @@ function testMethod(){
         dt.draw();
         
         $('#companyName').html("<u>" + (obj.symbol).toUpperCase() +" - "+ obj.name + "</u>");
+        document.getElementById("symbol-field").value = obj.symbol;
         
     	var c = document.getElementById("stockPriceChanging");
     	var previousClose = obj.quote.previousClose;
@@ -164,7 +165,7 @@ function isStockMarketOpen(){
 
 function updateStockPrice(stockSymbol) {
     $.ajax({
-        url : 'getStockPrice/'+stockSymbol,
+        url : 'stock-price/'+stockSymbol,
         success : function(data) {
         	
         	var c = document.getElementById("stockPriceChanging");

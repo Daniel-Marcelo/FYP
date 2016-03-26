@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
 import bct.ct413.dao.TradeTransactionDAO;
 import bct.ct413.model.StockOwned;
 import bct.ct413.model.Trade;

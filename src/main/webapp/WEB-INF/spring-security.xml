@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<!-- <http auto-config="true"> <intercept-url pattern="/welcome*" access="ROLE_USER" 
-		/> <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/loginfailed" 
+		/> <form-login login-page="/login" default-target-url="/welcome" authentication-failure-url="/login-failed" 
 		/> <logout logout-success-url="/logout" /> </http> -->
 
 	<!-- <http auto-config="true"> <intercept-url pattern="/home*" access="ROLE_USER" 
@@ -15,26 +15,40 @@
 
 
 	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/home**" access="hasRole('ROLE_USER')" />
- 		<intercept-url pattern="/symbolInfoPage**" access="hasRole('ROLE_USER')" />
- 		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/removeUserAdmin**" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/games**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/account**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/symbol-lookup**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/watchlist**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/game**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/game-rankings/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/game-rules-edit/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/game-rules-view/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/leave-game/**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/join**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/create**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/rankings/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/editGameRules/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/viewGameRules/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/leaveGame/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
+		
+		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin-edit-user/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin-deleting-user/**" access="hasRole('ROLE_ADMIN')" />
+		
+		<!-- <intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" 
+			/> <intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" /> 
+			<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" /> <intercept-url 
+			pattern="/removeUserAdmin**" access="hasRole('ROLE_ADMIN')" /> <intercept-url 
+			pattern="/games**" access="hasRole('ROLE_USER')" /> <intercept-url pattern="/join**" 
+			access="hasRole('ROLE_USER')" /> <intercept-url pattern="/create**" access="hasRole('ROLE_USER')" 
+			/> <intercept-url pattern="/rankings/**" access="hasRole('ROLE_USER')" /> 
+			<intercept-url pattern="/editGameRules/**" access="hasRole('ROLE_USER')" 
+			/> <intercept-url pattern="/viewGameRules/**" access="hasRole('ROLE_USER')" 
+			/> <intercept-url pattern="/leaveGame/**" access="hasRole('ROLE_USER')" /> -->
 
 		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
 
 		<access-denied-handler error-page="/403" />
 
-		<form-login login-page="/login" default-target-url="/home" authentication-failure-url="/login?error" username-parameter="email"
+		<form-login login-page="/login" default-target-url="/home"
+			authentication-failure-url="/login?error" username-parameter="email"
 			password-parameter="password" login-processing-url="/auth/login_check"
 			authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />
 		<logout logout-success-url="/login?logout" delete-cookies="JSESSIONID" />
@@ -57,8 +71,9 @@
 				authorities-by-username-query="select email, role from fyp_user_roles where email =?  " />
 		</authentication-provider>
 	</authentication-manager>
-	
-		<beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+
+	<beans:bean id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<beans:constructor-arg name="strength" value="10" />
 	</beans:bean>
 

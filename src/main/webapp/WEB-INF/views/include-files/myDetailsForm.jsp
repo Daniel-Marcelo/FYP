@@ -11,7 +11,7 @@
 <body>
 
 
-	<form:form name="updateDetailsForm" action="updateUserDetails"
+	<form:form name="updateDetailsForm" action="updating-user"
 						method="post" modelAttribute="existingReg"
 						onSubmit="return updateValidation();">
 

@@ -23,7 +23,7 @@ $(document).ready(function() {
 		var gameID = document.getElementById("gameIDHeader").value;
 		
 		$.ajax({
-			url : 'updatedBalance/'+String(gameID),
+			url : 'update-balance/'+String(gameID),
 			success : function(data) {
 
 				$('#autoBalance').html("BALANCE: $ " + numeral(data).format('0,0'));
@@ -72,14 +72,14 @@ $(document).ready(function() {
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
-				<li class='active'><a href="${pageContext.request.contextPath}/home">Home</a></li>
+				<li class='active'><a href="${pageContext.request.contextPath}/account">Home</a></li>
 
 				<li><a href="javascript:formSubmit()"> Logout</a></li>
  				<li><a href='${pageContext.request.contextPath}/portfolioz'>Portfolio</a></li>
- 				<li><a href='${pageContext.request.contextPath}/symbolInfoPage'>Stock Look Up</a></li>
+ 				<li><a href='${pageContext.request.contextPath}/symbol-lookup'>Stock Look Up</a></li>
 				<li><a href='${pageContext.request.contextPath}/trade'>Trade</a></li>
-				<li><a href='${pageContext.request.contextPath}/rankings/1'>Global Rankings</a></li>
-				<li><a href='${pageContext.request.contextPath}/dashboard'>Dashboard</a></li>
+				<li><a href='${pageContext.request.contextPath}/game-rankings/1'>Global Rankings</a></li>
+				<li><a href='${pageContext.request.contextPath}/game-dashboard'>Dashboard</a></li>
 				<li><a href='${pageContext.request.contextPath}/watchlist'>WatchList</a></li>
 				<li><a href='${pageContext.request.contextPath}/games'>Games</a></li>
 				
@@ -97,8 +97,8 @@ $(document).ready(function() {
 			</c:if>
 			<c:if test="${pageContext.request.userPrincipal.name == null}">
 
-				<li><a href='#' onclick="register();">Register</a></li>
-				<li><a href='#' onclick="login();">Login</a></li>
+				<li><a href="register">Register</a></li>
+				<li><a href="login">Login</a></li>
 
 			</c:if>
 

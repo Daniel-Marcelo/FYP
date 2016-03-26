@@ -2,6 +2,7 @@
 html, body, #main-container {
 	margin: 0;
 	height: 100%;
+	background-color : WHITE;
 }
 
 #main-container {
