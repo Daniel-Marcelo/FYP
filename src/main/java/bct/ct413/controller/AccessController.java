@@ -1,17 +1,14 @@
 package bct.ct413.controller;
 
 
-import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -38,10 +35,7 @@ import bct.ct413.dao.UserRolesDAO;
 import bct.ct413.model.Game;
 import bct.ct413.model.User;
 import bct.ct413.service.GameService;
-import bct.ct413.service.StockOwnedService;
 import bct.ct413.service.TradeService;
-import bct.ct413.service.TradeTransactionService;
-import bct.ct413.service.UserGameParticipationService;
 import bct.ct413.service.UserService;
 
 import com.google.gson.Gson;
@@ -92,27 +86,29 @@ public class AccessController {
 	@Autowired
 	private TradeService tradeService;
 	
+	@Autowired
+	private JavaMailSender mailSender;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
 	  @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
 		
 		
 		String targetUrl = getRememberMeTargetUrlFromSession(request);
-		ModelAndView model = new ModelAndView("LoginForm");
+		ModelAndView model = new ModelAndView("login");
 		
 		if (error != null) {
 			model.addObject("error", "Invalid username and password!");
 			
 			//login form for update, if login error, get the targetUrl from session again.
 			if(StringUtils.hasText(targetUrl)){
-				System.out.println("IN THIS IF LOOP");
 				model.addObject("targetUrl", targetUrl);
 				model.addObject("loginUpdate", true);
 			}
 			
 		}
 
-		if(targetUrl.equals("/removeUserAdmin"))
+		if(targetUrl.equals("/admin-remove-user"))
 			model.addObject("loginUpdate", true);
 
 		if (logout != null) 
@@ -122,55 +118,28 @@ public class AccessController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/admin**", method = RequestMethod.GET)
-	public ModelAndView adminPage() {
-		return new ModelAndView("admin");
+	@RequestMapping(value = "/sending-password-email", method = RequestMethod.POST)
+	public ModelAndView sendingEmail(@RequestParam("email") String emailAddress) {
+
+		String newPass = generateRandomPassword();
+		String recipientAddress = emailAddress;
+		String subject = "Password Reset";
+		String message = "Requested Password Reset Successful\nNew Password: "
+				+ newPass + "\n\nPlease login and change your password";
+
+		// creates a simple e-mail object
+		SimpleMailMessage email = new SimpleMailMessage();
+		email.setTo(recipientAddress);
+		email.setSubject(subject);
+		email.setText(message);
+
+		// sends the e-mail
+		mailSender.send(email);
+		userDAO.update(emailAddress, newPass);
+
+		return new ModelAndView("redirect:/login");
 	}
-	
-	@RequestMapping(value = "/removeUserAdmin", method = RequestMethod.GET)
- 	public ModelAndView updatePage(HttpServletRequest request) {
-
-		ModelAndView model = new ModelAndView();
-
-		if (isRememberMeAuthenticated()) {
-			//send login for update
-			setRememberMeTargetUrlToSession(request);
-			model.addObject("loginUpdate", true);
-			model.setViewName("redirect:/login");
-			model.addObject("user", new User());
-
-		} else {
-			model.setViewName("update");
-			List<User> allUsers = userDAO.get();
-			model.addObject("allUsers", allUsers);
-		}
-		return model;
-	}
-	
-	/**
-	 * If the login in from remember me cookie, refer
-	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl
-	 */
-	private boolean isRememberMeAuthenticated() {
-
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication == null) {
-			return false;
-		}
-
-		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-	}
-	
-	/**
-	 * save targetURL in session
-	 */
-	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
-		HttpSession session = request.getSession(false);
-		if(session!=null){
-			session.setAttribute("targetUrl", "/removeUserAdmin");
-		}
-	}
-	
+		
 	/**
 	 * get targetURL from session
 	 */
@@ -183,38 +152,15 @@ public class AccessController {
 		return targetUrl;
 	}
 	
-	@RequestMapping(value="/loginfailed", method = RequestMethod.GET)
-	public String loginerror(ModelMap model) {
- 
-		model.addAttribute("error", "true");
-		return "login";
- 
-	}
-	
-/*	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logout(ModelMap model) {
- 
-		return "LoginForm";
-	}*/
-	
-/*	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
 
-		model.addObject("newReg", new User());
-		model.setViewName("RegistrationForm");
+		model.addObject("user", new User());
+		model.setViewName("register");
 		return model;
-	}*/
+	}
 	
-/*	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
-	public ModelAndView userLogin(ModelAndView model) {
-
-		
-		model.addObject("newLogin", new User());
-		model.setViewName("LoginForm");
-		return model;
-	}*/
-	
-	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/save-user", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User newUser) {
 		
 		Game game = gameDAO.get(1);
@@ -236,7 +182,7 @@ public class AccessController {
 		return new ModelAndView("redirect:/home");
 	}
 	
-    @RequestMapping(value = "checkIfEmailAlreadyUsed/{uemail:.+}", method = RequestMethod.GET)
+    @RequestMapping(value = "is-email-free/{uemail:.+}", method = RequestMethod.GET)
     public @ResponseBody String getEmailsOfRegisteredUsers(@PathVariable String uemail) {
     	
     	int count = 0;
@@ -245,52 +191,18 @@ public class AccessController {
 		return new Gson().toJson(count);
     }
     
-    
-    @RequestMapping(value = "deleteUser/{email:.+}", method = RequestMethod.GET)
-    public @ResponseBody String deleteUser(@PathVariable String email){
-    	
-    	List<Integer> gameIDs = gameService.getCreatedGameIDs(email);
-    	System.out.println("Number of created games: "+gameIDs.size());
-    	//Removing games created by user
-    	
-    	
-    	for(int gameID: gameIDs){
-        	stockOwnedDAO.remove(gameID);
+	private String generateRandomPassword() {
 
-	    	Map<Integer, Integer> tradeTransactionIDsForGame = tradeService.getTradeAndTransactionIDs(gameID);
-			if(tradeTransactionIDsForGame.keySet().size() != 0){
-				
-				limitOrderDetailsDAO.remove(tradeTransactionIDsForGame.keySet());
-				tradeDAO.remove(gameID);
-				tradeTransactionDAO.remove(tradeTransactionIDsForGame.values());
-			}
-			
-	    	userGameAccountValHistoryDAO.remove(gameID);
-	    	userGameParticipationDAO.remove(gameID);
-	    	gameDAO.remove(gameID);
-    	}
-    	
-    	gameDAO.remove(email);
-    	stockOnWatchDAO.remove(email);
+		StringBuilder newPass = new StringBuilder();
+		String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-    	Map<Integer, Integer> tradeAndTransactionIDsForUser = tradeService.getTradeAndTransactionIDsForUser(email);
+		for (int i = 0; i < 8; i++) {
 
-		if(tradeAndTransactionIDsForUser.keySet().size() != 0){
-			
-			limitOrderDetailsDAO.remove(tradeAndTransactionIDsForUser.keySet());
-			tradeDAO.remove(email);
-			tradeTransactionDAO.remove(tradeAndTransactionIDsForUser.values());
-			
+			Random r = new Random();
+			int random = r.nextInt(25);
+			newPass.append(alphabet.charAt(random));
+
 		}
-
-    	stockOwnedDAO.remove(email);
-    	userGameAccountValHistoryDAO.remove(email);
-    	userGameParticipationDAO.remove(email);
-    	persistentLoginsDAO.delete(email);
-    	userRolesDAO.remove(email);
-    	userDAO.remove(email);
-    	
-    	return email+ "removed from application";
-    }
-
+		return newPass.toString();
+	}
 }

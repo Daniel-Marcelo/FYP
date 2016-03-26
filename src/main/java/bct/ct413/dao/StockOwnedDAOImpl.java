@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import bct.ct413.model.StockOwned;
-import bct.ct413.model.Trade;
 
 public class StockOwnedDAOImpl implements StockOwnedDAO {
 	

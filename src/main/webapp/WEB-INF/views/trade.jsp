@@ -103,7 +103,7 @@ td {
 				<h3 id="errorTag" style="display: none;"></h3>
 				<h4 id="errorTag2" style="display: none;"></h4>
 
-				<form:form name="trade" id="trade" action="executeTrade"
+				<form:form name="trade" id="trade" action="execute-trade"
 					method="POST" modelAttribute="trade"
 					onSubmit="return enableBuyOrSell();">
 
@@ -183,11 +183,11 @@ td {
 							<td><form:input path="costOfTrade" id="costOfTrade"
 									class="form-field" type="number" min="1" max="100000"
 									placeholder="Desired price..." readOnly="true" step="0.01" /></td>
-						<tr id="durationField" style="visibility: hidden;">
-							<td class="desc">Duration</td>
-							<td><form:select disabled="true" path="durationDays"
+						<tr id="durationField" >
+							<td class="desc" style = "display: none;">Duration</td>
+							<td style = "display: none;"><form:select disabled="true" path="durationDays"
 									id="duration" name="duration" class="form-field"
-									style="margin-top: 2%;">
+									style="margin-top: 2%;" >
 
 									<option value="7">7 Days</option>
 									<option value="14">14 Days</option>

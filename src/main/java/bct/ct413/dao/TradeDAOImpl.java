@@ -5,20 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import bct.ct413.model.LimitOrder;
 import bct.ct413.model.Trade;
 import bct.ct413.model.TradeTransaction;
-
-import com.google.gson.Gson;
 
 public class TradeDAOImpl implements TradeDAO {
 

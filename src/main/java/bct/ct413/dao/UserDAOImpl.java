@@ -4,29 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import bct.ct413.model.DashboardUserDetails;
-import bct.ct413.model.Game;
-import bct.ct413.model.StockOwned;
-import bct.ct413.model.Trade;
 import bct.ct413.model.User;
-import bct.ct413.model.UserGameAccountValHistory;
-import bct.ct413.model.UserGameParticipation;
 
 public class UserDAOImpl implements UserDAO {
 

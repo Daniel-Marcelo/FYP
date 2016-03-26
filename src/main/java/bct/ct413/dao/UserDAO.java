@@ -3,14 +3,7 @@ package bct.ct413.dao;
 
 import java.util.List;
 
-import yahoofinance.Stock;
-import bct.ct413.model.DashboardUserDetails;
-import bct.ct413.model.Game;
-import bct.ct413.model.StockOwned;
-import bct.ct413.model.Trade;
 import bct.ct413.model.User;
-import bct.ct413.model.UserGameAccountValHistory;
-import bct.ct413.model.UserGameParticipation;
 
 
 public interface UserDAO {
