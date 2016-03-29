@@ -26848,3 +26848,26 @@ function autoComplete(){
         }
       });
 }
+
+function autoCompleteTradeForm(){
+	var companies = getCompanies();
+	var symbols = new Array();
+	
+	for(var i = 0; i <companies.length ; i++){{
+		var symbol = companies[i].Symbol;
+		//console.log(symbol);
+		symbols[i] = symbol;
+		//console.log(symbols[i]);
+		
+	}}
+	
+    $( "#companySymbol" ).autocomplete({
+        source: symbols,
+        select: function(event, ui) {
+            if(ui.item){
+                console.log(ui.item);
+               // testMethod();
+            }
+        }
+      });
+}

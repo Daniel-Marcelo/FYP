@@ -15,72 +15,71 @@
 	src="${pageContext.request.contextPath}/resources/js/validate-order.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
+	
+	<script src="${pageContext.request.contextPath}/resources/js/symbol-autocomplete.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	
 
 
 <script>
 	var sharesAndStocksOwned = JSON.parse('${jsonMap}');
-
 	$(document).ready(function() {
+		
 
+		autoCompleteTradeForm();
 		isStockMarketOpen();
 		changeBalance();
-
-		var e1 = document.getElementById("StockBuySymbol");
+		var e1 = document.getElementById("companySymbol");
 		e1.addEventListener("blur", function(event) {
-
 			if (e1.value != '') {
 				updateStockPrice();
 				allowOrDisallowSelling(sharesAndStocksOwned);
 			}
-
 		}, true);
-
 		$('#quantity').on('input', function() {
-
 			updateTotal();
 			var buyOrSell = document.getElementById("buyOrSell").value;
 			if (buyOrSell == "Buy") {
 				validateFunds();
 			}
 		});
-
 		var e2 = document.getElementById("quantity");
 		e2.addEventListener("blur", function(event) {
-
 			updateTotal();
-
 			var buyOrSell = document.getElementById("buyOrSell").value;
 			if (buyOrSell == "Buy") {
 				validateFunds();
 			}
 		}, true);
-
 		$('#sharePrice').on('input', function() {
-
 			updateTotal();
 		});
-
 	});
-
 	function setLimit() {
 		validateFunds();
 		setSellLimit(sharesAndStocksOwned);
 	}
-
 	function changeBalance() {
-
+		
+		var elements = document.getElementsByTagName("input");
+		for (var ii=0; ii < elements.length; ii++) {
+		  if (elements[ii].type == "text") {
+		    elements[ii].value = "";
+		  }
+		  if (elements[ii].type == "number") {
+			    elements[ii].value = 0;
+			  }
+		}
 		var gameID = document.getElementById("gameID").value;
 		var participations = JSON.parse('${gameParticipationsJSON}');
-
 		for (i = 0; i < participations.length; i++) {
 			if (participations[i].gameID == gameID) {
 				setBalance(participations[i].balance);
 			} else {
 				console.log("No ID MATCH");
 			}
-
 		}
-
 	}
 </script>
 
@@ -131,7 +130,7 @@ td {
 						</tr>
 						<tr>
 							<td>Stock Symbol</td>
-							<td><form:input id="StockBuySymbol" path="symbol"
+							<td><form:input id="companySymbol" path="symbol"
 									class="form-field" type="text" placeholder="Stock Symbol..." /></td>
 							<td id="symbolError"
 								style="padding-left: 50px; padding-top: 50px;"></td>
@@ -183,9 +182,9 @@ td {
 							<td><form:input path="costOfTrade" id="costOfTrade"
 									class="form-field" type="number" min="1" max="100000"
 									placeholder="Desired price..." readOnly="true" step="0.01" /></td>
-						<tr id="durationField" >
-							<td class="desc" style = "display: none;">Duration</td>
-							<td style = "display: none;"><form:select disabled="true" path="durationDays"
+						<tr id="durationField" style = "visibility: hidden;">
+							<td class="desc">Duration</td>
+							<td><form:select disabled="true" path="durationDays"
 									id="duration" name="duration" class="form-field"
 									style="margin-top: 2%;" >
 

@@ -169,6 +169,7 @@ public class GameController {
 		if(getActiveUserEmail().equals(game.getCreatorEmail())){
 			model = new ModelAndView("/game/edit-rules");
 			model.addObject(game);
+			model.addObject("privateType", "Private");
 
 		}
 		else{
@@ -223,6 +224,14 @@ public class GameController {
 		return model;
 		
 	}
+	@RequestMapping(value = "temp-dashboard", method = RequestMethod.GET)
+	public ModelAndView tempDashboardView(){
+
+		ModelAndView model = getDashboardModel(); /*getDashboardModel();*/
+		model.setViewName("game/temp-dashboard");
+		return model;
+		
+	}
 	
 	@RequestMapping(value = "/creating-game", method = RequestMethod.POST)
 	public ModelAndView creatingGame(@ModelAttribute Game newGame) {
@@ -240,7 +249,7 @@ public class GameController {
 		userGameParticipationDAO.addToGame(newGame, newGame.getCreatorEmail());
 		userGameAccountValHistoryDAO.insert(gameID, newGame.getStartingCash(), email);
 
-		ModelAndView model = new ModelAndView("redirect:/home");
+		ModelAndView model = new ModelAndView("redirect:/games");
 		model.addObject("messageFromHome", "GAME CREATED");
 
 		return model;
@@ -296,7 +305,7 @@ public class GameController {
 	    	gameDAO.remove(gameID);
 		}
 		//Check if user owns game, if so, remove all data from game
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/games");
 	}
 	
 	public String generateJoinCode() {

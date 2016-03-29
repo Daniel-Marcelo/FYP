@@ -35,11 +35,7 @@
 						for (var i = 0; i < values.length; i++) {
 							values[i].innerHTML = numeral(values[i].innerHTML)
 									.format('$0,0.00');
-
 						}								
-
-
-
 						for ( var key in gameIDs) {
 							if (gameIDs.hasOwnProperty(key)) {
 								var gameID = gameIDs[key];
@@ -47,7 +43,6 @@
 								
 								createTable1(gameID);
 								createTable2(gameID);
-
 							}
 						}
 					});
@@ -57,12 +52,10 @@
 			"paging" : true,
 			"ordering" : true,
 			"info" : true
-
 		});
 		
 	}
  	function createTable2(gameID){
-
 	$('#myStatsTable' + gameID).DataTable({
 		"paging" : false,
 		"ordering" : false,
@@ -70,25 +63,18 @@
 		"bFilter" : false
 	});
 	} 
-
 						function getDailyChange(index, i) {
 							var thisClose = index.history[i].close;
-
 							var yesterdayClose = index.history[i + 1].close;
 							var percent = (thisClose / yesterdayClose) * 100;
 							var diffPerc = percent - 100;
-
 							return diffPerc;
 						}
-
 						function getDate(dateString) {
-
 							var res = dateString.split(/[- :]/);
-
 							var year = res[0];
 							var month = res[1] - 1;
 							var day = res[2];
-
 							return new Date(year, month, day);
 						}
 						//Function to draw blank chart
@@ -100,7 +86,6 @@
 							var gameIDs = JSON.parse("${gameIDs}");
 	
 							console.log("DRAWING CHARTS");
-
 							for ( var key in gameIDs) {
 								if (gameIDs.hasOwnProperty(key)) {
 									var gameID = gameIDs[key];
@@ -109,16 +94,12 @@
 									data.addColumn('number', "DJI");
 									data.addColumn('number', "SNP");
 									data.addColumn('number', "Acc. Value");
-
 									for (var i = 0; i < dow.history.length - 1; i++) {
 										var value = 0;
-
 										var thisDate = dow.history[i].date;
-
 										//console.log(thisDate);
 										var dowChange = getDailyChange(dow, i);
 										var SPChange = getDailyChange(SP, i);
-
 										for ( var key in myBalanceHistory) {
 											if (myBalanceHistory
 													.hasOwnProperty(key)) {
@@ -127,13 +108,11 @@
 														thisDate.year,
 														thisDate.month,
 														thisDate.dayOfMonth);
-
 												if (date.getTime() == compareDate
 														.getTime()) {
 													value = myBalanceHistory[key].percentChange;
 													break;
 												}
-
 											}
 										}
 										var accValueChange = document
@@ -147,7 +126,6 @@
 														thisDate.dayOfMonth),
 												dowChange / 100,
 												SPChange / 100, value / 100 ]);
-
 									}
 									dt = wrapper = new google.visualization.ChartWrapper(
 											{
@@ -160,13 +138,11 @@
 												},
 												containerId : 'performanceChart'
 														+ gameID
-
 											});
 									wrapper.draw();
 								}
 							}
 						}
-
 </script>
 </head>
 <body>
@@ -178,8 +154,8 @@
 	<div style="overflow: hidden;">
 		<c:forEach var="userParticipation" items="${participatingGames}">
 
-			<div
-				style="float: left; margin-right: 5%; height: 600px; width: 500px;font-size: 11px;">
+			<div style = "background-color:blue; margin-bottom: 7%; margin-left: 2%;" >
+			<div style="float: left; margin-right: 5%; height: 600px; width: 520px; font-size: 11px;">
 				<div style=" margin-bottom:3%;">
 					<div align="center">
 						<h3>${userParticipation.getGame().getGameName()}</h3>
@@ -214,8 +190,7 @@
 					style="width: 100%; height: 35%; padding-left: 0"></div>
 
 
-  				<div
-					style="width: 100%; font-size: 11px;"> 
+  				<div style="width: 100%; font-size: 11px; margin-bottom: 100px;"> 
 						<table id="myStatsTable${userParticipation.getGame().getGameID()}"
 							class="table table-striped table-bordered" width="100%">
 						<thead style = "display: none;">
@@ -252,6 +227,7 @@
 							</tbody>
 						</table>
  				</div>
+			</div>
 			</div>
 
 		</c:forEach>

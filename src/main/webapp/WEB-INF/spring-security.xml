@@ -27,6 +27,8 @@
 		<intercept-url pattern="/join**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/create**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
+				<intercept-url pattern="/temp-dashboard**" access="hasRole('ROLE_USER')" />
+		
 		
 		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin-edit-user/**" access="hasRole('ROLE_ADMIN')" />
@@ -47,7 +49,7 @@
 
 		<access-denied-handler error-page="/403" />
 
-		<form-login login-page="/login" default-target-url="/home"
+		<form-login login-page="/login" default-target-url="/account"
 			authentication-failure-url="/login?error" username-parameter="email"
 			password-parameter="password" login-processing-url="/auth/login_check"
 			authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />

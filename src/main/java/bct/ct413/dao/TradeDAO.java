@@ -3,6 +3,7 @@ package bct.ct413.dao;
 
 import java.util.List;
 
+import bct.ct413.model.LimitOrder;
 import bct.ct413.model.Trade;
 
 
@@ -23,5 +24,7 @@ public interface TradeDAO {
 	void remove(int gameID, String email);
 	
 	void remove(String email);
+
+	void insert(LimitOrder limitOrder);
 
 }

@@ -75,7 +75,7 @@ function errorMsg(msg){
 
 			<c:if test="${pageContext.request.userPrincipal.name == game.getCreatorEmail()}">
 			
-			<h1 >Edit Game Rules For ${game.getGameName()}</h1>
+			<h1 >Edit Game Rules For ${game.getGameName()} ${game.getGameType()} ${privateType}</h1>
 	
 				<form:form action="${pageContext.request.contextPath}/editing-game/${game.getGameID()}" method="post" modelAttribute="game" onSubmit="return validateTheDates();">
 		
@@ -110,6 +110,13 @@ function errorMsg(msg){
 							<td>End Date</td>
 							<td><form:input path="endDate" id="endDateGame" class="form-field" type="date" readOnly="true" value="${game.getEndDate()}" /></td>
 						</tr>
+						
+									<c:if test="${game.getGameType() == privateType}">
+						<tr>
+							<td>Join Code</td>
+							<td><input  class="form-field" type = "text" readOnly="true" value="${game.getJoinCode()}" /></td>
+						</tr>
+						</c:if>
 		
 						<tr>
 							<td colspan="2" align="center"><button id="orderButton" type="submit" class="btn blue-submit">Save New Details</button></td>

@@ -32,7 +32,7 @@
 	top: 0;
 	left: 0;
 	z-index: 10;
-	height: 400px;
+	height: 200px;
 	width: 400px;
 	background-color: white;
 	opacity: 0.8;
@@ -86,60 +86,8 @@
 						height="1000" width="100%" />
 				</div>
 				<div id="login">
-					<div style="padding-top: 0px;">
-						<h1>User Login</h1>
-					</div>
 
-					<c:if test="${not empty error}">
-						<div class="errorblock">
-							Your login attempt was not successful, try again.<br /> Caused :
-							${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
-						</div>
-					</c:if>
-
-					<c:if test="${not empty msg}">
-						<h3>${msg}</h3>
-					</c:if>
-
-					<form:form id="loginForm" name="loginForm"
-						action="/FYP/auth/login_check?targetUrl=${targetUrl}"
-						method="post" modelAttribute="user">
-						<table>
-							<tr>
-								<td><form:input id="email" name="email" path="email"
-										class="form-field" type="text" placeholder="Email.." /></td>
-							</tr>
-
-							<tr>
-								<td><form:input path="password" type="password"
-										class="form-field" placeholder="Password.." /></td>
-							</tr>
-
-							<c:if test="${empty loginUpdate}">
-								<tr>
-									<td align="center">Remember Me <input type="checkbox"
-										name="remember-me" /></td>
-								</tr>
-							</c:if>
-
-							<tr>
-
-								<td align="center"><a id="myLink" href="forgot-password"
-									>Forgot Password</a></td>
-							</tr>
-							<tr>
-								<td colspan="2" align="center"><button type="submit"
-										class="btn blue-submit">Login</button></td>
-							</tr>
-						</table>
-
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
-					</form:form>
-
-				</div>
-
-				<div id="passwordReset" style="display: none;">
+				<div id="passwordReset">
 					<h1>Password Reset</h1>
 					<form action="sending-password-email" method="post"
 						name="PassWordResetForm" onSubmit="return checkEmailHasAccount();">
@@ -160,6 +108,9 @@
 
 					</form>
 				</div>
+				</div>
+
+				
 			</div>
 		</div>
 	</div>

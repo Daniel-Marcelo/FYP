@@ -102,12 +102,10 @@ public class TradeDetails {
 	
 	public Trade getTradeObject(String email, int transactionID) {
 		Trade trade = new Trade();
-		trade.setEmail(userEmail);
 		trade.setSymbol(symbol);
-		trade.setDate(date);
 		trade.setBuyOrSell(buyOrSell);
 		trade.setTradeType(tradeType);
-		trade.setTransactionID(transactionID);
+		trade.getTransaction().setTransactionID(transactionID);
 		trade.setStatus("Executed");
 		trade.setGameID(gameID);
 
@@ -119,7 +117,7 @@ public class TradeDetails {
 	    
 		trade.setDate(timeOfTrade);
 		trade.setEmail(email);
-		trade.setTransactionID(transactionID);
+		//trade.setTransactionID(transactionID);
 
 		//trade.printDetails();
 		return trade;

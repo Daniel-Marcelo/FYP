@@ -3,7 +3,7 @@ var isEmailValid;
 
 
 
-function updateValidation(){
+function updateValidation(existingEmails){
 	
 	var firstname = document.updateDetailsForm.firstName;
 	var lastname = document.updateDetailsForm.lastName;
@@ -16,7 +16,7 @@ function updateValidation(){
 	if(password2.value === password.value){
 		
 		console.log("Password is good");
-		if(updatedEmailisOK(uemail)){
+		if(updatedEmailisOK(uemail, existingEmails)){
 			
 			if(isInformationValidated(firstname,lastname, uemail, password, country)){
 				console.log("Returning true");
@@ -147,13 +147,24 @@ function ValidateEmail(uemail,myCallBack)
 	}
 } 
 
-function updatedEmailisOK(uemail)
+function updatedEmailisOK(uemail, existingEmails)
 {
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	
 	if(uemail.value.match(mailformat))
 	{
-		console.log("Correct Format - Checking this email - "+uemail.value);	
+		console.log("Correct Format - Checking this email - "+uemail.value);
+		for(var key in existingEmails){
+			if(existingEmails.hasOwnProperty(key)){
+				console.log(existingEmails[key]);
+				console.log("VS : "+uemail.value);
+				if(existingEmails[key] == uemail.value){
+					alert("Email Already In Use");
+					return false;
+				}
+			}
+		}
+		
 		return true;
 	}
 	else

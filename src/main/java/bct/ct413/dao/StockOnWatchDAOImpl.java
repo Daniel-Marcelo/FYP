@@ -37,11 +37,12 @@ public class StockOnWatchDAOImpl implements StockOnWatchDAO {
 			String[] symbolsArray = new String[symbols.size()];
 			symbols.toArray(symbolsArray);
 			
+			if(symbols.size()!= 0){
 			Map<String, Stock> stocksMap = YahooFinance.get(symbolsArray);
 			
 			for(String key : stocksMap.keySet())
 				stocks.add(stocksMap.get(key));
-
+			}
 			stmt2.close();
 			conn.close();
 		} catch (SQLException e) {

@@ -10,8 +10,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Portfolio</title>
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+<script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 <script src="${pageContext.request.contextPath}/resources/js/numeral.min.js" type="text/javascript"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
 <script>
 
 function updateStockTableForGame(gameID){
@@ -125,18 +129,21 @@ color: BLACK;
 
 		<div id="main-content">
 
-
-	<select id="currID" onChange="changeTable();">
+<div align = "center" style = "margin-top: 2%;">
+	<select id="currID" onChange="changeTable();" class="form-field">
 		<c:forEach var="userParticipation" items="${participatingGames}">
 			<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
 		</c:forEach>
-	</select>
+	</select>	
+	</div>
 
-		<div align="center">
-			<div id="gameInfo">
-				<div id="portfolioTables">
+		<div>
+			<div id="gameInfo" style = "margin: 0 auto; padding-bottom: 5%;">
+				<div id="portfolioTables" >
 
-					<table id="myTable" class="display responsive no-wrap" width="100%">
+				<div style = "padding-bottom: 5%; margin-top: 4%;">
+					<h1 align = "center">Stocks Owned</h1>
+					<table id="myTable" class="table table-striped table-bordered" width="100%">
 						<thead>
 							<tr>
 								<th>Symbol</th>
@@ -149,8 +156,10 @@ color: BLACK;
 							</tr>
 						</thead>
 					</table>
-
-					<table id="myTransactionTable" class="display responsive no-wrap" width="100%">
+</div>
+<div>
+					<h1 align = "center">My Transactions</h1>
+					<table id="myTransactionTable" class="table table-striped table-bordered" width="100%">
 						<thead>
 							<tr>
 								<th>Symbol</th>
@@ -164,6 +173,7 @@ color: BLACK;
 							</tr>
 						</thead>
 					</table>
+					</div>
 				</div>
 			</div>
 		</div>

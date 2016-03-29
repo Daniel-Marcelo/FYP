@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,7 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 import bct.ct413.dao.GameDAO;
 import bct.ct413.dao.LimitOrderDetailsDAO;
@@ -47,6 +47,7 @@ import bct.ct413.service.StockOwnedService;
 import bct.ct413.service.TradeService;
 import bct.ct413.service.TradeTransactionService;
 import bct.ct413.service.UserGameParticipationService;
+import bct.ct413.service.UserService;
 
 import com.google.gson.Gson;
 
@@ -100,6 +101,9 @@ public class HomeController {
 	private TradeTransactionService tradeTransactionService;
 	
 	@Autowired
+	private UserService userService;
+	
+	@Autowired
 	private TradeService tradeService;
 	
 	@RequestMapping(value = "/updating-user", method = RequestMethod.POST)
@@ -135,7 +139,7 @@ public class HomeController {
 		newEmail = existingUser.getEmail();
 		
 		new SecurityContextLogoutHandler().logout(request, null, null);
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/");
 
 	}
 	
@@ -165,15 +169,13 @@ public class HomeController {
 		System.out.println("TO: "+sdf.format(to.getTime()));
 		
 			Stock stock = YahooFinance.get(value, from, to,Interval.DAILY);
-			System.out.println("SIZE OF OBJECT: "+stock.getHistory().size());
-			System.out.println("CURRENCY: "+stock.getCurrency());
-			System.out.println(stock.getSymbol()+" - Market: "+stock.getStockExchange());
+			stock.print();
 
-/*			for(HistoricalQuote quote : stock.getHistory())
-				System.out.println(quote);
-			*/
-			if(stock.getName().equals("N/A"))
+			
+			if(stock.getName().equals("N/A")){
+				System.out.println("Returning not valid");
 				return "Not valid";
+			}
 			else
 				return new Gson().toJson(stock);
 	}
@@ -257,7 +259,9 @@ public class HomeController {
 		User user = userDAO.get(getActiveUserEmail());
 
 		model.setViewName("account");
+		Set<String> emails = userService.getOtherEmails(getActiveUserEmail());
 		model.addObject("existingReg", user);
+		model.addObject("emailsJSON", new Gson().toJson(emails));
 
 		return model;
 	}
@@ -305,6 +309,7 @@ public class HomeController {
 			Trade trade = tradeDetails.getTradeObject(email, 0);
 			tradeDAO.insert(trade);	
 			int tradeID = tradeDAO.getLastTradeID(email, trade.getGameID());
+			System.out.println("Limit Order Trade ID: "+tradeID);
 
 			LimitOrder limitOrder = tradeDetails.getLimitOrderObject();
 			limitOrder.setTradeID(tradeID);

@@ -57,7 +57,11 @@ public class GameServiceImpl implements GameService {
 		System.out.println("GAME:" + g.getGameName() + " End Date: " + end);
 		int days = Days.daysBetween(today, end).getDays();
 
-		board.setDaysLeft(days);
+		if(days > 0)
+			board.setDaysLeft(days);
+		else
+			board.setDaysLeft(0);
+
 
 		return board;
 	}
