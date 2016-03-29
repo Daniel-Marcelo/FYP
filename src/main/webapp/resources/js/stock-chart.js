@@ -49,16 +49,16 @@ function testMethod(){
 	$.ajax({
         url : 'stock-info/'+stockSymbol,
         success : function(data) {
-
-        var obj = JSON.parse(data);
+        	console.log(data);
 
         
-        if(obj.name == "N/A"){
+        if(data == "Not valid"){
         	myLoad.style.visibility = "hidden";
         	alert("Please Enter a Valid Symbol");
         }
         else{
-        	
+            var obj = JSON.parse(data);
+            
 		var data = new google.visualization.DataTable();
 		data.addColumn('date', 'Date');
     	data.addColumn('number', obj.symbol);
@@ -164,6 +164,7 @@ function isStockMarketOpen(){
 
 
 function updateStockPrice(stockSymbol) {
+	
     $.ajax({
         url : 'stock-price/'+stockSymbol,
         success : function(data) {

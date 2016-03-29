@@ -160,6 +160,13 @@ public class AccessController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
+	public ModelAndView forgotPass(ModelAndView model) {
+
+
+		return model;
+	}
+	
 	@RequestMapping(value = "/save-user", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User newUser) {
 		
@@ -170,8 +177,6 @@ public class AccessController {
 		String hashedPassword = passwordEncoder.encode(password);
 		
 		newUser.setPassword(hashedPassword);
-		System.out.println(hashedPassword+": "+hashedPassword.length());
-
 		userDAO.insert(newUser);
 		userRolesDAO.insert(newUser);
 		userGameParticipationDAO.addToGame(game, newUser.getEmail());
@@ -179,7 +184,7 @@ public class AccessController {
 		
 		//userDAO.addToDefaultGame(newUser);
 				
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/games");
 	}
 	
     @RequestMapping(value = "is-email-free/{uemail:.+}", method = RequestMethod.GET)

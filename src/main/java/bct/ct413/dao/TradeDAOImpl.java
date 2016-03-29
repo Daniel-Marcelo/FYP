@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import bct.ct413.model.LimitOrder;
 import bct.ct413.model.Trade;
 import bct.ct413.model.TradeTransaction;
 
@@ -30,10 +31,10 @@ public class TradeDAOImpl implements TradeDAO {
 			Connection conn = dataSource.getConnection();
 			PreparedStatement stmt1;
 			
-			if(trade.getTransactionID()!= 0){
+			if(trade.getTransaction().getTransactionID()!= 0){
 
 				stmt1 = conn.prepareStatement("INSERT INTO fyp_trade (email, symbol, date, buy_or_sell, trade_type, status, game_id, transaction_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-				stmt1.setInt(8, trade.getTransactionID());
+				stmt1.setInt(8, trade.getTransaction().getTransactionID());
 
 			}else
 				stmt1 = conn.prepareStatement("INSERT INTO fyp_trade (email, symbol, date, buy_or_sell, trade_type, status, game_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -60,6 +61,31 @@ public class TradeDAOImpl implements TradeDAO {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void insert(LimitOrder limitOrder) {
+
+
+		try {
+
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO fyp_trade (email, symbol, date, buy_or_sell, trade_type, status, game_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+		
+			stmt1.setString(1, limitOrder.getEmail());
+			stmt1.setString(2, limitOrder.getSymbol().toUpperCase());
+			stmt1.setDate(3, limitOrder.getDate());
+			stmt1.setString(4, limitOrder.getBuyOrSell()); 
+			stmt1.setString(5, "Limit");
+			stmt1.setInt(7, limitOrder.getGameID());
+			stmt1.setString(6, "Ongoing");
+
+			stmt1.execute();
+			stmt1.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -126,7 +152,7 @@ public class TradeDAOImpl implements TradeDAO {
 				trade.setDate(rs.getDate("date"));
 				trade.setBuyOrSell(rs.getString("buy_or_sell"));
 				trade.setTradeType(rs.getString("trade_type"));
-				trade.setTransactionID(rs.getInt("transaction_id"));
+				trade.getTransaction().setTransactionID(rs.getInt("transaction_id"));
 				limitOrdersList.add(trade);
 				
 			}
@@ -164,7 +190,7 @@ public class TradeDAOImpl implements TradeDAO {
 				trade.setDate(rs.getDate("date"));
 				trade.setBuyOrSell(rs.getString("buy_or_sell"));
 				trade.setTradeType(rs.getString("trade_type"));
-				trade.setTransactionID(rs.getInt("transaction_id"));
+				trade.getTransaction().setTransactionID(rs.getInt("transaction_id"));
 				trade.setStatus(rs.getString("status"));
 				trade.setGameID(rs.getInt("game_id"));
 				

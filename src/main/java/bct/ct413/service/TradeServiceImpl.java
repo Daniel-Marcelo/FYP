@@ -37,7 +37,7 @@ public class TradeServiceImpl implements TradeService {
 		
 		for(Trade t : trades)
 			if(t.getGameID() == gameID)
-				idsMap.put(t.getTradeID(), t.getTransactionID());
+				idsMap.put(t.getTradeID(), t.getTransaction().getTransactionID());
 		
 		return idsMap;
 		
@@ -53,7 +53,7 @@ public class TradeServiceImpl implements TradeService {
 		
 		for(Trade t : trades)
 			if(t.getGameID() == gameID && t.getEmail().equals(email))
-				idsMap.put(t.getTradeID(), t.getTransactionID());
+				idsMap.put(t.getTradeID(), t.getTransaction().getTransactionID());
 		
 		return idsMap;
 	}
@@ -66,7 +66,7 @@ public class TradeServiceImpl implements TradeService {
 		
 		for(Trade t : trades)
 			if(t.getEmail().equals(email))
-				idsMap.put(t.getTradeID(), t.getTransactionID());
+				idsMap.put(t.getTradeID(), t.getTransaction().getTransactionID());
 		
 		return idsMap;
 	}
@@ -81,7 +81,7 @@ public class TradeServiceImpl implements TradeService {
 			t.printDetails();
 			System.out.println();
 			if(t.getEmail().equals(email) && t.getSymbol().equals(symbol) && t.getGameID() == gameID)
-				ids.add(t.getTransactionID());
+				ids.add(t.getTransaction().getTransactionID());
 		}
 		
 		

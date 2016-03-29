@@ -4,14 +4,14 @@ import java.sql.Date;
 
 public class Trade {
 	
-	private int tradeID;
-	private String email; 
-	private String symbol;  
-	private Date date;		
-	private String buyOrSell;	
-	private String tradeType;	
-	private String status;
-	private int gameID;
+	private int tradeID;//
+	private String email; //
+	private String symbol; // 
+	private Date date;		//
+	private String buyOrSell;//	
+	private String tradeType;	//
+	private String status;//
+	private int gameID;//
 	
 	/*
 	 * If the trade involves a limit order, these two fields will be null

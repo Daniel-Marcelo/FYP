@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/symbol-lookup.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="${pageContext.request.contextPath}/resources/js/symbol-lookup.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/symbol-autocomplete.js"></script>
 
 <style>
 .ui-autocomplete{
@@ -83,15 +83,15 @@ $(document).ready(function() {
 		<div id="searchAndChart">
 			<div id="searchBox">
 
-				<form action="javascript:testMethod();">
-					<input id="companySymbol" class="inputField"
+<!-- 				<form action="javascript:testMethod();">
+ -->					<input id="companySymbol" class="inputField"
 						placeholder="Symbol Lookup..." type="text" name="symbol" autofocus>
 					<input type="hidden" name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 <!-- 					<button id="sendingSymbolButton" type="submit"
 						class="btn blue-submit">Submit</button> -->
-				</form>
-			</div>
+<!-- 				</form>
+ -->			</div>
 			
 				<div id ="load-animation">
 					<div id="circularG">
@@ -107,7 +107,7 @@ $(document).ready(function() {
 				</div>
 
  			<div id="marketStatus"></div>
- 			<div id='chart_div'></div>
+ 			<div id='chart_div' style = "width: 1000px; height: 500px"></div>
 		</div>
 
  		<div id="stockInfoArea">
@@ -150,7 +150,8 @@ $(document).ready(function() {
 
 			</ul>
 
- 			<div align="center" id="watch-div" style = "visibility : hidden;">
+ 			<div align="center" id="watch-div" style = "visibility : hidden; 	padding: 0 20% 0 40%;
+ 			">
 			
 				<div id = "confirmation"></div>
 			

@@ -61,10 +61,10 @@ function isStockMarketOpen() {
 
 		console.log("Stock market is not open - current time (EST): " + ESTHour
 				+ ":" + currentMinute + " - " + days[currentDay]);
-/*		var error = document.getElementById('errorTag');
+		var error = document.getElementById('errorTag');
 		error.innerHTML = "Stock market is not open. A trade cannot be performed."+"<br>";
 		error.style.display = "inline";
-		error.style.color = "RED";*/
+		error.style.color = "RED";
 
 		var tradeForm = document.getElementById("trade");
 		trade.style.display = "inline";
@@ -79,10 +79,10 @@ function isStockMarketOpen() {
 
 function updateStockPrice() {
 	
-	var stockSymbol = document.getElementById("StockBuySymbol").value;
+	var stockSymbol = document.getElementById("companySymbol").value;
 	
 	$.ajax({
-		url : 'getStockPrice/' + (stockSymbol.toUpperCase()),
+		url : 'stock-price/' + (stockSymbol.toUpperCase()),
 		success : function(data) {
 			
 			//If the symbol is invalid
@@ -98,7 +98,7 @@ function updateStockPrice() {
 				
 				
 				//Changes symbol entered to RED to alert user of error
-				var symbolField = document.getElementById("StockBuySymbol");
+				var symbolField = document.getElementById("companySymbol");
 				symbolField.style.color = "RED";
 				
 				//Quantity field disabled and reset until user fixes earlier error
@@ -141,7 +141,7 @@ function updateStockPrice() {
 				orderType.disabled = false;
 				
 				//Remove RED alert
-				var symbolField = document.getElementById("StockBuySymbol");
+				var symbolField = document.getElementById("companySymbol");
 				symbolField.style.color = "BLACK";
 				
 				//Show the relevant stock price in the price field
@@ -217,14 +217,14 @@ function displayPriceField() {
 
 	} else {
 		field.readOnly = true;
-		durField.style.visibility = "hidden	";
+		durField.style.visibility = "hidden";
 		duration.disabled = false;
 	}
 }
 
 function allowOrDisallowSelling(stocksOwnedJSON){
 	
-	var stockSymbol = document.getElementById("StockBuySymbol").value.toUpperCase();
+	var stockSymbol = document.getElementById("companySymbol").value.toUpperCase();
 	var gameID = document.getElementById("gameID").value;
 
 	var numberSharesOwned = 0;
@@ -262,7 +262,7 @@ function setSellLimit(stocksOwnedJSON){
 	
 	if(buyOrSell == "Sell"){
 		
-		var stockSymbol = (document.getElementById("StockBuySymbol").value).toUpperCase();
+		var stockSymbol = (document.getElementById("companySymbol").value).toUpperCase();
 		var numberSharesOwned = 0;
 		
 		for(var key in stocksOwnedJSON){

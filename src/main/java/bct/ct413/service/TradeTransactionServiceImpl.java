@@ -25,7 +25,11 @@ public class TradeTransactionServiceImpl implements TradeTransactionService {
 		TradeTransaction transaction = new TradeTransaction();
 		
 		for(int id : transactionIDs){
+			System.out.println("Fetching ID: "+id);
 			transaction = tradeTransactionDAO.get(id);
+			System.out.println("Transaction ID: "+transaction.getTransactionID());
+			System.out.println("Quantity: "+transaction.getQuantity());
+			System.out.println("Total: "+transaction.getTotal());
 			quantity += transaction.getQuantity();
 			total += transaction.getTotal();
 		}

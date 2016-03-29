@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
@@ -15,9 +17,7 @@
 
 
 <style>
-td {
-	padding-right: 5%;
-}
+
 </style>
 
 <script>
@@ -37,6 +37,12 @@ td {
 				var gamesJSON = JSON.parse('${dataTableGamesJSON}');
 				drawDataTable(gamesJSON); */
 			});
+	
+	function performUpdateValidation(){
+		var bool = updateValidation(JSON.parse('${emailsJSON}'));
+		console.log("RETURNING: "+bool);
+		return bool;
+	}
 </script>
 </head>
 
@@ -64,75 +70,63 @@ td {
 
 		</c:if>	 --%>
 		
-									<%@include file="include-files/myDetailsForm.jsp"%>
-		
-<%--  			<div class="container">
+	<form:form name="updateDetailsForm" action="updating-user"
+						method="post" modelAttribute="existingReg"
+						onSubmit="return performUpdateValidation();">
 
+						<div align=center>
+							<table>
+								<tr>
+									<td>First Name</td>
+								<tr>
+								<tr>
+									<td><form:input path="firstName" class="form-field"
+											type="text" placeholder="Full Name.." /></td>
+								<tr>
+								<tr>
+									<td>Last Name</td>
+								<tr>
+								<tr>
+									<td><form:input path="lastName" class="form-field"
+											type="text" placeholder="Last Name.." /></td>
+								<tr>
+								<tr>
+									<td>Email</td>
+								<tr>
+								<tr>
 
- 
- 				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">My Account</h3>
-					</div>
-					<div class="panel-body">
+									<td><form:input path="email" class="form-field"
+											type="text" placeholder="Email.." /></td>
+								<tr>
+								<tr>
+									<td>Password</td>
+								<tr>
+								<tr>
+									<td><form:input path="password" type="password"
+											class="form-field" placeholder="Password.." /></td>
+								<tr>
+								<tr>
+									<td>Retype Password</td>
+								<tr>
+								<tr>
+									<td><form:input path="retypedPassword" type="password"
+											class="form-field" placeholder="Password.." /></td>
+								<tr>
+								<tr>
+									<td>Country</td>
+								<tr>
+								<tr>
+									<td><form:input path="country" class="form-field"
+											type="text" placeholder="Country.." /></td>
+								<tr>
+								<tr>
+									<td colspan="2" align="center"><button type="submit"
+											class="btn blue-submit">Save Changes</button></td>
+								</tr>
 
-						<ul class="nav nav-tabs">
-							<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-							<li><a data-toggle="tab" href="#menu1">My Games</a></li>
-							<li><a data-toggle="tab" href="#menu2">Create/ Join</a></li>
-							<li><a data-toggle="tab" href="#menu3">Leave Game</a></li>
-							<li><a data-toggle="tab" href="#menu4">Edit Game</a></li>
-
-						</ul>
-
-					</div>
-
-					<div class="tab-content">
-						<div id="home" class="tab-pane fade in active">
-
-
+							</table>
 						</div>
-
-
-						<div id="menu1" class="tab-pane fade">
-							<div align="center">
-								<div align="center" style="width: 95%">
-
-									<%@include file="include-files/myGamesTab.jsp"%>
-
-								</div>
-							</div>
-						</div>
-
-
-						<div id="menu2" class="tab-pane fade" style="margin: 2% 5% 0 5%;">
-
-							<%@include file="include-files/joinCreate.jsp"%>
-
-						</div>
-						
-
-				<div id="menu3" class="tab-pane fade">
-
-					<%@include file="include-files/leaveGameTab.jsp"%>
-
-				</div>
-
-				<div id="menu4" class="tab-pane fade">
-
-					<div align="center">
-						<div align="center" style="width: 95%">
-
-							<%@include file="include-files/editGameTab.jsp"%>
-
-						</div>
-					</div>
-				</div>
-
-
-					</div>
-				</div>
- 			</div> --%>
+					</form:form>		
  		</div>
 	</div>
  	<div id = "footer"><%@include file="footer.jsp"%></div>
