@@ -100,8 +100,9 @@ public class StockOwnedServiceImpl implements StockOwnedService {
 						
 				double valueOfOwnedStocks = 0;
 		
-				for (StockOwned s : stocksOwned)
+				for (StockOwned s : stocksOwned){
 					valueOfOwnedStocks += s.getTotal();
+				}
 		
 				user.setCurAccVal(valueOfOwnedStocks + user.getBalance());
 			}else

@@ -1,0 +1,8 @@
+@CHARSET "ISO-8859-1";
+
+.admin-button {
+	width: 50%;
+	height: 20%;
+	font-size: 32px;
+	margin-bottom: 3%;
+}

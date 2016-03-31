@@ -1,0 +1,29 @@
+@CHARSET "ISO-8859-1";
+
+#dashboard-div {
+	overflow: hidden;
+}
+
+
+.game-inner-div {
+	margin-left: 2%;
+	float: initial;
+/* 	margin-right: 5%;
+ */	width: 800px;
+ max-width: 800px;
+	margin-bottom: 3%;
+	display: inline-table;
+/* 	 max-height: 700px;
+ */	
+}
+
+.performance-chart {
+	height: 45%;
+	padding: 0;
+	margin: 0;
+}
+
+.stats-table-div {
+	width: 100%;
+}
+

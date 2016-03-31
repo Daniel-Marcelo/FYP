@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+h3 {
+	color: #5383d3;
+	font: normal 72px 'Cookie', cursive;
+	margin: 0;
+}
+
+h3 span {
+	font: normal 72px 'Cookie', cursive;
+	color: #5383d3;
+}
+
+.vertical-align {
+margin-top: 20%;
+}

@@ -1,7 +1,10 @@
 
 var isEmailValid;
 
-
+function performUpdateValidation(){
+	var bool = updateValidation(JSON.parse('${emailsJSON}'));
+	return bool;
+}
 
 function updateValidation(existingEmails){
 	

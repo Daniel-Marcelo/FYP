@@ -26,10 +26,7 @@
 		<intercept-url pattern="/leave-game/**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/join**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/create**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />
-				<intercept-url pattern="/temp-dashboard**" access="hasRole('ROLE_USER')" />
-		
-		
+		<intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" />		
 		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin-edit-user/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin-deleting-user/**" access="hasRole('ROLE_ADMIN')" />

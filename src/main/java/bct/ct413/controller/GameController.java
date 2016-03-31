@@ -344,6 +344,7 @@ public class GameController {
 			game.setUsersInGame(usersInGame);
 			userGameParticipationService.assignBalances(participations, usersInGame);
 			stockOwnedService.calculateAccountValue(usersInGame, game.getGameID());
+			System.out.println("GAME: "+game.getGameID()+": current acc val for user: "+usersInGame.get(0).getCurAccVal());
 			game.setBoard(gameService.getDashboardStats(email, game));
 			gameIDs.add(game.getGameID());
 

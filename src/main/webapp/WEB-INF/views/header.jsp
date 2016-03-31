@@ -14,9 +14,6 @@
 
 $(document).ready(function() {
 	
-/* 	changeBalanceHeader();
-	setInterval(function() {autoUpdateBalance();}, 10000); */
-	
 });
 	function autoUpdateBalance() {
 		

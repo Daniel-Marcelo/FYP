@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+td {
+ 	padding-right: 5%;
+ 	font-weight: bold;
+  	padding-top: 20px;
+  	font-size: 14px;
+}
+
+h1{
+	margin-top: 20px; 
+	color: #3db2e1; 
+}

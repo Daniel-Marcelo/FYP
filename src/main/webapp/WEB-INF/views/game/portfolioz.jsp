@@ -1,184 +1,85 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Portfolio</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/numeral.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/game/portfolio.js" type="text/javascript"></script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-<script src="${pageContext.request.contextPath}/resources/js/numeral.min.js" type="text/javascript"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/reg-and-login.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/game/portfolio.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
 <script>
-
-function updateStockTableForGame(gameID){
-	
-	var table = $('#myTable').DataTable();
-	var stocks = JSON.parse('${stocksForUser}');
-	
-	table.rows().remove().draw();
-
-	//Populate Stock Table
-	for ( var index in stocks) {
-		if (stocks.hasOwnProperty(index)) {
-
-			//1  = Default global game that every usr is included in
-			if (stocks[index].gameID == gameID) {
-					table.row.add([
-										stocks[index].symbol,
-										stocks[index].companyName,
-										stocks[index].quantity,
-										numeral(stocks[index].avgPurchPrice).format('$0,0.00'),
-										numeral(stocks[index].currentPrice).format('$0,0.00'),
-										numeral(stocks[index].total).format('$0,0.00'),
-										numeral(stocks[index].gainOrLoss).format('$0,0.00')
-								]).draw(false); 
-			}
-		}
-	}
-
-}
-
-function updateTransactionTable(gameID){
-	var table2 = $('#myTransactionTable').DataTable();
-	var myTransactions = JSON.parse('${myTransactions}');
-	table2.rows().remove().draw();
-	
-	for ( var index in myTransactions) {
-		if (myTransactions.hasOwnProperty(index)) {
-
-			if (myTransactions[index].gameID == gameID) {
-				table2.row.add([
-										myTransactions[index].symbol,
-										numeral(myTransactions[index].transaction.sharePrice).format('$0,0.00'),
-										myTransactions[index].transaction.quantity,
-										numeral(myTransactions[index].transaction.total).format('$0,0.00'),
-										myTransactions[index].date,
-										myTransactions[index].buyOrSell,
-										myTransactions[index].tradeType,
-										myTransactions[index].status
-								]).draw(false); 
-			}
-		}
-	}
-}
-
 	$(document).ready(function() {
-
-		$('#myTable').DataTable({
-			"columnDefs": [{ className: "dt-body-center", "targets": [0,1,2,3,4,5,6] }],
-			"createdRow": function ( row, data, index ) {
-				            if ( data[6].replace(/[\$,]/g, '') * 1 < 0 ) {
-				                $('td', row).eq(6).addClass('RED');
-				            }				            
-				            if ( data[6].replace(/[\$,]/g, '') * 1 > 0 ) {
-				                $('td', row).eq(6).addClass('GREEN');
-				            }
-				            if ( data[6].replace(/[\$,]/g, '') * 1 == 0 ) {
-				                $('td', row).eq(6).addClass('BLACK');
-				            }
-            }
-		});
-						
-		//1 is the defult game ID
-
-
-		//Populate my transactions table
-		$('#myTransactionTable').DataTable({
-			"columnDefs": [{ className: "dt-body-center", "targets": [0,1,2,3,4,5,6,7 ] }]
-		});
-		
-		updateStockTableForGame(1);
-		updateTransactionTable(1);
+		createTables();
 
 	});
-
-	function changeTable() {
-		var currGameID = document.getElementById("currID").value;
-		updateStockTableForGame(currGameID);
-		updateTransactionTable(currGameID);
+	function getStocksForUser(){
+		return JSON.parse('${stocksForUser}');
+	}
+	function getTransactionsForUser(){
+		return JSON.parse('${myTransactions}');
 	}
 </script>
-
-<style>
-#gameInfo {
-	width: 70%;
-}
-.RED{
-	color: RED;
-}
-.GREEN{
-color: GREEN;
-}
-.BLACK{
-color: BLACK;
-}
-</style>
-
 </head>
 <body>
-<div id="main-container">
+	<div id="main-container">
 		<div id="header"><%@include file="../header.jsp"%></div>
-
 		<div id="main-content">
-
-<div align = "center" style = "margin-top: 2%;">
-	<select id="currID" onChange="changeTable();" class="form-field">
-		<c:forEach var="userParticipation" items="${participatingGames}">
-			<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
-		</c:forEach>
-	</select>	
-	</div>
-
-		<div>
-			<div id="gameInfo" style = "margin: 0 auto; padding-bottom: 5%;">
-				<div id="portfolioTables" >
-
-				<div style = "padding-bottom: 5%; margin-top: 4%;">
-					<h1 align = "center">Stocks Owned</h1>
-					<table id="myTable" class="table table-striped table-bordered" width="100%">
-						<thead>
-							<tr>
-								<th>Symbol</th>
-								<th>Company Name</th>
-								<th>Quantity</th>
-								<th>Avg. Purch. Price</th>
-								<th>Current Price</th>
-								<th>Total Value</th>
-								<th>Gain/Loss</th>
-							</tr>
-						</thead>
-					</table>
-</div>
-<div>
-					<h1 align = "center">My Transactions</h1>
-					<table id="myTransactionTable" class="table table-striped table-bordered" width="100%">
-						<thead>
-							<tr>
-								<th>Symbol</th>
-								<th>Price</th>
-								<th>Quantity</th>
-								<th>Total</th>
-								<th>Date</th>
-								<th>Transaction Type</th>
-								<th>Trade Type</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-					</table>
+			<div align="center" style = "margin-top: 4%;">
+				<select id="currID" onChange="changeTable();" class="form-field">
+					<c:forEach var="userParticipation" items="${participatingGames}">
+						<option value="${userParticipation.getGame().getGameID()}">${userParticipation.getGame().getGameName()}</option>
+					</c:forEach>
+				</select>
+			</div>
+			<div>
+				<div id="game-info-div">
+					<div>
+						<div id = "tables-div">
+							<h1 align="center">Stocks Owned</h1>
+							<table id="myTable" class="table table-striped table-bordered" width="100%">
+								<thead>
+									<tr>
+										<th>Symbol</th>
+										<th>Company Name</th>
+										<th>Quantity</th>
+										<th>Avg. Purch. Price</th>
+										<th>Current Price</th>
+										<th>Total Value</th>
+										<th>Gain/Loss</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div>
+							<h1 align="center">My Transactions</h1>
+							<table id="myTransactionTable" class="table table-striped table-bordered" width="100%">
+								<thead>
+									<tr>
+										<th>Symbol</th>
+										<th>Price</th>
+										<th>Quantity</th>
+										<th>Total</th>
+										<th>Date</th>
+										<th>Transaction Type</th>
+										<th>Trade Type</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-				</div>
-		</div>	
+	</div>
 	<div id="footer"><%@include file="../footer.jsp"%></div>
 </body>
 </html>

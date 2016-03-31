@@ -8,4 +8,6 @@ public interface UserService {
 
 	Set<String> getOtherEmails(String email);
 
+	String getPassword(String email);
+
 }

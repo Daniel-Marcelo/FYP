@@ -284,3 +284,47 @@ function setSellLimit(stocksOwnedJSON){
 	
 	
 }
+
+/**
+ * 
+ */
+
+	function setLimit() {
+		validateFunds();
+		setSellLimit(getStocksOwned());
+	}
+	function changeBalance() {
+		
+		var elements = document.getElementsByTagName("input");
+		for (var ii=0; ii < elements.length; ii++) {
+		  if (elements[ii].type == "text") {
+		    elements[ii].value = "";
+		  }
+		  if (elements[ii].type == "number") {
+			    elements[ii].value = 0;
+			  }
+		}
+		var gameID = document.getElementById("gameID").value;
+		var participations = getGameParticipations();
+		for (i = 0; i < participations.length; i++) {
+			if (participations[i].gameID == gameID) {
+				setBalance(participations[i].balance);
+			} else {
+				console.log("No ID MATCH");
+			}
+		}
+	}
+	function updatePriceAndQuantity(){
+		
+		if (document.getElementById("companySymbol").value != '') {
+			updateStockPrice();
+			allowOrDisallowSelling(getStocksOwned());
+		}
+	}
+	
+	function updateTotalAndValidateFunds(){
+		updateTotal();
+		
+		if (document.getElementById("buyOrSell").value == "Buy") 
+			validateFunds();
+	}

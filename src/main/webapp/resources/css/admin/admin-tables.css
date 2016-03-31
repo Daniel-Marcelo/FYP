@@ -1,0 +1,23 @@
+@CHARSET "ISO-8859-1";
+
+#main-content {
+	width: 100%;
+	height: 85%;
+}
+
+#outer-table-div {
+	display: inline-block;
+	height: 100%;
+	width: 88%;
+}
+
+#inner-table-div {
+	margin: 0 auto;
+	width: 70%;
+	font-size: 16px;
+}
+
+.admin-title{
+	padding-top: 5%;
+	margin-bottom: 3%
+}	

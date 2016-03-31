@@ -53,8 +53,8 @@
 }
 /* Custom CSS Styles */
 #css-side-menu {
-  font-family: 'Lato', sans-serif;
-  font-size: 18px;
+/*   font-family: 'Lato', sans-serif;
+ */  font-size: 18px;
   width: 200px;
 }
 #css-side-menu ul a,

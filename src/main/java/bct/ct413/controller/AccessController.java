@@ -9,7 +9,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -118,6 +121,32 @@ public class AccessController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/updating-password", method = RequestMethod.POST)
+	public ModelAndView updatingPassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, HttpServletRequest request){
+		
+		System.out.println("old: "+oldPassword);
+		System.out.println("new: "+newPassword);
+		String email = getActiveUserEmail();
+		String hashedOldPassword = userService.getPassword(email);
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		if(encoder.matches(oldPassword, hashedOldPassword)){
+			System.out.println("Passwords match");
+			
+			String hashedNewPassword = encoder.encode(newPassword);
+
+			userDAO.updatePassword(email, hashedNewPassword);
+		}else{
+			System.out.println("Passwords do not match");
+		}
+		
+		new SecurityContextLogoutHandler().logout(request, null, null);
+		ModelAndView model = new ModelAndView("redirect:/login");
+		return model;
+		
+	}
+
+	
 	@RequestMapping(value = "/sending-password-email", method = RequestMethod.POST)
 	public ModelAndView sendingEmail(@RequestParam("email") String emailAddress) {
 
@@ -133,9 +162,12 @@ public class AccessController {
 		email.setSubject(subject);
 		email.setText(message);
 
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(newPass);
+		
 		// sends the e-mail
 		mailSender.send(email);
-		userDAO.update(emailAddress, newPass);
+		userDAO.update(emailAddress, hashedPassword);
 
 		return new ModelAndView("redirect:/login");
 	}
@@ -209,5 +241,12 @@ public class AccessController {
 
 		}
 		return newPass.toString();
+	}
+	
+	public String getActiveUserEmail() {
+
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		return auth.getName();
 	}
 }
