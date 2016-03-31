@@ -1,239 +1,157 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Dashboard | Game</title>
-
-
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
-
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"
+	type="text/javascript"></script>
 <script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
-<script src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
-
-
+<script
+	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/game/dashboard.js"></script>
+<link rel="stylesheet"
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/game/dashboard.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/tags.css">
 
 <script>
-	$(document)
-			.ready(
-					function() {
-						
-						google.charts.load('43', {
-							'packages' : [ 'annotationchart' ]
-						});
-						google.charts.setOnLoadCallback(drawChart);
-						var gameIDs = JSON.parse("${gameIDs}");
-						var values = document
-								.getElementsByClassName("currAccVal");
-						for (var i = 0; i < values.length; i++) {
-							values[i].innerHTML = numeral(values[i].innerHTML)
-									.format('$0,0.00');
-						}								
-						for ( var key in gameIDs) {
-							if (gameIDs.hasOwnProperty(key)) {
-								var gameID = gameIDs[key];
-								console.log("GAME: ID"+gameID);
-								
-								createTable1(gameID);
-								createTable2(gameID);
-							}
-						}
-					});
-	
-	function createTable1(gameID){
-		$('#myTable' + gameID).DataTable({
-			"paging" : true,
-			"ordering" : true,
-			"info" : true
+	$(document).ready(function() {
+
+		google.charts.load('43', {
+			'packages' : [ 'annotationchart' ]
 		});
-		
-	}
- 	function createTable2(gameID){
-	$('#myStatsTable' + gameID).DataTable({
-		"paging" : false,
-		"ordering" : false,
-		"info" : false,
-		"bFilter" : false
+		google.charts.setOnLoadCallback(drawCharts);
+
+		formatMoney();
+		formatPositions();
+		drawTables(JSON.parse("${gameIDs}"));
 	});
-	} 
-						function getDailyChange(index, i) {
-							var thisClose = index.history[i].close;
-							var yesterdayClose = index.history[i + 1].close;
-							var percent = (thisClose / yesterdayClose) * 100;
-							var diffPerc = percent - 100;
-							return diffPerc;
-						}
-						function getDate(dateString) {
-							var res = dateString.split(/[- :]/);
-							var year = res[0];
-							var month = res[1] - 1;
-							var day = res[2];
-							return new Date(year, month, day);
-						}
-						//Function to draw blank chart
-						function drawChart() {
-							var dow = JSON.parse('${DOW}');
-							var SP = JSON.parse('${sAndP}');
-							var myBalanceHistory = JSON
-									.parse('${balanceHistory}');
-							var gameIDs = JSON.parse("${gameIDs}");
-	
-							console.log("DRAWING CHARTS");
-							for ( var key in gameIDs) {
-								if (gameIDs.hasOwnProperty(key)) {
-									var gameID = gameIDs[key];
-									var data = new google.visualization.DataTable();
-									data.addColumn('date', 'Date');
-									data.addColumn('number', "DJI");
-									data.addColumn('number', "SNP");
-									data.addColumn('number', "Acc. Value");
-									for (var i = 0; i < dow.history.length - 1; i++) {
-										var value = 0;
-										var thisDate = dow.history[i].date;
-										//console.log(thisDate);
-										var dowChange = getDailyChange(dow, i);
-										var SPChange = getDailyChange(SP, i);
-										for ( var key in myBalanceHistory) {
-											if (myBalanceHistory
-													.hasOwnProperty(key)) {
-												var date = getDate(myBalanceHistory[key].date);
-												var compareDate = new Date(
-														thisDate.year,
-														thisDate.month,
-														thisDate.dayOfMonth);
-												if (date.getTime() == compareDate
-														.getTime()) {
-													value = myBalanceHistory[key].percentChange;
-													break;
-												}
-											}
-										}
-										var accValueChange = document
-												.getElementById("accValueCell");
-										accValueChange.innerHTML = numeral(
-												accValueChange.innerHTML)
-												.format('0.000%');
-										data.addRow([
-												new Date(thisDate.year,
-														thisDate.month,
-														thisDate.dayOfMonth),
-												dowChange / 100,
-												SPChange / 100, value / 100 ]);
-									}
-									dt = wrapper = new google.visualization.ChartWrapper(
-											{
-												chartType : 'AnnotationChart',
-												dataTable : data,
-												options : {
-													'displayAnnotations' : true,
-													'legendPosition' : 'newRow',
-													'numberFormats' : '#.##%'
-												},
-												containerId : 'performanceChart'
-														+ gameID
-											});
-									wrapper.draw();
-								}
-							}
-						}
+
+	//Function to draw blank chart
+	function getDow() {
+		return JSON.parse('${DOW}')
+	}
+	function getSAndP() {
+		return JSON.parse('${sAndP}')
+	}
+	function getBalanceHistory(gameID) {
+		var historyForAllGames = JSON.parse('${balanceHistory}');
+		var balances = new Array();
+		var i = 0;
+		for ( var key in historyForAllGames) {
+			if (historyForAllGames.hasOwnProperty(key)) {
+				if (historyForAllGames[key].gameID == gameID) {
+					balances[i] = historyForAllGames[key];
+					i++;
+				}
+			}
+		}
+		return balances;
+	}
+	function getGameIDs() {
+		return JSON.parse("${gameIDs}");
+	}
+	function newDataTable() {
+		return new google.visualization.DataTable();
+	}
 </script>
 </head>
 <body>
 
-<div id="main-container">
+	<div id="main-container">
 		<div id="header"><%@include file="../header.jsp"%></div>
 
 		<div id="main-content">
-	<div style="overflow: hidden;">
-		<c:forEach var="userParticipation" items="${participatingGames}">
+			<div id="dashboard-div">
+				<c:forEach var="userParticipation" items="${participatingGames}">
 
-			<div style = "background-color:blue; margin-bottom: 7%; margin-left: 2%;" >
-			<div style="float: left; margin-right: 5%; height: 600px; width: 520px; font-size: 11px;">
-				<div style=" margin-bottom:3%;">
-					<div align="center">
-						<h3>${userParticipation.getGame().getGameName()}</h3>
+					<div class="game-inner-div">
+						<div style="width: inherit">
+							<div align="center">
+								<h3>${userParticipation.getGame().getGameName()}</h3>
+							</div>
+							<div style="height: 200px; overflow: auto;">
+								<div style="margin: 0 auto; width: 96%;">
+									<table id="myTable${userParticipation.getGame().getGameID()}"
+										class="table table-striped table-bordered">
+										<thead>
+											<tr>
+												<th>Position</th>
+												<th>Name</th>
+												<th>Country</th>
+												<th>Balance</th>
+												<th>Acc. Value</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="user"
+												items="${userParticipation.getGame().getUsersInGame()}">
+
+												<tr>
+													<td class="position"></td>
+													<td>${user.getFirstName()}${user.getLastName()}</td>
+													<td>${user.getCountry()}</td>
+													<td class="money">${user.getBalance()}</td>
+													<td class="money">${user.getCurAccVal()}</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<div style="width: inherit"
+							id="performanceChart${userParticipation.getGame().getGameID()}"
+							class="performance-chart"></div>
+
+						<div style="margin: 0 auto; width: 100%;">
+							<table
+								id="myStatsTable${userParticipation.getGame().getGameID()}"
+								class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th>Top Player</th>
+										<th>Current Position</th>
+										<th>Acc. Value</th>
+										<th>Days Left</th>
+										<th>Current Balance</th>
+										<th>Acc. Value Change</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr>
+										<td>${userParticipation.getGame().getBoard().getTopPlayerName()}</td>
+										<td>${userParticipation.getGame().getBoard().getUserPosition()}</td>
+										<td class="money">${userParticipation.getGame().getBoard().getUserAccVal()}</td>
+										<td>${userParticipation.getGame().getBoard().getDaysLeft()}</td>
+										<td class="money">${userParticipation.getGame().getBoard().getCurBal()}</td>
+										<td id="accValueCell"></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
 					</div>
 
-					<table id="myTable${userParticipation.getGame().getGameID()}"
-						class="table table-striped table-bordered" width="100%">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Country</th>
-								<th>Balance</th>
-								<th>Acc. Value</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="user" items="${userParticipation.getGame().getUsersInGame()}">
-
-								<tr>
-									<td>${user.getFirstName()}${user.getLastName()}</td>
-									<td>${user.getCountry()}</td>
-									<td>${user.getBalance()}</td>
-									<td>${user.getCurAccVal()}</td>
-
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-
-				<div id="performanceChart${userParticipation.getGame().getGameID()}"
-					style="width: 100%; height: 35%; padding-left: 0"></div>
-
-
-  				<div style="width: 100%; font-size: 11px; margin-bottom: 100px;"> 
-						<table id="myStatsTable${userParticipation.getGame().getGameID()}"
-							class="table table-striped table-bordered" width="100%">
-						<thead style = "display: none;">
-							<tr>
-								<th>Name</th>
-								<th>Country</th>
-								<th>Balance</th>
-								<th>Acc. Value</th>
-								<th>Balance</th>
-								<th>Acc. Value</th>
-							</tr>
-						</thead>
-							<tbody>
-
-								<tr>
-									<td><b>Top Player</b></td>
-									<td>${userParticipation.getGame().getBoard().getTopPlayerName()}</td>
-									<td><b>Current Position</b></td>
-									<td>${userParticipation.getGame().getBoard().getUserPosition()}</td>
-									<td><b>Acc. Value</b></td>
-									<td class="currAccVal">${userParticipation.getGame().getBoard().getUserAccVal()}</td>
-
-								</tr>
-
-								<tr>
-									<td><b>Days Left In Game</b></td>
-									<td>${userParticipation.getGame().getBoard().getDaysLeft()}</td>
-									<td><b>Current Balance</b></td>
-									<td class="currAccVal">${userParticipation.getGame().getBoard().getCurBal()}</td>
-									<td><b>Acc. Value Change</b></td>
-									<td id="accValueCell"></td>
-
-								</tr>
-							</tbody>
-						</table>
- 				</div>
+				</c:forEach>
 			</div>
-			</div>
-
-		</c:forEach>
-	</div>
-
-	</div>
+		</div>
 	</div>
 	<div id="footer"><%@include file="../footer.jsp"%></div>
 

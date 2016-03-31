@@ -1,248 +1,75 @@
 @CHARSET "ISO-8859-1";
 
-.float-right{
-	float : right;
-}
- 
-
-#circularG{
-	position: relative;
-	width:58px;
-	height:58px;
+.float-right {
+	float: right;
 }
 
-.circularG{
-	position:absolute;
-	background-color:rgb(0,0,0);
-	width:14px;
-	height:14px;
-	border-radius:9px;
-		-o-border-radius:9px;
-		-ms-border-radius:9px;
-		-webkit-border-radius:9px;
-		-moz-border-radius:9px;
-	animation-name:bounce_circularG;
-		-o-animation-name:bounce_circularG;
-		-ms-animation-name:bounce_circularG;
-		-webkit-animation-name:bounce_circularG;
-		-moz-animation-name:bounce_circularG;
-	animation-duration:0.388s;
-		-o-animation-duration:0.388s;
-		-ms-animation-duration:0.388s;
-		-webkit-animation-duration:0.388s;
-		-moz-animation-duration:0.388s;
-	animation-iteration-count:infinite;
-		-o-animation-iteration-count:infinite;
-		-ms-animation-iteration-count:infinite;
-		-webkit-animation-iteration-count:infinite;
-		-moz-animation-iteration-count:infinite;
-	animation-direction:normal;
-		-o-animation-direction:normal;
-		-ms-animation-direction:normal;
-		-webkit-animation-direction:normal;
-		-moz-animation-direction:normal;
+body {
+	margin: 0;
 }
 
-#circularG_1{
-	left:0;
-	top:23px;
-	animation-delay:0.148s;
-		-o-animation-delay:0.148s;
-		-ms-animation-delay:0.148s;
-		-webkit-animation-delay:0.148s;
-		-moz-animation-delay:0.148s;
+#main-content {
+	margin: 5%;
+	width: 90%;
+	height: 85%;
 }
 
-#circularG_2{
-	left:6px;
-	top:6px;
-	animation-delay:0.194s;
-		-o-animation-delay:0.194s;
-		-ms-animation-delay:0.194s;
-		-webkit-animation-delay:0.194s;
-		-moz-animation-delay:0.194s;
-}
-
-#circularG_3{
-	top:0;
-	left:23px;
-	animation-delay:0.24s;
-		-o-animation-delay:0.24s;
-		-ms-animation-delay:0.24s;
-		-webkit-animation-delay:0.24s;
-		-moz-animation-delay:0.24s;
-}
-
-#circularG_4{
-	right:6px;
-	top:6px;
-	animation-delay:0.286s;
-		-o-animation-delay:0.286s;
-		-ms-animation-delay:0.286s;
-		-webkit-animation-delay:0.286s;
-		-moz-animation-delay:0.286s;
-}
-
-#circularG_5{
-	right:0;
-	top:23px;
-	animation-delay:0.332s;
-		-o-animation-delay:0.332s;
-		-ms-animation-delay:0.332s;
-		-webkit-animation-delay:0.332s;
-		-moz-animation-delay:0.332s;
-}
-
-#circularG_6{
-	right:6px;
-	bottom:6px;
-	animation-delay:0.388s;
-		-o-animation-delay:0.388s;
-		-ms-animation-delay:0.388s;
-		-webkit-animation-delay:0.388s;
-		-moz-animation-delay:0.388s;
-}
-
-#circularG_7{
-	left:23px;
-	bottom:0;
-	animation-delay:0.434s;
-		-o-animation-delay:0.434s;
-		-ms-animation-delay:0.434s;
-		-webkit-animation-delay:0.434s;
-		-moz-animation-delay:0.434s;
-}
-
-#circularG_8{
-	left:6px;
-	bottom:6px;
-	animation-delay:0.48s;
-		-o-animation-delay:0.48s;
-		-ms-animation-delay:0.48s;
-		-webkit-animation-delay:0.48s;
-		-moz-animation-delay:0.48s;
-}
-
-
-
-@keyframes bounce_circularG{
-	0%{
-		transform:scale(1);
-	}
-
-	100%{
-		transform:scale(.3);
-	}
-}
-
-@-o-keyframes bounce_circularG{
-	0%{
-		-o-transform:scale(1);
-	}
-
-	100%{
-		-o-transform:scale(.3);
-	}
-}
-
-@-ms-keyframes bounce_circularG{
-	0%{
-		-ms-transform:scale(1);
-	}
-
-	100%{
-		-ms-transform:scale(.3);
-	}
-}
-
-@-webkit-keyframes bounce_circularG{
-	0%{
-		-webkit-transform:scale(1);
-	}
-
-	100%{
-		-webkit-transform:scale(.3);
-	}
-}
-
-@-moz-keyframes bounce_circularG{
-	0%{
-		-moz-transform:scale(1);
-	}
-
-	100%{
-		-moz-transform:scale(.3);
-	}
-}
-
-
-
-
-
-
-body{
-font-family: 'Open Sans', 'sans-serif';
-margin:0;
-}
-
-#main-content{
-
-	margin:5%;
-	width: 90%; 
-	height: 85%; 
-
-}
-#searchBox{
-
-	width: 50%; 
-	height: 10%; 
+#searchBox {
+	width: 50%;
+	height: 10%;
 	display: inline-block;
-	float:left;
- }
- 
-#load-animation{
+	float: left;
+}
+
+#load-animation {
 	display: inline-block;
 }
 
-#searchAndChart{
-
+#searchAndChart {
 	height: 100%;
 	width: 50%;
 	float: left;
-	display:inline-block;
+	display: inline-block;
 }
 
-#stockInfoArea{
-
-	
-width: 50%; 
-height: 100%;
-display: inline-block; 
+#stockInfoArea {
+	width: 50%;
+	height: 100%;
+	display: inline-block;
 }
 
-#chart_div{
-
-width: 100%; 
-height: 100%;
-display: inline-block; 
-margin-top: 25px;
-padding: 0;
+#chart_div {
+	width: 1000px;
+	height: 500px;
+	display: inline-block;
+	margin-top: 25px;
+	padding: 0;
+	display: inline-block;
 }
 
-#stockInfoTable{
-	margin-top:10%;
+#stockInfoTable {
+	margin-top: 10%;
+	padding: 0 19% 0 39%;
+}
+
+#marketStatus {
+	width: 40%;
+	height: 10%;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 50px;
+	position: relative;
+	display: inline-block;
+	float: right;
+}
+
+#watch-div {
+	visibility: hidden;
 	padding: 0 20% 0 40%;
 }
 
+.ui-autocomplete{
 
-#marketStatus{
-	width: 40%;
-	height: 10%;
-  	text-align: center;
-	vertical-align: middle;
-	line-height: 50px;
-	position: relative; 
-	display: inline-block; 
-	float: right;
-
- }
+		border-radius: 5px;
+	
+}

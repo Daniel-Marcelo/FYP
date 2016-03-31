@@ -1,15 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/admin-side-menu.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin-side-menu.css">
+<style>
+#side-menu-div{
+	height: 100%; 
+	width: 12%; 
+	float: left; 
+	display: inline-block;
+}
+</style>
 </head>
 <body>
-
-<div style="height: 100%; width: 12%; float: left; display: inline-block;">
+<div id = "side-menu-div">
 				<div id='css-side-menu'>
 					<ul>
 								<li class='has-sub'><a href='admin'><span>Admin Home</span></a></li>

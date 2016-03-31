@@ -18,6 +18,7 @@ public interface UserDAO {
 	void delete(String currentEmail);
 	
 	double getBalance(String email, int gameID);
+	void updatePassword(String email, String hashedNewPassword);
 
 
 }

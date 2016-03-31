@@ -116,6 +116,17 @@ public class AdminController {
 		return model;
 
     }
+	
+	@RequestMapping(value = "admin-delete-game/{gameID}", method = RequestMethod.GET)
+	public ModelAndView leavingGameView(@PathVariable int gameID) {
+		
+		ModelAndView model = new ModelAndView("/admin/delete");
+		Game game = gameDAO.get(gameID);
+		model.addObject("game", game);
+		return model;
+		
+	
+	}
 
     @RequestMapping(value = "admin-deleting-user/{email:.+}", method = RequestMethod.GET)
     public @ResponseBody String deleteUser(@PathVariable String email){
@@ -204,8 +215,10 @@ public class AdminController {
 	@RequestMapping(value = "admin-remove-game", method = RequestMethod.GET)
 	public ModelAndView removeGameAdmin(){
 
-		ModelAndView model = getDashboardModel();
-		model.setViewName("admin/delete-game");
+		ModelAndView model = new ModelAndView("admin/delete-game");
+		List<Game> games = gameDAO.getList();
+	//	gameService.setGame(participatingGames);
+		model.addObject("games",games);
 
 		return model;
 	}

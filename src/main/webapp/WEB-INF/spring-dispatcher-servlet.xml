@@ -28,6 +28,8 @@
   
  <!-- declare beans -->  
  <bean id="userDAO" class="bct.ct413.dao.UserDAOImpl" />  
+ 
+ 
  <bean id="userRolesDAO" class="bct.ct413.dao.UserRolesDAOImpl" /> 
  <bean id="persistentLoginsDAO" class="bct.ct413.dao.PersistentLoginsDAOImpl" />   
  <bean id = "tradeDAO" class = "bct.ct413.dao.TradeDAOImpl"/> 
@@ -77,8 +79,8 @@
     <!-- SMTP settings -->
     <property name="host" value="smtp.gmail.com." />
     <property name="port" value="587" />
-    <property name="username" value="danielm.mckee@gmail.com" />
-    <property name="password" value="" />
+    <property name="username" value="xchangegalway@gmail.com" />
+    <property name="password" value="xChange2016" />
  
     <property name="javaMailProperties">
         <!-- additional properties specific to JavaMail -->

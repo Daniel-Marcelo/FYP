@@ -154,6 +154,7 @@ public class HomeController {
 	public @ResponseBody String getStockPerice(@PathVariable String value){
 		
 		Stock stock = YahooFinance.get(value);
+		stock.print();
 		return new Gson().toJson(stock.getQuote().getPrice());
 		
 	}
@@ -170,6 +171,7 @@ public class HomeController {
 		
 			Stock stock = YahooFinance.get(value, from, to,Interval.DAILY);
 			stock.print();
+			System.out.println(new Gson().toJson(stock.getHistory()));
 
 			
 			if(stock.getName().equals("N/A")){
@@ -183,7 +185,6 @@ public class HomeController {
 	@RequestMapping(value = "watchlist", method = RequestMethod.GET)
 	public ModelAndView watchListView() {
 		
-		System.out.println("JAVA "  +System.getProperty("java.runtime.version"));
 		ModelAndView model = new ModelAndView("watchlist");
 		List<Stock> stocksOnWatch = stockOnWatchDAO.getList(getActiveUserEmail());
 		model.addObject("stocks", stocksOnWatch);
@@ -252,9 +253,27 @@ public class HomeController {
 
 		return model;
 	}
+/*	@RequestMapping(value = "portfolio", method = RequestMethod.GET)
+	public ModelAndView portfolioiew() {
+
+		ModelAndView model = new ModelAndView("game/portfolioz");
+		String email = getActiveUserEmail();
+		
+		List<UserGameParticipation> participatingGames = userGameParticipationService.getParticipatingGames(email);
+		gameService.setGame(participatingGames);
+		List<StockOwned> stocksForUserForGames = stockOwnedService.stockOwnedPortfolioInfo(email);
+		//List<Game> gamesForUser = gameService.getCreatedGamesByUser(email);
+		List<Trade> myTransactions = tradeDAO.getPortfolioTradeDetails(email);
+
+		model.addObject("gamesForUser", participatingGames);
+		model.addObject("stocksForUser", new Gson().toJson(stocksForUserForGames));
+		model.addObject("myTransactions", new Gson().toJson(myTransactions));
+
+		return model;
+	}*/
 
 	@RequestMapping(value = { "/account", "/" }, method = RequestMethod.GET)
-	public ModelAndView homeView(ModelAndView model) throws IOException {
+	public ModelAndView myAccountView(ModelAndView model) throws IOException {
 
 		User user = userDAO.get(getActiveUserEmail());
 
@@ -265,6 +284,12 @@ public class HomeController {
 
 		return model;
 	}
+	@RequestMapping(value = { "/home"}, method = RequestMethod.GET)
+	public ModelAndView homeView(ModelAndView model) throws IOException {
+		return new ModelAndView("home");
+	}
+
+
 
 	@RequestMapping(value = "/trade", method = RequestMethod.GET)
 	public ModelAndView tradeView() {

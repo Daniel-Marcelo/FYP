@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+
+td {
+	padding-right: 5%;
+}
+
+#errorTag, #errorTag2 {
+	display: none;
+}
+
+#userBalance {
+	font-size: 24px;
+	color: green;
+}
+
+#durationField{
+	visibility: hidden;
+}
+

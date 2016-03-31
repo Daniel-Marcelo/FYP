@@ -7,92 +7,32 @@
 <meta charset="utf-8">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/stock-chart.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/symbol-lookup.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/numeral.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/symbol-autocomplete.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/symbol-lookup.css">
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/loading-anim.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="${pageContext.request.contextPath}/resources/js/symbol-autocomplete.js"></script>
-
-<style>
-.ui-autocomplete{
-
-		border-radius: 5px;
-	
-}
-
-</style>
-
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <script>
-
-
-
 $(document).ready(function() {
-	
-	var elements = document.getElementsByTagName("input");
-	for (var ii=0; ii < elements.length; ii++) {
-	  if (elements[ii].type == "text") {
-	    elements[ii].value = "";
-	  }
-	}
-	
-
-		//document.getElementById("watch-div").style.visibility = "hidden";
-		document.getElementById("stockInfoArea").style.visibility = "hidden";
-		document.getElementById("chart_div").style.visibility = "hidden";
-		document.getElementById("load-animation").style.visibility = "hidden";
-		
+		emptyFields();
+		hideDivs();
 		autoComplete();
-
 	});
-	
-	 
-	 function addToWatchList(){
-		 var name = document.getElementById("companyName");
-		 var symbol = String(getSymbol(name.innerHTML));
-
-		 $.ajax({
-		        url : 'watch-stock/'+symbol,
-		        success : function(data) {
-				 var confirmWatch = document.getElementById("confirmation");
-				 confirmWatch.innerHTML = data;
-				 confirmWatch.style.color = "GREEN";
-				 
-			 }
-		 });
-	 }
-		 
-	 function getSymbol(name){
-		 
-		 var res1 = name.split("<u>"); 	//Will give SYM - NAME </u>
-		 var res2 = res1[1].split(" - ");
-
-		 return res2[0];
-	 }
 </script>
 </head>
 
 <body>
 <div id="main-container">
 		<div id="header"><%@include file="header.jsp"%></div>
-
 		<div id="main-content">
-
 		<div id="searchAndChart">
 			<div id="searchBox">
-
-<!-- 				<form action="javascript:testMethod();">
- -->					<input id="companySymbol" class="inputField"
-						placeholder="Symbol Lookup..." type="text" name="symbol" autofocus>
-					<input type="hidden" name="${_csrf.parameterName}"
-						value="${_csrf.token}" />
-<!-- 					<button id="sendingSymbolButton" type="submit"
-						class="btn blue-submit">Submit</button> -->
-<!-- 				</form>
- -->			</div>
-			
+					<input id="companySymbol" class="form-field" placeholder="Symbol Lookup..." type="text" name="symbol" autofocus>
+			</div>
 				<div id ="load-animation">
 					<div id="circularG">
 						<div id="circularG_1" class="circularG"></div>
@@ -105,11 +45,9 @@ $(document).ready(function() {
 						<div id="circularG_8" class="circularG"></div>
 					</div>
 				</div>
-
  			<div id="marketStatus"></div>
- 			<div id='chart_div' style = "width: 1000px; height: 500px"></div>
+ 			<div id='chart_div'></div>
 		</div>
-
  		<div id="stockInfoArea">
  			<ul id="stockInfoTable" class="list-group">
 
@@ -150,18 +88,14 @@ $(document).ready(function() {
 
 			</ul>
 
- 			<div align="center" id="watch-div" style = "visibility : hidden; 	padding: 0 20% 0 40%;
- 			">
-			
+ 			<div align="center" id="watch-div">
 				<div id = "confirmation"></div>
-			
 				<br>
-				<form method="post" action="watch-stock">
+				<form method="post" action="watch-stock" style = "width: 99%; ">
 					<input id = "symbol-field" type="hidden" name="symbol"/>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-					<button type="submit" class="btn blue-submit">Watch Stock</button>
+					<button type="submit" class="wide btn blue-submit">Watch Stock</button>
 				</form>
-
 			</div> 
 		</div>
 	</div>

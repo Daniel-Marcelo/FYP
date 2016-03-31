@@ -228,4 +228,22 @@ public class UserDAOImpl implements UserDAO {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void updatePassword(String email, String hashedNewPassword) {
+
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("UPDATE fyp_user SET  password = ? WHERE email = ?");
+			stmt1.setString(1, hashedNewPassword);
+			stmt1.setString(2, email);
+			stmt1.execute();
+			
+			stmt1.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

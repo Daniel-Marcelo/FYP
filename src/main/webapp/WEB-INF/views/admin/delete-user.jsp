@@ -4,93 +4,39 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Remove User</title>
-
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"
-	type="text/javascript"></script>
-<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
-	type="text/javascript"></script>
-<link rel="stylesheet"
-	href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
-
-
+<title>Remove User | Admin</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/js/admin/admin-delete-user.js" type="text/javascript"></script>
+<script src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script	src="//cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/admin-tables.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <script>
 	$(document).ready(function() {
 		var table = $('#allUsersTable').DataTable();
-
-		$('#allUsersTable tbody').on('click', 'tr', function() {
-			if ($(this).hasClass('selected')) {
-				$(this).removeClass('selected');
-			} else {
-				table.$('tr.selected').removeClass('selected');
-				$(this).addClass('selected');
-			}
-		});
-
-		$('#removeUserButton').click(function() {
-			var error = document.getElementById("errorMsg");
-
-			if (table.row('.selected').length == 0) {
-				error.innerHTML = "Please select a user to remove<br><br>";
-				error.style.display = "inline";
-				error.style.color = "RED";
-			} else {
-				var email = table.row('.selected').data()[2];
-				table.row('.selected').remove().draw(false);
-				if (error.style.display == "inline") {
-					error.style.display = "none";
-				}
-				removeUserFromDB(email);
-			}
-		});
-
-		function removeUserFromDB(email) {
-			console.log("email" + email);
-
-			$.ajax({
-				url : "admin-deleting-user/" + email,
-				success : function(data) {
-					console.log(data);
-				}
-			});
-		}
-
+		$('#allUsersTable tbody').on('click', 'tr', addSelectedClass);
+		$('#removeUserButton').click(removeUser);
 	});
 </script>
-
-
-<style>
-#main-content {
-/* 	margin: 5%; */
-	width: 100%;
-	height: 85%;
-}
-</style>
 </head>
 <body>
 
 	<div id="main-container">
 		<div id="header"><%@include file="../header.jsp"%></div>
-
 		<div id="main-content">
-
 			<div id = "side-menu"><%@include file="side-menu.jsp"%></div>
+			<div id = "outer-table-div">
 			
-			<div style="display: inline-block; height: 100%; width: 88%; margin-top: 5%;">
-
-
-
-				<div align="center">
-					<div style="height: 30%; width: 80%; display: inline-block;">
-						<div>
-							<h3 id="errorMsg"></h3>
-							<button id="removeUserButton" class="btn blue-submit">Remove
-								User</button>
-
-						</div>
-						<div>
-							<table id="allUsersTable" class="display">
+			<div  align="center">
+			<div class = "admin-title" style = "width: 25%;">
+				<button id="removeUserButton" class="wide btn blue-submit">Remove User</button>
+				<h3 id="errorMsg"></h3>
+			</div>
+			</div>
+								<div id = "inner-table-div">
+							<table id="allUsersTable" class="table table table-bordered">
 								<thead>
 									<tr>
 										<th>First Name</th>
@@ -100,7 +46,6 @@
 									</tr>
 								</thead>
 								<tbody>
-
 									<c:forEach var="user" items="${allUsers}">
 										<tr>
 											<td>${user.getFirstName()}</td>
@@ -111,11 +56,8 @@
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
 					</div>
-				</div>
 			</div>
-
 		</div>
 	</div>
 	<div id="footer"><%@include file="../footer.jsp"%></div>
