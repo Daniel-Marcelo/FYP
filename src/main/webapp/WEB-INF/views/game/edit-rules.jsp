@@ -6,8 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Edit Game Rules</title>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/game/edit-rules.js" type="text/javascript"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -57,10 +57,10 @@ $(document).ready(function() {
 						</tr>
 						
 						<c:if test="${game.getGameType() == privateType}">
-						<tr>
-							<td>Join Code</td>
-							<td><input  class="form-field" type = "text" readOnly value="${game.getJoinCode()}" /></td>
-						</tr>
+							<tr>
+								<td>Join Code</td>
+								<td><input  class="form-field" type = "text" readOnly value="${game.getJoinCode()}" /></td>
+							</tr>
 						</c:if>
 						
 							

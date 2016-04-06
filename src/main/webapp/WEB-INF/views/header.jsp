@@ -69,16 +69,16 @@ $(document).ready(function() {
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
-				<li class='active'><a href="${pageContext.request.contextPath}/account">Home</a></li>
+				<li class='active'><a href="${pageContext.request.contextPath}/account">My Account</a></li>
 
 				<li><a href="javascript:formSubmit()"> Logout</a></li>
- 				<li><a href='${pageContext.request.contextPath}/portfolioz'>Portfolio</a></li>
  				<li><a href='${pageContext.request.contextPath}/symbol-lookup'>Stock Look Up</a></li>
 				<li><a href='${pageContext.request.contextPath}/trade'>Trade</a></li>
-				<li><a href='${pageContext.request.contextPath}/game-rankings/1'>Global Rankings</a></li>
-				<li><a href='${pageContext.request.contextPath}/game-dashboard'>Dashboard</a></li>
-				<li><a href='${pageContext.request.contextPath}/watchlist'>WatchList</a></li>
 				<li><a href='${pageContext.request.contextPath}/games'>Games</a></li>
+				<li><a href='${pageContext.request.contextPath}/game-dashboard'>Dashboard</a></li>
+ 				<li><a href='${pageContext.request.contextPath}/portfolio'>Portfolio</a></li>
+				<li><a href='${pageContext.request.contextPath}/game-rankings/1'>Global Rankings</a></li>
+				<li><a href='${pageContext.request.contextPath}/watchlist'>WatchList</a></li>
 				
 				
 				

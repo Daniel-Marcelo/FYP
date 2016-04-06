@@ -18,4 +18,12 @@ public interface StockOwnedDAO {
 
 	void remove(String email);
 
+	void updateQuantity(int gameID, String symbol, String email, int newQuantity);
+
+	void updateAvgPurchPrice(int gameID, String symbol, String email,
+			double avgPurchPrice);
+
+	void insert(int gameID, String symbol, String email, double avgPurchPrice,
+			int quantity);
+
 }

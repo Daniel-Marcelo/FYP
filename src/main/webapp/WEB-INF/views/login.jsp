@@ -30,6 +30,11 @@
 							${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
 						</div>
 					</c:if>
+					<c:if test="${not empty passwordConfirmation}">
+						<div class="errorblock">
+							${passwordConfirmation}
+						</div>
+					</c:if>
 					<c:if test="${not empty msg}"> <h3>${msg}</h3> </c:if>
 					<form:form id="loginForm" name="loginForm" action="/FYP/auth/login_check?targetUrl=${targetUrl}" method="post" modelAttribute="user">
 						<table>

@@ -96,8 +96,6 @@ public class GameController {
 		if(!isAlreadyInGame){
 			userGameParticipationDAO.addToGame(game, email);
 			userGameAccountValHistoryDAO.insert(game.getGameID(), game.getStartingCash(), email);
-			System.out.println("Adding user to game: "+email);
-
 		}
 		else
 			System.out.println("User already in game");
@@ -109,8 +107,11 @@ public class GameController {
 	public ModelAndView gamesView() {
 		ModelAndView model = new ModelAndView("game/games");
 		
-		List<UserGameParticipation> participatingGames = userGameParticipationService.getParticipatingGames(getActiveUserEmail());
+		List<UserGameParticipation> participatingGames = 
+				userGameParticipationService.getParticipatingGames(getActiveUserEmail());
 		gameService.setGame(participatingGames);
+		
+		
 		model.addObject("participatingGames",participatingGames);
 
 		return model;
@@ -148,9 +149,7 @@ public class GameController {
 		ModelAndView model = new ModelAndView("/game/rankings");
 		
 		List<UserGameParticipation> participations = userGameParticipationDAO.getList(gameID);
-		System.out.println("Number of participations: "+participations.size());
 		List<User> usersInGame = userDAO.getList(getEmailList(participations));
-		System.out.println("Number of users in this game: "+usersInGame.size());
 		userGameParticipationService.assignBalances(participations, usersInGame);
 		stockOwnedService.calculateAccountValue(usersInGame, gameID);
 		Game game = gameDAO.get(gameID);
@@ -250,8 +249,6 @@ public class GameController {
 		userGameAccountValHistoryDAO.insert(gameID, newGame.getStartingCash(), email);
 
 		ModelAndView model = new ModelAndView("redirect:/games");
-		model.addObject("messageFromHome", "GAME CREATED");
-
 		return model;
 	}
 	
@@ -328,26 +325,24 @@ public class GameController {
 		Calendar to = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");		
 		from.add(Calendar.YEAR, -1); 
-		System.out.println("FROM: "+sdf.format(from.getTime()));
-		System.out.println("TO: "+sdf.format(to.getTime()));
 		
-		//List<Game> games = userDAO.getGamesForUser(getActiveUserEmail());
 		
-		//This needs redoing
-		List<UserGameParticipation> participatingGames = userGameParticipationService.getParticipatingGames(email);
+		List<UserGameParticipation> participatingGames = 
+				userGameParticipationService.getParticipatingGames(email);
 		gameService.setGame(participatingGames);
-		//List<Game> games = gameService.getCreatedGamesByUser(getActiveUserEmail());
+		
 		for(UserGameParticipation UGP : participatingGames){
+			
 			Game game = UGP.getGame();
-			List<UserGameParticipation> participations = userGameParticipationDAO.getList(game.getGameID());
+			List<UserGameParticipation> participations = 
+					userGameParticipationDAO.getList(game.getGameID());
 			List<User> usersInGame = userDAO.getList(getEmailList(participations));
 			game.setUsersInGame(usersInGame);
+			
 			userGameParticipationService.assignBalances(participations, usersInGame);
 			stockOwnedService.calculateAccountValue(usersInGame, game.getGameID());
-			System.out.println("GAME: "+game.getGameID()+": current acc val for user: "+usersInGame.get(0).getCurAccVal());
 			game.setBoard(gameService.getDashboardStats(email, game));
 			gameIDs.add(game.getGameID());
-
 		}
 		
 		String[] symbols = {"^DJI", "^GSPC"};
@@ -356,7 +351,6 @@ public class GameController {
 		Stock sAndP = stocks.get("^GSPC");
 		
 		List<UserGameAccountValHistory> balancesForGames = userGameAccountValHistoryDAO.get(email);
-		//getGameIDs(games);
 
 		
 		ModelAndView model = new ModelAndView("dashboard");

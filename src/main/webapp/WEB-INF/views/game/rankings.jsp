@@ -17,7 +17,10 @@
 <script>
 	$(document).ready(function() {
 		$('#rankings-table').DataTable({	
-			"order": [[ 4, "desc" ]]
+			"order": [[ 4, "desc" ]],
+	        "scrollY":        "55%",
+	        "scrollCollapse": true,
+	        "paging":         false
 		});
 		formatMoney();
 		formatPositions();

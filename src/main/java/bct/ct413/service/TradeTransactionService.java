@@ -7,6 +7,6 @@ import bct.ct413.model.Trade;
 
 public interface TradeTransactionService {
 
-	StockOwned calculateNewAvgPurchPrice(List<Integer> transactionIDs, Trade trade);
+	double calculateNewAvgPurchPrice(List<Integer> transactionIDs, Trade trade);
 
 }

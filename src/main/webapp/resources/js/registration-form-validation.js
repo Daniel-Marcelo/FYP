@@ -2,126 +2,84 @@
 var isEmailValid;
 
 function performUpdateValidation(){
-	var bool = updateValidation(JSON.parse('${emailsJSON}'));
+	var bool = validateUpdatedDetails(getEmails());
 	return bool;
 }
 
-function updateValidation(existingEmails){
+function performRegistrationValidation(){
+	var bool = validateRegistrationDetails(getEmails());
+		
+	return bool;
+}
+
+function validateUpdatedDetails(existingEmails){
 	
 	var firstname = document.updateDetailsForm.firstName;
 	var lastname = document.updateDetailsForm.lastName;
 	var uemail = document.updateDetailsForm.email;
-	var password = document.updateDetailsForm.password;
 	var country = document.updateDetailsForm.country;
-	var password2 = document.updateDetailsForm.retypedPassword;
 	
-	console.log("IN HERE NOW");
-	if(password2.value === password.value){
-		
-		console.log("Password is good");
-		if(updatedEmailisOK(uemail, existingEmails)){
-			
-			if(isInformationValidated(firstname,lastname, uemail, password, country)){
-				console.log("Returning true");
-				return true;
-			}
-		}
-	}
-	else{
-		alert("Passwords do not match.");
-	}
-		console.log("Returning false");
-		return false;
-		
-}
-
-
-function formValidation()
-{
-
-var firstname = document.registration.firstName;
-var lastname = document.registration.lastName;
-var uemail = document.registration.email;
-var password = document.registration.password;
-var country = document.registration.country;
-
-ValidateEmail(uemail,myCallBack)
-
-if(isEmailValid){
-	
-	console.log("Email is valid");
-	if(isInformationValidated(firstName, lastName, uemail, password, country)){
-		return true;
-	}
-}
-	return false;
-
-}
-
-function isInformationValidated(firstname,lastname, uemail, password, country){
-	
-	if(allLetter(firstname, lastname))
-	{	console.log("Name - valid");
-		if(checkPassword(password))
-		{ 			console.log("Password - valid");
-		
+	if(checkEmail(uemail, existingEmails)){
+		if(allLetter(firstname)){
+			if(allLetter(lastname)){
+				if(allLetter(country)){
 					return true;
+				}
 			}
 		}
-	
+	}
+	console.log("Returning false");
 	return false;
 }
 
-function allLetter(firstname, lastname)
+function validateRegistrationDetails(existingEmails){
+
+	var firstname = document.updateDetailsForm.firstName;
+	var lastname = document.updateDetailsForm.lastName;
+	var uemail = document.updateDetailsForm.email;
+	var country = document.updateDetailsForm.country;
+	var password = document.updateDetailsForm.password;
+
+	if(allLetter(firstname)){
+		if(allLetter(lastname)){
+			if(allLetter(country)){
+				if(checkPassword(password)){
+					return true;
+				}
+			}
+		}
+	}
+	console.log("Returning false");
+	return false;
+}
+
+function allLetter(item)
 { 
 	var letters = /^[A-Za-z ]+$/;
 	
-	if(firstname.value.match(letters))
+	if(item.value.match(letters))
 	{
-		if(lastname.value.match(letters)){
-			return true;
-		}
-		else
-		{
-			alert('Name must have alphabet characters only');
-			lastname.focus();
-			return false;
-		}
-		
+		console.log("Validated: "+item.value+" - All letters!");
+		return true;
 	}
-	
 	else
 	{
-		alert('Name must have alphabet characters only');
-		firstname.focus();
+		alert('Name/ Country must have alphabet characters only');
+		item.focus();
 		return false;
 	}
 }
 
 function checkPassword(password)
 { 
-	var mx = 8 
-	var passLength = password.value.length;
-	if (passLength == 0 || passLength< mx)
-	{
-	alert("Password should not be empty / length be over "+mx+" characters");
-	password.focus();
-	return false;
+	if (password.value.length == 0 || password.value.length< 8){
+		
+		alert("Password should not be empty / length be over "+8+" characters");
+		password.focus();
+		return false;
 	}
 	return true;
-//	var letters = /^[0-9a-zA-Z]+$/;
-	
-/*	if(uadd.value.match(letters))
-	{
-		return true;
-	}
-	
-	else
-	{
-		alert('User address must have alphanumeric characters only');
-		uadd.focus();
-		return false;
-	}*/
+
 }
 
 
@@ -150,17 +108,15 @@ function ValidateEmail(uemail,myCallBack)
 	}
 } 
 
-function updatedEmailisOK(uemail, existingEmails)
+function checkEmail(uemail, existingEmails)
 {
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 	
 	if(uemail.value.match(mailformat))
 	{
-		console.log("Correct Format - Checking this email - "+uemail.value);
+		console.log("Email Correct Format");
 		for(var key in existingEmails){
 			if(existingEmails.hasOwnProperty(key)){
-				console.log(existingEmails[key]);
-				console.log("VS : "+uemail.value);
 				if(existingEmails[key] == uemail.value){
 					alert("Email Already In Use");
 					return false;
@@ -172,22 +128,7 @@ function updatedEmailisOK(uemail, existingEmails)
 	}
 	else
 	{
-		alert("You have entered an invalid email address!");
+		alert("Email Address Not Formatted Correctly!");
 		return false;
-	}
-}
-
-function myCallBack(result){
-	
-	console.log("Connection was a success: "+result);
-	
-	//if the email already is associated to an account
-	if(result > 0 ){
-		alert("Email already associated to an account");
-		isEmailValid = false;
-	}
-	else{
-		console.log("The email is free to be used.");
-		isEmailValid = true;
 	}
 }

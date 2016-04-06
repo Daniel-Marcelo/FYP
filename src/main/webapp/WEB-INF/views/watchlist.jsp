@@ -15,14 +15,20 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
 <script>
 	$(document).ready(function() {
-		$('#watchlistTable').DataTable();
+		
+		
+		$('#watchlistTable').DataTable({
+			 "lengthChange": false
+
+		});
+		
 		$('#watchlistTable tbody').on('click', 'tr', addActiveClass);
-		$('#removeStockButton').click(removeStock);
+		
+		
 	});
 </script>
 </head>
 <body>
-
 
 <div id="main-container">
 		<div id="header"><%@include file="header.jsp"%></div>
@@ -30,7 +36,7 @@
 			<div align="center">
 				<div style = "margin-top: 5%;">
 					<h3 id="errorMsg"></h3>
-				<form method="post" action="delete-stock">
+				<form method="post" action="delete-stock" onSubmit = "return isStockClicked();">
 					<input id = "symbol-field" type="hidden" name="symbol"/>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<button style = "width: 20%;" id="removeStockButton" class="btn blue-submit">Remove Stock</button>

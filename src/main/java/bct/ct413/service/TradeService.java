@@ -15,6 +15,6 @@ public interface TradeService {
 	
 	Map<Integer, Integer> getTradeAndTransactionIDsForUser(String email);
 
-	List<Integer> getTransactionIDs(String email, String symbol, int gameID);
+	List<Integer> getPurchaseOrderTransactionIDs(String email, String symbol, int gameID);
 
 }

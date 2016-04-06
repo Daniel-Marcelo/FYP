@@ -2,6 +2,7 @@ package bct.ct413.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -22,47 +23,37 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public DashboardUserDetails getDashboardStats(String email, Game g) {
 
-		int index = 0;
 		Collections.sort(g.getUsersInGame());
+		DashboardUserDetails board 	= new DashboardUserDetails();
+		String name 				= null;
+		double myAccVal 			= 0;
+		double highestAccVal		= 0;
+		int index 					= 0;
 
-		DashboardUserDetails board = new DashboardUserDetails();
-		String name = null;
-		double myAccVal = 0;
-		double highestAccVal = 0;
 		for (User u : g.getUsersInGame()) {
-			System.out.println("Comparing: "+u.getCurAccVal() +" " + highestAccVal);
+			
 			if (u.getCurAccVal() > highestAccVal) {
 				highestAccVal = u.getCurAccVal();
 				name = u.getFirstName() + " " + u.getLastName();
-				System.out.println("Top player: "+name);
 			}
 			if (u.getEmail().equals(email)) {
-				System.out.println(email + " was found at index: " + index);
 				myAccVal = u.getCurAccVal();
 				board.setUserPosition(index + 1);
 				board.setCurBal(u.getBalance());
-
 			}
 			index++;
-
 		}
 		board.setTopPlayerName(name);
 		board.setUserAccVal(myAccVal);
 
 		DateTime today = new DateTime();
-
-		System.out.println("GAME:" + g.getGameName() + " Today Date: " + today);
 		DateTime end = new DateTime(g.getEndDate());
-
-		System.out.println("GAME:" + g.getGameName() + " End Date: " + end);
 		int days = Days.daysBetween(today, end).getDays();
 
 		if(days > 0)
 			board.setDaysLeft(days);
 		else
 			board.setDaysLeft(0);
-
-
 		return board;
 	}
 
@@ -162,13 +153,16 @@ public class GameServiceImpl implements GameService {
 	public void setActiveGames(List<UserGameParticipation> participatingGames) {
 
 		List<Game> games = gameDAO.getList();
+		Iterator<UserGameParticipation> iterator = participatingGames.iterator();
 		
-		for(UserGameParticipation UGP : participatingGames)
+		while(iterator.hasNext()){
+			UserGameParticipation UGP = iterator.next();
 			for(Game game: games)
 				if(UGP.getGameID() == game.getGameID() && game.getStatus().equals("Ended"))
-					participatingGames.remove(UGP);
+					iterator.remove();
 				else if(UGP.getGameID() == game.getGameID() && game.getStatus().equals("Active"))
-					UGP.setGame(game);		
+					UGP.setGame(game);	
+		}
 	}
 	
 }

@@ -16,10 +16,8 @@
 <script>
 	$(document).ready(function() {
 		var table = $('#example').DataTable({
-			"columnDefs" : [ {
-				className : "dt-body-center",
-				"targets" : [ 0, 1, 2, 3, 4, 5 ]
-			}]
+				"lengthChange": false,
+				stateSave: true
 		});
 	});
 </script>

@@ -2,6 +2,7 @@ package bct.ct413.controller;
 
 
 import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -94,7 +95,7 @@ public class AccessController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-	  @RequestParam(value = "logout", required = false) String logout, HttpServletRequest request) {
+	  @RequestParam(value = "logout", required = false) String logout, @RequestParam(value = "change-success", required = false) String passwordChange, HttpServletRequest request) {
 		
 		
 		String targetUrl = getRememberMeTargetUrlFromSession(request);
@@ -110,6 +111,9 @@ public class AccessController {
 			}
 			
 		}
+		if(passwordChange!=null){
+			model.addObject("passwordConfirmation", "Please Login With New Details");
+		}
 
 		if(targetUrl.equals("/admin-remove-user"))
 			model.addObject("loginUpdate", true);
@@ -124,24 +128,21 @@ public class AccessController {
 	@RequestMapping(value = "/updating-password", method = RequestMethod.POST)
 	public ModelAndView updatingPassword(@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, HttpServletRequest request){
 		
-		System.out.println("old: "+oldPassword);
-		System.out.println("new: "+newPassword);
 		String email = getActiveUserEmail();
 		String hashedOldPassword = userService.getPassword(email);
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		if(encoder.matches(oldPassword, hashedOldPassword)){
-			System.out.println("Passwords match");
 			
 			String hashedNewPassword = encoder.encode(newPassword);
-
 			userDAO.updatePassword(email, hashedNewPassword);
 		}else{
-			System.out.println("Passwords do not match");
+			return new ModelAndView("redirect:/account?password-error");		
 		}
 		
 		new SecurityContextLogoutHandler().logout(request, null, null);
-		ModelAndView model = new ModelAndView("redirect:/login");
+		
+		ModelAndView model = new ModelAndView("redirect:/login?change-success");
 		return model;
 		
 	}
@@ -185,8 +186,11 @@ public class AccessController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView newUser(ModelAndView model) {
+	public ModelAndView newUser(ModelAndView model, @RequestParam(value = "email-taken", required = false) String emailTaken) {
 
+		if(emailTaken!=null)
+			model.addObject("emailTaken", "This Email Is Already In Use");
+		
 		model.addObject("user", new User());
 		model.setViewName("register");
 		return model;
@@ -202,21 +206,32 @@ public class AccessController {
 	@RequestMapping(value = "/save-user", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User newUser) {
 		
-		Game game = gameDAO.get(1);
+		Set<String> emails = userService.getOtherEmails(" ");
+		boolean isInUse = false;
 		
-		String password = newUser.getPassword();
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String hashedPassword = passwordEncoder.encode(password);
+		for(String email: emails)
+			if(newUser.getEmail().equals(email))
+				isInUse = true;
 		
-		newUser.setPassword(hashedPassword);
-		userDAO.insert(newUser);
-		userRolesDAO.insert(newUser);
-		userGameParticipationDAO.addToGame(game, newUser.getEmail());
-		userGameAccountValHistoryDAO.insert(game.getGameID(), game.getStartingCash(), newUser.getEmail());
-		
-		//userDAO.addToDefaultGame(newUser);
-				
-		return new ModelAndView("redirect:/games");
+		if(!isInUse){
+			Game game = gameDAO.get(1);
+			String password = newUser.getPassword();
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String hashedPassword = passwordEncoder.encode(password);
+			
+			newUser.setPassword(hashedPassword);
+			userDAO.insert(newUser);
+			userRolesDAO.insert(newUser);
+			userGameParticipationDAO.addToGame(game, newUser.getEmail());
+			userGameAccountValHistoryDAO.insert(game.getGameID(), game.getStartingCash(), newUser.getEmail());
+			
+			//userDAO.addToDefaultGame(newUser);
+					
+			return new ModelAndView("redirect:/games");
+		}else{
+			
+			return new ModelAndView("redirect:/register?email-taken");
+		}
 	}
 	
     @RequestMapping(value = "is-email-free/{uemail:.+}", method = RequestMethod.GET)

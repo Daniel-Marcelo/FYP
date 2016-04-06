@@ -22,7 +22,7 @@
 						history and/or stocks owned are no longer in play and are permanently erased.<br>
 						<br>
 					</h2>
-					<div id="leaveForm" style = "width: 3	0%;">
+					<div id="leaveForm" style = "width: 30%;">
 						<form action="${pageContext.request.contextPath}/leave-game" method="POST">
 							<input type="hidden" id="gameToLeaveID${game.getGameID()}" name="gameToLeaveID" value="${game.getGameID()}"> 
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

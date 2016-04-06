@@ -130,16 +130,17 @@ public class HomeController {
 			persistentLoginsDAO.delete(currentEmail);
 			userDAO.delete(currentEmail);
 			
-		}
+		}else{
 		
-		//userDAO.update(existingUser);
+			userDAO.update(existingUser);
+		}
 		
 		currentEmail = getActiveUserEmail();
 		System.out.println("AFTER - Old: "+currentEmail+" - new: "+existingUser.getEmail());
 		newEmail = existingUser.getEmail();
 		
 		new SecurityContextLogoutHandler().logout(request, null, null);
-		return new ModelAndView("redirect:/");
+		return new ModelAndView("redirect:/account?details-change");
 
 	}
 	
@@ -153,9 +154,16 @@ public class HomeController {
 	@RequestMapping(value = "stock-price/{value}", method = RequestMethod.GET)
 	public @ResponseBody String getStockPerice(@PathVariable String value){
 		
+		System.out.println("Value: "+value);
 		Stock stock = YahooFinance.get(value);
-		stock.print();
-		return new Gson().toJson(stock.getQuote().getPrice());
+		
+		if(stock == null || stock.getName().equals("N/A")){
+			
+			System.out.println("Returning not valid");
+			return "Not valid";
+		}
+		else
+			return new Gson().toJson(stock.getQuote().getPrice());
 		
 	}
 	 
@@ -195,7 +203,10 @@ public class HomeController {
 	public ModelAndView addingStockToWatchList(@RequestParam("symbol") String symbol){
 
 		System.out.println("The symbol is: "+symbol);
+		
 		String message = stockOnWatchDAO.insert(getActiveUserEmail(), symbol);
+		
+		
 		return new ModelAndView("redirect:/watchlist");
 		//return message;
 		
@@ -203,8 +214,9 @@ public class HomeController {
 	
 	@RequestMapping(value = "delete-stock", method = RequestMethod.POST)
 	public ModelAndView  removeFromWatchList(@RequestParam("symbol") String symbol){
-		System.out.println("DEleting from watchlist");
+		
 		String message = stockOnWatchDAO.remove(symbol, getActiveUserEmail());
+		
 		return new ModelAndView("redirect:/watchlist");
 
 		//return message;
@@ -235,16 +247,16 @@ public class HomeController {
 
 	}*/
 
-	@RequestMapping(value = "portfolioz", method = RequestMethod.GET)
+	@RequestMapping(value = "portfolio", method = RequestMethod.GET)
 	public ModelAndView portfolioView() {
 
 		ModelAndView model = new ModelAndView("game/portfolioz");
-		String email = getActiveUserEmail();
 		
-		List<UserGameParticipation> participatingGames = userGameParticipationService.getParticipatingGames(email);
+		String email = getActiveUserEmail();
+		List<UserGameParticipation> participatingGames = 
+				userGameParticipationService.getParticipatingGames(email);
 		gameService.setGame(participatingGames);
 		List<StockOwned> stocksForUserForGames = stockOwnedService.stockOwnedPortfolioInfo(email);
-		//List<Game> gamesForUser = gameService.getCreatedGamesByUser(email);
 		List<Trade> myTransactions = tradeDAO.getPortfolioTradeDetails(email);
 
 		model.addObject("participatingGames", participatingGames);
@@ -272,19 +284,38 @@ public class HomeController {
 		return model;
 	}*/
 
-	@RequestMapping(value = { "/account", "/" }, method = RequestMethod.GET)
-	public ModelAndView myAccountView(ModelAndView model) throws IOException {
+	@RequestMapping(value = { "/account", "/"}, method = RequestMethod.GET)
+	public ModelAndView myAccountView(@RequestParam(value = "details-change", required = false) String detailsChange, 
+			@RequestParam(value = "password-change", required = false) String passwordChange, @RequestParam(value = "password-error", required = false) String passwordError) throws IOException {
+		
+		ModelAndView model =  new ModelAndView("account");
+		String email = getActiveUserEmail();
+		User user = userDAO.get(email);
+		Set<String> emails = userService.getOtherEmails(email);
 
-		User user = userDAO.get(getActiveUserEmail());
-
-		model.setViewName("account");
-		Set<String> emails = userService.getOtherEmails(getActiveUserEmail());
+		
+		if (detailsChange != null) {
+			System.out.println("DetailsChange: "+detailsChange);
+			model.addObject("detailsConfirmation", "Changes Successfully Made.");
+		}
+		if (passwordChange != null) {
+			System.out.println("PasswordChange: "+passwordChange);
+			model.addObject("passwordConfirmation", "Password Change Successful.");
+		}
+		if (passwordError != null) {
+			System.out.println("PasswordChange: "+passwordChange);
+			model.addObject("passwordError", "Incorrect Password Entered");
+		}
+		
+		
+		
 		model.addObject("existingReg", user);
 		model.addObject("emailsJSON", new Gson().toJson(emails));
 
 		return model;
 	}
-	@RequestMapping(value = { "/home"}, method = RequestMethod.GET)
+		
+	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public ModelAndView homeView(ModelAndView model) throws IOException {
 		return new ModelAndView("home");
 	}
@@ -299,14 +330,18 @@ public class HomeController {
 		
 		List<UserGameParticipation> participatingGames = userGameParticipationService.getParticipatingGames(email);
 		gameService.setActiveGames(participatingGames);
-			//List<Game> gamesForUser = gameService.getActiveGames(email);
-			List<UserGameParticipation> gameParticipations = userGameParticipationDAO.get(email);
-			List<StockOwned> stocksOwned = stockOwnedService.getList(email);
-			ModelAndView model = new ModelAndView("trade");
-			model.addObject("trade", new TradeDetails());
-			model.addObject("participatingGames", participatingGames);
-			model.addObject("jsonMap", new Gson().toJson(stocksOwned));
-			model.addObject("gameParticipationsJSON", new Gson().toJson(gameParticipations));
+		List<StockOwned> stocksOwned = stockOwnedService.getList(email);
+		
+		
+		
+/*		List<UserGameParticipation> gameParticipations = userGameParticipationDAO.get(email);
+*/		
+		
+		ModelAndView model = new ModelAndView("trade");			
+		model.addObject("trade", new TradeDetails());
+		model.addObject("participatingGames", participatingGames);
+		model.addObject("jsonMap", new Gson().toJson(stocksOwned));
+		model.addObject("gameParticipationsJSON", new Gson().toJson(participatingGames));
 
 		return model;
 	}
@@ -334,45 +369,56 @@ public class HomeController {
 			Trade trade = tradeDetails.getTradeObject(email, 0);
 			tradeDAO.insert(trade);	
 			int tradeID = tradeDAO.getLastTradeID(email, trade.getGameID());
-			System.out.println("Limit Order Trade ID: "+tradeID);
-
+			
 			LimitOrder limitOrder = tradeDetails.getLimitOrderObject();
 			limitOrder.setTradeID(tradeID);
-
 			limitOrderDetailsDAO.insert(limitOrder);
 		}
 
 		if (tradeDetails.getTradeType().equals("Market")) {
 
-			System.out.println("Inserting market order into database");
 			TradeTransaction tradeTransaction = tradeDetails.getTransactionObject();
 			tradeTransactionDAO.insert(tradeTransaction);
-			System.out.println("Transaction inserted");
 			int transactionID = tradeTransactionDAO.getLastTransactionID();
 			
-			System.out.println("Transaction ID FETHED: "+transactionID);
-
 			Trade trade = tradeDetails.getTradeObject(email,transactionID);
 			tradeDAO.insert(trade);
-			System.out.println("Trade inserted");
 
+			List<Integer> transactionIDs = tradeService
+					.getPurchaseOrderTransactionIDs(trade.getEmail(), trade.getSymbol(), trade.getGameID());
+			
 			if (trade.getBuyOrSell().equals("Sell")) {
-
+				
 				tradeTransaction.setTotal(-(tradeTransaction.getTotal()));
 				tradeTransaction.setQuantity(-(tradeTransaction.getQuantity()));
+				userGameParticipationDAO.updateBalance(email, tradeTransaction.getTotal(), trade.getGameID());
+				int oldQuantity = stockOwnedService.getQuantity(trade.getEmail(), trade.getSymbol(), trade.getGameID());
+				int newQuantity = oldQuantity + tradeTransaction.getQuantity();
+				stockOwnedDAO.updateQuantity(trade.getGameID(), trade.getSymbol(), trade.getEmail(), newQuantity);
+
+			}else{
+				userGameParticipationDAO.updateBalance(email, tradeTransaction.getTotal(), trade.getGameID());
+				double avgPurchPrice = tradeTransactionService
+						.calculateNewAvgPurchPrice(transactionIDs, trade);
+
+				int oldQuantity = stockOwnedService.getQuantity(trade.getEmail(), trade.getSymbol(), trade.getGameID());
+				
+				//If in stock owned table
+				if(oldQuantity != -1){
+					int newQuantity = oldQuantity + tradeTransaction.getQuantity();
+					System.out.println("New quantity = "+newQuantity);
+					stockOwnedDAO.updateQuantity(trade.getGameID(), trade.getSymbol(), trade.getEmail(), newQuantity);
+					stockOwnedDAO.updateAvgPurchPrice(trade.getGameID(), trade.getSymbol(), trade.getEmail(), avgPurchPrice);
+				}
+				else{
+					stockOwnedDAO.insert(trade.getGameID(), trade.getSymbol(), trade.getEmail(), avgPurchPrice, tradeTransaction.getQuantity());
+				}
+
 			}
 			
-			List<Integer> transactionIDs = tradeService.getTransactionIDs(trade.getEmail(), trade.getSymbol(), trade.getGameID());
-			
-			System.out.println("There are "+transactionIDs.size()+" transactions to be used in calculating the new Average Purchase Price");
-			StockOwned so = tradeTransactionService.calculateNewAvgPurchPrice(transactionIDs, trade);
-			System.out.println("New average purchase price");
-			userGameParticipationDAO.updateBalance(email, tradeTransaction.getTotal(), trade.getGameID());
-			//userDAO.updateStocksOwned(trade, tradeTransaction.getQuantity());
-			stockOwnedService.updateQuantity(trade, so);
-			//stockOwnedDAO.update(trade, tradeTransaction.getQuantity(), newAvgPurchasePrice);
+			//stockOwnedService.updateQuantity(trade, so);
 		}
-		return new ModelAndView("symbol-lookup");
+		return new ModelAndView("redirect:/portfolio");
 	}
 	
 	public String getActiveUserEmail() {

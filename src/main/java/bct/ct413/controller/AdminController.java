@@ -132,14 +132,13 @@ public class AdminController {
     public @ResponseBody String deleteUser(@PathVariable String email){
     	
     	List<Integer> gameIDs = gameService.getCreatedGameIDs(email);
-    	System.out.println("Number of created games: "+gameIDs.size());
-    	//Removing games created by user
-    	
     	
     	for(int gameID: gameIDs){
         	stockOwnedDAO.remove(gameID);
 
-	    	Map<Integer, Integer> tradeTransactionIDsForGame = tradeService.getTradeAndTransactionIDs(gameID);
+	    	Map<Integer, Integer> tradeTransactionIDsForGame = 
+	    			tradeService.getTradeAndTransactionIDs(gameID);
+	    	
 			if(tradeTransactionIDsForGame.keySet().size() != 0){
 				
 				limitOrderDetailsDAO.remove(tradeTransactionIDsForGame.keySet());
@@ -155,16 +154,16 @@ public class AdminController {
     	gameDAO.remove(email);
     	stockOnWatchDAO.remove(email);
 
-    	Map<Integer, Integer> tradeAndTransactionIDsForUser = tradeService.getTradeAndTransactionIDsForUser(email);
+    	Map<Integer, Integer> tradeAndTransactionIDsForUser = 
+    			tradeService.getTradeAndTransactionIDsForUser(email);
 
 		if(tradeAndTransactionIDsForUser.keySet().size() != 0){
 			
 			limitOrderDetailsDAO.remove(tradeAndTransactionIDsForUser.keySet());
 			tradeDAO.remove(email);
 			tradeTransactionDAO.remove(tradeAndTransactionIDsForUser.values());
-			
 		}
-
+		
     	stockOwnedDAO.remove(email);
     	userGameAccountValHistoryDAO.remove(email);
     	userGameParticipationDAO.remove(email);

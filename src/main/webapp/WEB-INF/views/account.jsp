@@ -11,7 +11,14 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/js/registration-form-validation.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">			
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">			
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
+
+<script>
+
+function getEmails(){
+	 return JSON.parse('${emailsJSON}');
+}
+</script>			
 </head>
 <body>
 
@@ -29,6 +36,11 @@
 		<div style = "width: 20%; overflow:hidden; padding-bottom: 5%; margin-left: 20%; display: inline-block; float: left;">
 			<div align = "center" style = "padding-top: 1% 0%;">
 				<h1>Details</h1>
+				<c:if test="${not empty detailsConfirmation}">
+						<div style = "color: GREEN;">
+							<h2>${detailsConfirmation}</h2>
+						</div>
+					</c:if>
 			</div>
 				<form:form name="updateDetailsForm" action="updating-user" method="post" modelAttribute="existingReg" onSubmit="return performUpdateValidation();">
 						<div>
@@ -71,7 +83,12 @@
 			<div style = "padding-top: 1% 0%; margin-left:35%;">
 				<h1>Change Password</h1>
 			</div>
-			<c:if test="${not empty msg}"> <h3>${msg}</h3> </c:if>
+					<c:if test="${not empty passwordError}">
+						<div style = "color: RED; padding-top: 1% 0%; margin-left:32%;" >
+							<h2>${passwordError}</h2>
+						</div>
+					</c:if>
+			<%-- <c:if test="${not empty msg}"> <h3>${msg}</h3> </c:if> --%>
 			<form action="updating-password" method="POST">
 							<table>
 								<tr>

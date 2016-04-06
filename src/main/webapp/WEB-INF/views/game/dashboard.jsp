@@ -25,6 +25,8 @@
 	href="${pageContext.request.contextPath}/resources/css/game/dashboard.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/tags.css">
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/game/dashboard-loader.css">
 
 <script>
 	$(document).ready(function() {
@@ -35,8 +37,16 @@
 		google.charts.setOnLoadCallback(drawCharts);
 
 		formatMoney();
-		formatPositions();
+		//formatPositions();
 		drawTables(JSON.parse("${gameIDs}"));
+		
+		
+        var intervalID = setInterval(function(){
+        	console.log("Update");
+        	document.getElementById('loader').style.display = "none";
+        	document.getElementById('dashboard-div').style.visibility = "visible";
+
+       		}, 1000); 
 	});
 
 	//Function to draw blank chart
@@ -74,83 +84,98 @@
 		<div id="header"><%@include file="../header.jsp"%></div>
 
 		<div id="main-content">
-			<div id="dashboard-div">
-				<c:forEach var="userParticipation" items="${participatingGames}">
-
-					<div class="game-inner-div">
-						<div style="width: inherit">
-							<div align="center">
-								<h3>${userParticipation.getGame().getGameName()}</h3>
-							</div>
-							<div style="height: 200px; overflow: auto;">
-								<div style="margin: 0 auto; width: 96%;">
-									<table id="myTable${userParticipation.getGame().getGameID()}"
-										class="table table-striped table-bordered">
-										<thead>
-											<tr>
-												<th>Position</th>
-												<th>Name</th>
-												<th>Country</th>
-												<th>Balance</th>
-												<th>Acc. Value</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach var="user"
-												items="${userParticipation.getGame().getUsersInGame()}">
-
+		
+		<div id = "loader" style = "margin-top: 13%;">
+			<div id="circularG">
+				<div id="circularG_1" class="circularG"></div>
+				<div id="circularG_2" class="circularG"></div>
+				<div id="circularG_3" class="circularG"></div>
+				<div id="circularG_4" class="circularG"></div>
+				<div id="circularG_5" class="circularG"></div>
+				<div id="circularG_6" class="circularG"></div>
+				<div id="circularG_7" class="circularG"></div>
+				<div id="circularG_8" class="circularG"></div>
+			</div>
+		</div>
+				<div id="dashboard-div" style = "visibility: hidden;">
+					<c:forEach var="userParticipation" items="${participatingGames}">
+	
+						<div class="game-inner-div">
+							<div style="width: inherit">
+								<div align="center">
+									<h3>${userParticipation.getGame().getGameName()}</h3>
+								</div>
+								<div style="height: 190px; ">
+									<div style="float: left; margin: 0 auto; width: 100%;">
+										<table id="myTable${userParticipation.getGame().getGameID()}"
+											class="table table-striped table-bordered">
+											<thead>
 												<tr>
-													<td class="position"></td>
-													<td>${user.getFirstName()}${user.getLastName()}</td>
-													<td>${user.getCountry()}</td>
-													<td class="money">${user.getBalance()}</td>
-													<td class="money">${user.getCurAccVal()}</td>
+													<th>Position</th>
+													<th>Name</th>
+													<th>Country</th>
+													<th>Balance</th>
+													<th>Acc. Value</th>
 												</tr>
-											</c:forEach>
-										</tbody>
-									</table>
+											</thead>
+											<tbody>
+												<c:forEach var="user"
+													items="${userParticipation.getGame().getUsersInGame()}">
+	
+													<tr>
+														<td class="position${userParticipation.getGame().getGameID()}"></td>
+														<td>${user.getFirstName()} ${user.getLastName()}</td>
+														<td>${user.getCountry()}</td>
+														<td class="money">${user.getBalance()}</td>
+														<td class="money">${user.getCurAccVal()}</td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
+	
+							<div
+								id="performanceChart${userParticipation.getGame().getGameID()}"
+								class="performance-chart"></div>
+								
+								
+	
+							<div style="margin: 0 auto; width: 100%;">
+								<table
+									id="myStatsTable${userParticipation.getGame().getGameID()}"
+									class="table table-striped table-bordered">
+									<thead>
+										<tr>
+											<th>Top Player</th>
+											<th>Current Position</th>
+											<th>Acc. Value</th>
+											<th>Days Left</th>
+											<th>Current Balance</th>
+	<!-- 										<th>Acc. Value Change</th>
+	 -->									</tr>
+									</thead>
+									<tbody>
+	
+										<tr>
+											<td>${userParticipation.getGame().getBoard().getTopPlayerName()}</td>
+											<td>${userParticipation.getGame().getBoard().getUserPosition()}</td>
+											<td class="money">${userParticipation.getGame().getBoard().getUserAccVal()}</td>
+											<td>${userParticipation.getGame().getBoard().getDaysLeft()}</td>
+											<td class="money">${userParticipation.getGame().getBoard().getCurBal()}</td>
+	<!-- 										<td id="accValueCell"></td>
+	 -->
+										</tr>
+									</tbody>
+								</table>
+							</div>
+	
+	
 						</div>
-
-						<div style="width: inherit"
-							id="performanceChart${userParticipation.getGame().getGameID()}"
-							class="performance-chart"></div>
-
-						<div style="margin: 0 auto; width: 100%;">
-							<table
-								id="myStatsTable${userParticipation.getGame().getGameID()}"
-								class="table table-striped table-bordered">
-								<thead>
-									<tr>
-										<th>Top Player</th>
-										<th>Current Position</th>
-										<th>Acc. Value</th>
-										<th>Days Left</th>
-										<th>Current Balance</th>
-										<th>Acc. Value Change</th>
-									</tr>
-								</thead>
-								<tbody>
-
-									<tr>
-										<td>${userParticipation.getGame().getBoard().getTopPlayerName()}</td>
-										<td>${userParticipation.getGame().getBoard().getUserPosition()}</td>
-										<td class="money">${userParticipation.getGame().getBoard().getUserAccVal()}</td>
-										<td>${userParticipation.getGame().getBoard().getDaysLeft()}</td>
-										<td class="money">${userParticipation.getGame().getBoard().getCurBal()}</td>
-										<td id="accValueCell"></td>
-
-									</tr>
-								</tbody>
-							</table>
-						</div>
-
-
-					</div>
-
-				</c:forEach>
-			</div>
+	
+					</c:forEach>
+				</div>
 		</div>
 	</div>
 	<div id="footer"><%@include file="../footer.jsp"%></div>
