@@ -15,18 +15,22 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/trade.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
+
 <script>
 	$(document).ready(function() {
 		
-		autoCompleteTradeForm();
+		autoCompleteSymbolField();
 		isStockMarketOpen();
 		changeBalance();
+		
 		document.getElementById("quantity").value = 1;
 		document.getElementById("companySymbol").addEventListener("blur", updatePriceAndQuantity, true);
-		$('#quantity').on('input', updateTotalAndValidateFunds);
-		document.getElementById("quantity").addEventListener("blur", updateTotalAndValidateFunds, true);
-		$('#sharePrice').on('input',updateTotal());
+/* 		document.getElementById("quantity").addEventListener("blur", updateTotalAndValidateFunds, true);
+ */		$('#quantity').on('input', updateTotalAndValidateFunds);
+		$('#sharePrice').on('input',updateTotal);
 	});
+	
+	
 	function getGameParticipations(){
 		return JSON.parse('${gameParticipationsJSON}');
 	}
@@ -90,11 +94,11 @@
 							</tr>
 							<tr>
 								<td>Price</td>
-								<td><form:input path="sharePrice" id="sharePrice" class="form-field" type="number" min="1" max="100000" placeholder="Desired price..." readOnly="true" step="0.01" /></td>
+								<td><form:input path="sharePrice" id="sharePrice" class="form-field" type="number" min="1" max="100000" placeholder="Price..." readOnly="true" step="0.01" /></td>
 							</tr>
 							<tr>
 								<td>Total</td>
-								<td><form:input path="costOfTrade" id="costOfTrade" class="form-field" type="number" min="1" max="100000" placeholder="Desired price..." readOnly="true" step="0.01" /></td>
+								<td><form:input path="costOfTrade" id="costOfTrade" class="form-field" type="number" min="1" max="100000" placeholder="Total...	" readOnly="true" step="0.01" /></td>
 							</tr>
 							<tr id="durationField">
 								<td >Duration</td>

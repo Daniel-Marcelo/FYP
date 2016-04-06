@@ -27,7 +27,7 @@ public class StockOwnedServiceImpl implements StockOwnedService {
 			if(so.getEmail().equals(email) && so.getSymbol().equals(symbol) && so.getGameID() == gameID)
 				return so.getQuantity();
 		
-		return 0;
+		return -1;
 	}
 	
 	@Override
@@ -125,11 +125,12 @@ public class StockOwnedServiceImpl implements StockOwnedService {
 	public void updateQuantity(Trade trade, StockOwned so){
 		
 		int oldQuantity = getQuantity(trade.getEmail(), trade.getSymbol(), trade.getGameID());
-
+		System.out.println("Old quantity: "+oldQuantity);
+		
 		if (oldQuantity == 0) 
 			stockOwnedDAO.insert(so);
 		else{
-			so.setQuantity(so.getQuantity()+oldQuantity);
+			so.setQuantity(so.getQuantity());
 			stockOwnedDAO.update(so);
 		}
 			

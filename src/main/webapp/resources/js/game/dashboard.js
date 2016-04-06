@@ -4,11 +4,15 @@
 
 	function createTable1(gameID){
 		$('#myTable' + gameID).DataTable({
-			"paging" : true,
 			"ordering" : true,
 			"info" : true,
-			"order": [[ 3, "desc" ]]
+			"order": [[ 4, "desc" ]],
+	        "scrollY":        "75px",
+	        "scrollCollapse": true,
+	        "paging":         false
 		});
+		
+		formatPositions(gameID);
 		
 	}
 	
@@ -57,8 +61,8 @@
 		}
 	}
 	
-	function formatPositions(){
-		var values = document.getElementsByClassName("position");
+	function formatPositions(gameID){
+		var values = document.getElementsByClassName("position"+gameID);
 		
 		for (var i = 0; i < values.length; i++) {
 			values[i].innerHTML = (i+1);
@@ -103,7 +107,8 @@
 						}
 					}
 					
-					data.addRow([new Date(thisDate.year,thisDate.month, thisDate.dayOfMonth), dowChange / 100, SPChange / 100, value / 100 ]);
+					data.addRow([new Date(thisDate.year,thisDate.month, 
+							thisDate.dayOfMonth), dowChange / 100, SPChange / 100, value / 100 ]);
 
 /*					var accValueChange = document.getElementById("accValueCell");
 					console.log("INNER HTML: "+accValueChange.value);

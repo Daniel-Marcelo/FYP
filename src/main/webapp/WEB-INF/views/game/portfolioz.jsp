@@ -43,7 +43,7 @@
 				<div id="game-info-div">
 					<div>
 						<div id = "tables-div">
-							<h1 align="center">Stocks Owned</h1>
+							<h1 align="center">Stocks Owned</h1>	
 							<table id="myTable" class="table table-striped table-bordered" width="100%">
 								<thead>
 									<tr>

@@ -15,13 +15,16 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <script>
 	$(document).ready(function() {
-		var table = $('#allUsersTable').DataTable();
-		$('#allUsersTable tbody').on('click', 'tr', addSelectedClass);
+		
+		var table = $('#allUsersTable').DataTable({
+			 "lengthChange": false
+		});
+		$('#allUsersTable tbody').on('click', 'tr', addActiveClass);
 		$('#removeUserButton').click(removeUser);
 	});
 </script>
 </head>
-<body>
+<body>	
 
 	<div id="main-container">
 		<div id="header"><%@include file="../header.jsp"%></div>

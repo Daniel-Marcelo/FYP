@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js" type="text/javascript"></script>
+	
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-login.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home.css">
 

@@ -72,7 +72,7 @@ public class TradeServiceImpl implements TradeService {
 	}
 	
 	@Override
-	public List<Integer> getTransactionIDs(String email, String symbol,int gameID) {
+	public List<Integer> getPurchaseOrderTransactionIDs(String email, String symbol,int gameID) {
 		
 		List<Integer> ids = new ArrayList<Integer>();
 		List<Trade> trades = tradeDAO.getList();
@@ -80,7 +80,7 @@ public class TradeServiceImpl implements TradeService {
 		for(Trade t : trades){
 			t.printDetails();
 			System.out.println();
-			if(t.getEmail().equals(email) && t.getSymbol().equals(symbol) && t.getGameID() == gameID)
+			if(t.getEmail().equals(email) && t.getSymbol().equals(symbol) && t.getGameID() == gameID && t.getBuyOrSell().equals("Buy"))
 				ids.add(t.getTransaction().getTransactionID());
 		}
 		

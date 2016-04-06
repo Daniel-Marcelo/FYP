@@ -18,9 +18,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <script>
 $(document).ready(function() {
+	
 		emptyFields();
 		hideDivs();
 		autoComplete();
+		
 	});
 </script>
 </head>

@@ -27,7 +27,8 @@
 	<mvc:annotation-driven />
   
  <!-- declare beans -->  
- <bean id="userDAO" class="bct.ct413.dao.UserDAOImpl" />  
+ 
+ 	<bean id="userDAO" class="bct.ct413.dao.UserDAOImpl" />  
  
  
  <bean id="userRolesDAO" class="bct.ct413.dao.UserRolesDAOImpl" /> 
@@ -46,8 +47,8 @@
  <bean id = "UserGameParticipationService" class = "bct.ct413.service.UserGameParticipationServiceImpl"/> 
  <bean id = "stockOwnedService" class = "bct.ct413.service.StockOwnedServiceImpl"/> 
  <bean id = "tradeTransactionService" class = "bct.ct413.service.TradeTransactionServiceImpl"/> 
- 
-  
+<!--  <bean id = "threading" class = "bct.ct413.service.ThreadingImpl"/>
+ -->  
  
  
    

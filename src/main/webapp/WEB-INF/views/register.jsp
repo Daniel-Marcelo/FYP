@@ -24,6 +24,11 @@
 				</div>
 				<div align="center" class = "white-background">
 					<h1>Registration</h1>
+					<c:if test="${not empty emailTaken}">
+						<div class="errorblock" style = "color: RED;">
+							${emailTaken}
+						</div>
+					</c:if>
 					<form:form id="registration" name="registration" action="save-user" method="post" modelAttribute="user" onSubmit="return formValidation();">
 						<table>
 							<tr>

@@ -2,7 +2,7 @@
  * 
  */
 
-	function addSelectedClass(){
+	function addActiveClass(){
 		var table = $('#allUsersTable').DataTable();
 
 		if ($(this).hasClass('active')) {

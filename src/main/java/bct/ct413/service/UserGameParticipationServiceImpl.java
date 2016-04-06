@@ -56,7 +56,6 @@ public class UserGameParticipationServiceImpl implements UserGameParticipationSe
 		for(UserGameParticipation UGP : gamesParticipations){
 			if(UGP.getEmail().equals(email))
 				relevantGames.add(UGP);
-				
 		}
 		return relevantGames;
 	}

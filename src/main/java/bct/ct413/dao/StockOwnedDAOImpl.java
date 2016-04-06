@@ -204,4 +204,76 @@ public class StockOwnedDAOImpl implements StockOwnedDAO {
 		
 	}
 
+
+
+
+	@Override
+	public void updateQuantity(int gameID, String symbol, String email,
+			int newQuantity) {
+		try{
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt2 = conn.prepareStatement("UPDATE fyp_stock_owned SET quantity = ? WHERE email = ? AND symbol = ? AND game_id = ?");
+			stmt2.setInt(1, newQuantity);
+			stmt2.setString(2, email);
+			stmt2.setString(3, symbol);
+			stmt2.setInt(4, gameID);
+			stmt2.executeUpdate();
+			stmt2.close();
+			conn.close();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
+
+
+
+	@Override
+	public void updateAvgPurchPrice(int gameID, String symbol, String email,
+			double avgPurchPrice) {
+		try{
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt2 = conn.prepareStatement("UPDATE fyp_stock_owned SET avg_purch_price = ? WHERE email = ? AND symbol = ? AND game_id = ?");
+			stmt2.setDouble(1, avgPurchPrice);
+			stmt2.setString(2, email);
+			stmt2.setString(3, symbol);
+			stmt2.setInt(4, gameID);
+			stmt2.executeUpdate();
+			stmt2.close();
+			conn.close();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}			
+	}
+
+
+
+
+	@Override
+	public void insert(int gameID, String symbol, String email,
+			double avgPurchPrice, int quantity) {
+
+		try{
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement stmt2 = conn.prepareStatement("INSERT INTO fyp_stock_owned VALUES (?, ?, ?, ?, ?)");
+			stmt2.setInt(1, gameID);
+			stmt2.setString(2, email);
+			stmt2.setString(3, symbol);
+			stmt2.setInt(4, quantity);
+			stmt2.setDouble(5, avgPurchPrice);
+			System.out.println("Symbol: "+symbol+ " price "+avgPurchPrice);	
+			stmt2.execute();
+			stmt2.close();
+			conn.close();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
 }

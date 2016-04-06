@@ -12,8 +12,6 @@ var intervalID = 0;
 
 //Function to draw blank chart
 function drawChart() {
-
-	
 	var data = new google.visualization.DataTable();
 	data.addColumn('date', 'Date');
 	data.addColumn('number', "");
@@ -27,20 +25,19 @@ function drawChart() {
 		},
 		containerId : 'chart_div'
 	});
-
-
 	wrapper.draw();
 }
 
 //Draws chart of a symbol entered from user, then updates the information table
-function testMethod(){
+function performLookup(stockSymbol){
 	
     var myLoad = document.getElementById("load-animation");
     myLoad.style.visibility = "visible";
+    
+    
 	window.clearInterval(intervalID);
 	
 	var symbolInputField = document.getElementById("companySymbol");
-	var stockSymbol = (symbolInputField.value).toUpperCase();
 	symbolInputField.value='';
 	var confirmation = document.getElementById("confirmation");
 	confirmation.innerHTML = "";
@@ -49,8 +46,6 @@ function testMethod(){
 	$.ajax({
         url : 'stock-info/'+stockSymbol,
         success : function(data) {
-        	console.log(data);
-
         
         if(data == "Not valid"){
         	myLoad.style.visibility = "hidden";
@@ -64,13 +59,15 @@ function testMethod(){
 	    	
 	  		for(i = 0 ; i < obj.history.length ; i++){
 	  			
-	  			var date = new Date(obj.history[i].date.year, obj.history[i].date.month, obj.history[i].date.dayOfMonth);
+	  			var date = new Date(obj.history[i].date.year, 
+	  					obj.history[i].date.month, obj.history[i].date.dayOfMonth);
 	  			data.addRows([ [date, obj.history[i].close] ])
-	  			
 	  		}
 	  		
 	  		dt.setDataTable(data);
 	        dt.draw();
+	        dt.getChart().setVisibleChartRange(null, null);
+
 	        
 	        $('#companyName').html("<u>" + (obj.symbol).toUpperCase() +" - "+ obj.name + "</u>");
 	        document.getElementById("symbol-field").value = obj.symbol;
@@ -100,25 +97,16 @@ function testMethod(){
 	        $('#EPSChanging').html(obj.stats.eps);
 	        $('#capChanging').html((numeral(obj.stats.marketCap).format('0.00a')).toUpperCase());
 	        
-	        dt.getChart().setVisibleChartRange(null, null);
 	        document.getElementById("chart_div").style.visibility = "visible";
 	        document.getElementById("stockInfoArea").style.visibility = "visible";
 	        document.getElementById("watch-div").style.visibility = "visible";
-	
-	             
 	        myLoad.style.visibility = "hidden";
 	
-	        if (isStockMarketOpen()){
-	/*       	    intervalId = setInterval(updateStockPrice(stockSymbol), 3000);
-	 * 
-	*/ 		//var intervalID = 0;
-			intervalID = setInterval(function(){
+	        console.log("Performing 2 second update");
+	        intervalID = setInterval(function(){
+	        	console.log("Update");
 	       		updateStockPrice(stockSymbol)       	
 	       		}, 2000); 
-			console.log("INTERVAL ID: "+intervalID + " stock symbol: "+ stockSymbol);
-	        }
-	
-			
 		}
         }
 	});
@@ -204,7 +192,7 @@ function hideDivs(){
 	document.getElementById("load-animation").style.visibility = "hidden";
 }
 
-function addToWatchList(){
+/*function addToWatchList(){
 	 var name = document.getElementById("companyName");
 	 var symbol = String(getSymbol(name.innerHTML));
 
@@ -217,7 +205,7 @@ function addToWatchList(){
 			 
 		 }
 	 });
-}
+}*/
 function getSymbolFromTable(name){
 	 
 	 var res1 = name.split("<u>"); 	//Will give SYM - NAME </u>

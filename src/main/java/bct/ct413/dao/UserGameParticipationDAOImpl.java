@@ -22,6 +22,7 @@ public class UserGameParticipationDAOImpl implements UserGameParticipationDAO {
 	@Override
 	public List<UserGameParticipation> getList(int gameID) {
 
+		System.out.println("IN HERE");
 		List<UserGameParticipation> users = new ArrayList<UserGameParticipation>();
 		try {
 			Connection conn = dataSource.getConnection();

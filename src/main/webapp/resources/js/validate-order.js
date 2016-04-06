@@ -86,14 +86,8 @@ function updateStockPrice() {
 		success : function(data) {
 			
 			//If the symbol is invalid
-			if( data == 0 ){
-				
-/*				var error = document.getElementById("errorTag2");
-
-				error.innerHTML = "Not a valid symbol"+"<br>";
-				error.style.display = "inline";
-				error.style.color = "RED";	*/
-				
+			if( data == "Not valid" ){
+			
 				errorMsg("errorTag2", "Not a valid symbol");
 				
 				
@@ -147,6 +141,8 @@ function updateStockPrice() {
 				//Show the relevant stock price in the price field
 				var c = document.getElementById("sharePrice");
 				c.value = data;
+				var c = document.getElementById("costOfTrade");
+				c.value = data;
 				
 				//Make the submi button active again
 				var orderButton = document.getElementById("orderButton");
@@ -159,6 +155,7 @@ function updateStockPrice() {
 
 function updateTotal(){
 	
+	console.log("Updating total");
 	var total = document.getElementById('costOfTrade');
 	var c = document.getElementById("sharePrice").value;
 	var q = document.getElementById('quantity').value;
@@ -293,10 +290,13 @@ function setSellLimit(stocksOwnedJSON){
 		validateFunds();
 		setSellLimit(getStocksOwned());
 	}
-	function changeBalance() {
-		
+	
+	
+	function clearFields(){
 		var elements = document.getElementsByTagName("input");
+		
 		for (var ii=0; ii < elements.length; ii++) {
+			
 		  if (elements[ii].type == "text") {
 		    elements[ii].value = "";
 		  }
@@ -304,17 +304,28 @@ function setSellLimit(stocksOwnedJSON){
 			    elements[ii].value = 0;
 			  }
 		}
+	}
+
+	function changeBalance() {
+		
+		clearFields();
+		
 		var gameID = document.getElementById("gameID").value;
 		var participations = getGameParticipations();
+		
 		for (i = 0; i < participations.length; i++) {
-			if (participations[i].gameID == gameID) {
+			
+			if (participations[i].gameID == gameID)
 				setBalance(participations[i].balance);
-			} else {
+			 else 
 				console.log("No ID MATCH");
-			}
+			
 		}
 	}
 	function updatePriceAndQuantity(){
+		
+		console.log("The symbol entered is: "+document.getElementById("companySymbol").value);
+		document.getElementById("quantity").value = 1;
 		
 		if (document.getElementById("companySymbol").value != '') {
 			updateStockPrice();

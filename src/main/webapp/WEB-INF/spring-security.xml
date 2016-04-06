@@ -42,11 +42,11 @@
 			/> <intercept-url pattern="/viewGameRules/**" access="hasRole('ROLE_USER')" 
 			/> <intercept-url pattern="/leaveGame/**" access="hasRole('ROLE_USER')" /> -->
 
-		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
+ 		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
 
 		<access-denied-handler error-page="/403" />
 
-		<form-login login-page="/login" default-target-url="/account"
+		<form-login login-page="/login" default-target-url="/games"
 			authentication-failure-url="/login?error" username-parameter="email"
 			password-parameter="password" login-processing-url="/auth/login_check"
 			authentication-success-handler-ref="savedRequestAwareAuthenticationSuccessHandler" />

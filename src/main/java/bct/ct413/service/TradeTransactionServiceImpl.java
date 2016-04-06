@@ -15,7 +15,7 @@ public class TradeTransactionServiceImpl implements TradeTransactionService {
 	public TradeTransactionDAO tradeTransactionDAO; 
 	
 	@Override
-	public StockOwned calculateNewAvgPurchPrice(List<Integer> transactionIDs, Trade trade){
+	public double calculateNewAvgPurchPrice(List<Integer> transactionIDs, Trade trade){
 		
 		//if(transactionIDs.size() != 0){
 		
@@ -38,13 +38,13 @@ public class TradeTransactionServiceImpl implements TradeTransactionService {
 			
 			System.out.println("Dividing: "+total+ "//"+quantity);
 			
-			StockOwned so = new StockOwned();
+/*			StockOwned so = new StockOwned();
 			so.setGameID(trade.getGameID());
 			so.setEmail(trade.getEmail());
 			so.setQuantity(quantity);
 			so.setSymbol(trade.getSymbol());
-			so.setAvgPurchPrice(avgPurchPrice);
-			return so;
+			so.setAvgPurchPrice(avgPurchPrice);*/
+			return avgPurchPrice;
 		
 	}
 

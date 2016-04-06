@@ -96,13 +96,11 @@ public class UserDAOImpl implements UserDAO {
 		
 		try {
 			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt1 = conn.prepareStatement("UPDATE fyp_user SET email = ?, password = ?, first_name = ?, last_name = ?, country=? WHERE email = ?");
-			stmt1.setString(1, user.getEmail());
-			stmt1.setString(2, user.getPassword());
-			stmt1.setString(3, user.getFirstName());
-			stmt1.setString(4, user.getLastName());
-			stmt1.setString(5, user.getCountry());
-			stmt1.setString(6, user.getEmail());
+			PreparedStatement stmt1 = conn.prepareStatement("UPDATE fyp_user SET first_name = ?, last_name = ?, country=? WHERE email = ?");
+			stmt1.setString(1, user.getFirstName());
+			stmt1.setString(2, user.getLastName());
+			stmt1.setString(3, user.getCountry());
+			stmt1.setString(4, user.getEmail());
 			stmt1.execute();
 			
 			stmt1.close();
