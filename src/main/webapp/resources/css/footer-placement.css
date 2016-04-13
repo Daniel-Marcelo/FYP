@@ -1,20 +1,17 @@
 @CHARSET "ISO-8859-1";
+
 html, body, #main-container {
 	margin: 0;
 	height: 100%;
-	background-color : WHITE;
+	background-color: WHITE;
 }
 
-body > #main-container {
+body>#main-container {
 	height: auto;
 	min-height: 100%;
 }
 
-
- #footer{
- clear: both;
- position: relative;
- z-index: 10;
-/*  height: 3em;
- */ margin-top: -3em;
-} 
+#footer {
+	clear: both;
+	position: relative;
+}

@@ -7,7 +7,7 @@ import yahoofinance.Stock;
 public interface StockOnWatchDAO {
 
 	// Create
-	String insert(String email, String symbol);
+	void insert(String email, String symbol);
 
 	// Read
 	List<Stock> getList(String email);
@@ -16,7 +16,7 @@ public interface StockOnWatchDAO {
 	void update(String currentEmail, String newEmail);
 
 	// Delete
-	String remove(String symbol, String email);
+	void remove(String symbol, String email);
 	void remove(String email);
 
 }

@@ -7,8 +7,7 @@ function performUpdateValidation(){
 }
 
 function performRegistrationValidation(){
-	var bool = validateRegistrationDetails(getEmails());
-		
+	var bool = validateRegistrationDetails();
 	return bool;
 }
 
@@ -19,7 +18,8 @@ function validateUpdatedDetails(existingEmails){
 	var uemail = document.updateDetailsForm.email;
 	var country = document.updateDetailsForm.country;
 	
-	if(checkEmail(uemail, existingEmails)){
+	if(checkEmailFormat(uemail) && isEmailFree(uemail, existingEmails) ){
+		console.log("Email all good");
 		if(allLetter(firstname)){
 			if(allLetter(lastname)){
 				if(allLetter(country)){
@@ -32,19 +32,21 @@ function validateUpdatedDetails(existingEmails){
 	return false;
 }
 
-function validateRegistrationDetails(existingEmails){
+function validateRegistrationDetails(){
 
-	var firstname = document.updateDetailsForm.firstName;
-	var lastname = document.updateDetailsForm.lastName;
-	var uemail = document.updateDetailsForm.email;
-	var country = document.updateDetailsForm.country;
-	var password = document.updateDetailsForm.password;
+	var firstname = document.registration.firstName;
+	var lastname = document.registration.lastName;
+	var uemail = document.registration.email;
+	var country = document.registration.country;
+	var password = document.registration.password;
 
-	if(allLetter(firstname)){
-		if(allLetter(lastname)){
-			if(allLetter(country)){
-				if(checkPassword(password)){
-					return true;
+	if(checkEmailFormat(uemail)){
+		if(allLetter(firstname)){
+			if(allLetter(lastname)){
+				if(allLetter(country)){
+					if(checkPassword(password)){
+						return true;
+					}
 				}
 			}
 		}
@@ -82,39 +84,25 @@ function checkPassword(password)
 
 }
 
-
-function ValidateEmail(uemail,myCallBack)
-{
-	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-	
-	if(uemail.value.match(mailformat))
-	{
-		//window.location.reload();
-		
-		console.log("Correct Format - Checking this email - "+uemail.value);
-		
-		
-		$.ajax({
-			async: false,
-	        url : 'is-email-free/'+uemail.value,
-	        success : myCallBack
-	    });
-
-	}
-	else
-	{
-		alert("You have entered an invalid email address!");
-		return false;
-	}
-} 
-
-function checkEmail(uemail, existingEmails)
-{
-	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-	
+function checkEmailFormat(uemail){
+var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	console.log("Checking email format");
 	if(uemail.value.match(mailformat))
 	{
 		console.log("Email Correct Format");
+		return true;
+	}
+	else
+	{
+		alert("Email Address Not Formatted Correctly!");
+		return false;
+	}
+
+}
+
+function isEmailFree(uemail, existingEmails)
+{
+	
 		for(var key in existingEmails){
 			if(existingEmails.hasOwnProperty(key)){
 				if(existingEmails[key] == uemail.value){
@@ -123,12 +111,5 @@ function checkEmail(uemail, existingEmails)
 				}
 			}
 		}
-		
-		return true;
-	}
-	else
-	{
-		alert("Email Address Not Formatted Correctly!");
-		return false;
-	}
+ return true;
 }

@@ -51,6 +51,7 @@ $(document).ready(function() {
  			<div id='chart_div'></div>
 		</div>
  		<div id="stockInfoArea">
+ 		<div id = "stock-table-div">
  			<ul id="stockInfoTable" class="list-group">
 
 				<li id="companyName" class="list-group-item"></li>
@@ -89,11 +90,11 @@ $(document).ready(function() {
 					id="capChanging" class = "float-right"></span></li>
 
 			</ul>
-
- 			<div align="center" id="watch-div">
+</div>
+ 			<div id="watch-div">
 				<div id = "confirmation"></div>
 				<br>
-				<form method="post" action="watch-stock" style = "width: 99%; ">
+				<form method="post" action="watch-stock">
 					<input id = "symbol-field" type="hidden" name="symbol"/>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<button type="submit" class="wide btn blue-submit">Watch Stock</button>

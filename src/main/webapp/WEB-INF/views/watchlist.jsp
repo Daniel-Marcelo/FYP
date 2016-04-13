@@ -21,10 +21,7 @@
 			 "lengthChange": false
 
 		});
-		
 		$('#watchlistTable tbody').on('click', 'tr', addActiveClass);
-		
-		
 	});
 </script>
 </head>

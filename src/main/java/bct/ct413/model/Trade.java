@@ -12,6 +12,7 @@ public class Trade {
 	private String tradeType;	//
 	private String status;//
 	private int gameID;//
+	private LimitOrder limitOrder;
 	
 	/*
 	 * If the trade involves a limit order, these two fields will be null
@@ -89,6 +90,12 @@ public class Trade {
 	}
 	public void setTransaction(TradeTransaction transaction) {
 		this.transaction = transaction;
+	}
+	public LimitOrder getLimitOrder() {
+		return limitOrder;
+	}
+	public void setLimitOrder(LimitOrder limitOrderDetails) {
+		this.limitOrder = limitOrderDetails;
 	}
 
 }

@@ -45,7 +45,6 @@
         	console.log("Update");
         	document.getElementById('loader').style.display = "none";
         	document.getElementById('dashboard-div').style.visibility = "visible";
-
        		}, 1000); 
 	});
 
@@ -101,9 +100,16 @@
 					<c:forEach var="userParticipation" items="${participatingGames}">
 	
 						<div class="game-inner-div">
-							<div style="width: inherit">
+							<div style="width: 100%;">
 								<div align="center">
 									<h3>${userParticipation.getGame().getGameName()}</h3>
+								
+								<c:if test = "${userParticipation.getGame().getStatus() != active}">
+									<h4 class = "red">Game Ended</h4>
+								</c:if>
+								<c:if test = "${userParticipation.getGame().getStatus() == active}">
+									<h4 class = "green">Game Active</h4>
+								</c:if>
 								</div>
 								<div style="height: 190px; ">
 									<div style="float: left; margin: 0 auto; width: 100%;">

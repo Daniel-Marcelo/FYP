@@ -1,9 +1,14 @@
 package bct.ct413.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -24,6 +29,8 @@ public class GameServiceImpl implements GameService {
 	public DashboardUserDetails getDashboardStats(String email, Game g) {
 
 		Collections.sort(g.getUsersInGame());
+		for(User u: g.getUsersInGame())
+			System.out.println(u.getEmail());
 		DashboardUserDetails board 	= new DashboardUserDetails();
 		String name 				= null;
 		double myAccVal 			= 0;
@@ -35,6 +42,7 @@ public class GameServiceImpl implements GameService {
 			if (u.getCurAccVal() > highestAccVal) {
 				highestAccVal = u.getCurAccVal();
 				name = u.getFirstName() + " " + u.getLastName();
+				System.out.println("Top Player: "+name);
 			}
 			if (u.getEmail().equals(email)) {
 				myAccVal = u.getCurAccVal();
@@ -107,8 +115,12 @@ public class GameServiceImpl implements GameService {
 		List<String> joinCodes = new ArrayList<String>();
 		List<Game> games = gameDAO.getList();
 		
-		for(Game game : games)
-			joinCodes.add(game.getJoinCode());
+		for(Game game : games){
+			if(game.getJoinCode() != null)
+				joinCodes.add(game.getJoinCode());
+
+		}
+			
 		
 		return joinCodes;
 	}
@@ -164,7 +176,31 @@ public class GameServiceImpl implements GameService {
 					UGP.setGame(game);	
 		}
 	}
-	
+
+
+	@Override
+	public boolean isGameStatusChangedToOpen(Game game) {
+
+		try {
+			DateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+			Date endDate = format.parse(game.getEndDate());
+			System.out.println("End Date: "+endDate);
+			
+			System.out.println("\nComparing end date: "+endDate+ " vs todays date: "+new Date());
+			
+			if(new Date().before(endDate)){
+				
+				System.out.println("Game with ID: "+game.getGameID()+" is now active.");
+				System.out.println("Updating status from ended to active");
+				return true;
+			}		
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}	
 }
 
 	

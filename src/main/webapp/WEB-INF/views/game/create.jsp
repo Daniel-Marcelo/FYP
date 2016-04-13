@@ -10,13 +10,17 @@
 <script src="${pageContext.request.contextPath}/resources/js/game/create-game.js" type="text/javascript"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
 <script>
 	$(document).ready(function() {
 		initialiseDatePickers();
 	});
 </script>
+<style>
+td	{
+	padding-right: 5%;	
+	}
+</style>
 </head>
 <body>
 	<div id="main-container">
@@ -29,14 +33,14 @@
 					<h3 id="gameCreationErrorMessage"></h3>
 				</div>
 				<div id="createGameDiv">
-					<form:form name="createGameForm" id="createGameForm" action="creating-game" method="POST" modelAttribute="newGame" onSubmit="return validateTheDates();">
+					<form:form name="createGameForm" id="createGameForm" action="creating-game" method="POST" modelAttribute="newGame" onSubmit="return validate();">
 
 						<h3 id="gameCreationErrorMessage"></h3>
 						<table>
 
 							<tr>
 								<td>Game Name</td>
-								<td><form:input path="gameName" class="form-field" type="text" /></td>
+								<td><form:input id = "gameName" path="gameName" class="form-field" type="text" /></td>
 							</tr>
 
 							<tr>

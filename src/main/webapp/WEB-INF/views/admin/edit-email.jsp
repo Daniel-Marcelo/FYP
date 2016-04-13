@@ -7,13 +7,25 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/is-email-free.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
+<script>
+function getExistingEmails(){
+	return JSON.parse('${existingEmails}');
+}
+</script>
+<style>
+td{
+	padding-right: 5%;
+	}
+</style>
 </head>
 <body>
 <div id="main-container">
 	<div id="header"><%@include file="../header.jsp"%></div>
 	<div id="main-content">
 		<div align="center">
-			<h1>Enter new email for user:</h1>
+			<h1 style = "padding-top: 4%;">Enter New Email for User</h1>
+			<h3 id = "error"></h3>
 			<form action="../admin-updating-user" method="GET" onSubmit="return validateEmail();">
 				<table>
 					<tr>
@@ -21,7 +33,6 @@
 						<td> </td>
 						<td><input id="currentEmail" class="form-field" value = "${currentEmail}" type="text" name="currentEmail" readOnly /></td>
 					</tr>
-	
 					<tr>
 						<td>New Email</td>
 						<td> </td>

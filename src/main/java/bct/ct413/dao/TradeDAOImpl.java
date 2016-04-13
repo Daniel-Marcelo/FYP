@@ -65,7 +65,7 @@ public class TradeDAOImpl implements TradeDAO {
 		}
 	}
 	
-	@Override
+/*	@Override
 	public void insert(LimitOrder limitOrder) {
 
 
@@ -88,7 +88,7 @@ public class TradeDAOImpl implements TradeDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 /*	@Override
 	public String getSharesOwned(String email) {
@@ -152,6 +152,7 @@ public class TradeDAOImpl implements TradeDAO {
 				trade.setDate(rs.getDate("date"));
 				trade.setBuyOrSell(rs.getString("buy_or_sell"));
 				trade.setTradeType(rs.getString("trade_type"));
+				trade.setStatus(rs.getString("status"));
 				trade.getTransaction().setTransactionID(rs.getInt("transaction_id"));
 				limitOrdersList.add(trade);
 				

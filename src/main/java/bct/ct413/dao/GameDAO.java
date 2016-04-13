@@ -21,4 +21,6 @@ public interface GameDAO {
 	// Delete
 	void remove(int gameID);
 	void remove(String email);
+
+	void updateStatus(int gameID, String status);
 }

@@ -9,10 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -24,9 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.Interval;
+import com.google.gson.Gson;
+
 import bct.ct413.dao.GameDAO;
 import bct.ct413.dao.LimitOrderDetailsDAO;
 import bct.ct413.dao.PersistentLoginsDAO;
@@ -46,8 +43,10 @@ import bct.ct413.service.GameService;
 import bct.ct413.service.StockOwnedService;
 import bct.ct413.service.TradeService;
 import bct.ct413.service.UserGameParticipationService;
-
-import com.google.gson.Gson;
+import bct.ct413.service.UserService;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.Interval;
 
 @Controller
 public class AdminController {
@@ -60,6 +59,9 @@ public class AdminController {
 	
 	@Autowired
 	private UserDAO userDAO;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private LimitOrderDetailsDAO limitOrderDetailsDAO;
@@ -131,6 +133,7 @@ public class AdminController {
     @RequestMapping(value = "admin-deleting-user/{email:.+}", method = RequestMethod.GET)
     public @ResponseBody String deleteUser(@PathVariable String email){
     	
+    	System.out.println("IN this controller");
     	List<Integer> gameIDs = gameService.getCreatedGameIDs(email);
     	
     	for(int gameID: gameIDs){
@@ -179,6 +182,7 @@ public class AdminController {
 
 		ModelAndView model = new ModelAndView("admin/edit-email");
 		model.addObject("currentEmail", email);
+		model.addObject("existingEmails", new Gson().toJson(userService.getOtherEmails(email)));
 		
 		return model;
 		
@@ -242,25 +246,25 @@ public class AdminController {
 
 		ModelAndView model = new ModelAndView();
 
-		if (isRememberMeAuthenticated()) {
+/*		if (isRememberMeAuthenticated()) {
 			//send login for update
 			setRememberMeTargetUrlToSession(request);
 			model.addObject("loginUpdate", true);
 			model.setViewName("redirect:/login");
 			model.addObject("user", new User());
 
-		} else {
+		} else {*/
 			model.setViewName("admin/delete-user");
 			List<User> allUsers = userDAO.get();
 			model.addObject("allUsers", allUsers);
-		}
+		//}
 		return model;
 	}
 	
-	/**
+/*	*//**
 	 * If the login in from remember me cookie, refer
 	 * org.springframework.security.authentication.AuthenticationTrustResolverImpl
-	 */
+	 *//*
 	private boolean isRememberMeAuthenticated() {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -269,17 +273,17 @@ public class AdminController {
 		}
 
 		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
-	}
+	}*/
 	
 	/**
 	 * save targetURL in session
 	 */
-	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
+/*	private void setRememberMeTargetUrlToSession(HttpServletRequest request){
 		HttpSession session = request.getSession(false);
 		if(session!=null){
 			session.setAttribute("targetUrl", "/admin-remove-user");
 		}
-	}
+	}*/
 	public ModelAndView getDashboardModel(){
 		Set<Integer> gameIDs = new HashSet<Integer>();
 		String email = getActiveUserEmail(); 

@@ -7,11 +7,36 @@
 
 
 //Enables buyOrSell field so it will be sent to controller
-function enableBuyOrSell(){
+function enableBuyOrSellAndValidateFields(){
 	var field = document.getElementById("buyOrSell");
 	field.disabled = false;
-	return true;
 	
+/*	if(document.getElementById("companySymbol").value == "" || document.getElementById("companySymbol").value == " "){
+		alert("Symbol Required");
+	}*/
+	if(allLetter(document.getElementById("companySymbol")))
+		return true;
+	else
+		return false;
+
+	
+}
+
+function allLetter(item)
+{ 
+	var letters = /[A-Za-z ]+$/;
+	
+	if(item.value.match(letters))
+	{
+		console.log("Validated: "+item.value+" - All letters!");
+		return true;
+	}
+	else
+	{
+		alert('Symbol must have alphabet characters only');
+		item.focus();
+		return false;
+	}
 }
 
 
@@ -84,7 +109,6 @@ function updateStockPrice() {
 	$.ajax({
 		url : 'stock-price/' + (stockSymbol.toUpperCase()),
 		success : function(data) {
-			
 			//If the symbol is invalid
 			if( data == "Not valid" ){
 			
@@ -331,6 +355,8 @@ function setSellLimit(stocksOwnedJSON){
 			updateStockPrice();
 			allowOrDisallowSelling(getStocksOwned());
 		}
+		document.getElementById("orderButton").style.display = "inline";
+		document.getElementById("orderButton").disabled = false;
 	}
 	
 	function updateTotalAndValidateFunds(){

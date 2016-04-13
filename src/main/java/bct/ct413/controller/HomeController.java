@@ -21,9 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.Interval;
+import com.google.gson.Gson;
+
 import bct.ct413.dao.GameDAO;
 import bct.ct413.dao.LimitOrderDetailsDAO;
 import bct.ct413.dao.PersistentLoginsDAO;
@@ -48,8 +47,9 @@ import bct.ct413.service.TradeService;
 import bct.ct413.service.TradeTransactionService;
 import bct.ct413.service.UserGameParticipationService;
 import bct.ct413.service.UserService;
-
-import com.google.gson.Gson;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.Interval;
 
 @Controller
 public class HomeController {
@@ -105,6 +105,7 @@ public class HomeController {
 	
 	@Autowired
 	private TradeService tradeService;
+
 	
 	@RequestMapping(value = "/updating-user", method = RequestMethod.POST)
 	public ModelAndView updatingUserDetails(@ModelAttribute User existingUser, HttpServletRequest request) {
@@ -119,6 +120,11 @@ public class HomeController {
 			System.out.println("Updating email in DB");
 			User user = userDAO.get(currentEmail);
 			user.setEmail(newEmail);
+			System.out.println("Country: "+existingUser.getCountry());
+			user.setCountry(existingUser.getCountry());
+			user.setFirstName(existingUser.getFirstName());
+			user.setLastName(existingUser.getLastName());
+			
 			userDAO.insert(user);
 			gameDAO.updateCreatorEmail(currentEmail, newEmail);
 			stockOwnedDAO.updateEmail(currentEmail, newEmail);
@@ -204,7 +210,7 @@ public class HomeController {
 
 		System.out.println("The symbol is: "+symbol);
 		
-		String message = stockOnWatchDAO.insert(getActiveUserEmail(), symbol);
+		stockOnWatchDAO.insert(getActiveUserEmail(), symbol);
 		
 		
 		return new ModelAndView("redirect:/watchlist");
@@ -215,42 +221,18 @@ public class HomeController {
 	@RequestMapping(value = "delete-stock", method = RequestMethod.POST)
 	public ModelAndView  removeFromWatchList(@RequestParam("symbol") String symbol){
 		
-		String message = stockOnWatchDAO.remove(symbol, getActiveUserEmail());
+		stockOnWatchDAO.remove(symbol, getActiveUserEmail());
 		
 		return new ModelAndView("redirect:/watchlist");
 
 		//return message;
 		
 	}
-	
-/*	@RequestMapping(value = "portfolio", method = RequestMethod.GET)
-	public ModelAndView portfolio() {
-
-		ModelAndView model = new ModelAndView("game/portfolio");
-
-		List<StockOwned> stocksForUserForGames = userDAO
-				.getStocksOwned(getActiveUserEmail());
-		List<Integer> gameIDs = userDAO.getGameIDsForUser(getActiveUserEmail());
-		List<Game> gamesForUser = userDAO.getGamesForUser(getActiveUserEmail());
-		List<Trade> myTransactions = tradeDAO
-				.getPortfolioTransactionDetails(getActiveUserEmail());
-				
-
-		System.out.println("Number of games: " + gameIDs);
-
-		model.addObject("stocksForUser",new Gson().toJson(stocksForUserForGames));
-		model.addObject("gamesForUser", gamesForUser);
-		model.addObject("gameIDsJSON", new Gson().toJson(gameIDs));
-		model.addObject("myTransactions", new Gson().toJson(myTransactions));
-
-		return model;
-
-	}*/
 
 	@RequestMapping(value = "portfolio", method = RequestMethod.GET)
 	public ModelAndView portfolioView() {
 
-		ModelAndView model = new ModelAndView("game/portfolioz");
+		ModelAndView model = new ModelAndView("game/portfolio");
 		
 		String email = getActiveUserEmail();
 		List<UserGameParticipation> participatingGames = 
@@ -258,10 +240,18 @@ public class HomeController {
 		gameService.setGame(participatingGames);
 		List<StockOwned> stocksForUserForGames = stockOwnedService.stockOwnedPortfolioInfo(email);
 		List<Trade> myTransactions = tradeDAO.getPortfolioTradeDetails(email);
-
+		
+		List<Trade> limitOrders	= tradeService.getAllLimitOrders(email);
+		System.out.println("number of limit orders: "+limitOrders.size());
+		for(Trade trade : limitOrders){
+			LimitOrder lo = limitOrderDetailsDAO.get(trade.getTradeID());
+			trade.setLimitOrder(lo);
+		}
+		model.addObject("participatingGamesJSON", new Gson().toJson(participatingGames));
 		model.addObject("participatingGames", participatingGames);
 		model.addObject("stocksForUser", new Gson().toJson(stocksForUserForGames));
 		model.addObject("myTransactions", new Gson().toJson(myTransactions));
+		model.addObject("limitOrders", new Gson().toJson(limitOrders));
 
 		return model;
 	}
@@ -398,8 +388,7 @@ public class HomeController {
 
 			}else{
 				userGameParticipationDAO.updateBalance(email, tradeTransaction.getTotal(), trade.getGameID());
-				double avgPurchPrice = tradeTransactionService
-						.calculateNewAvgPurchPrice(transactionIDs, trade);
+				double avgPurchPrice = tradeTransactionService.calculateNewAvgPurchPrice(transactionIDs, trade);
 
 				int oldQuantity = stockOwnedService.getQuantity(trade.getEmail(), trade.getSymbol(), trade.getGameID());
 				
@@ -413,9 +402,7 @@ public class HomeController {
 				else{
 					stockOwnedDAO.insert(trade.getGameID(), trade.getSymbol(), trade.getEmail(), avgPurchPrice, tradeTransaction.getQuantity());
 				}
-
 			}
-			
 			//stockOwnedService.updateQuantity(trade, so);
 		}
 		return new ModelAndView("redirect:/portfolio");

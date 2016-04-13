@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import bct.ct413.dao.TradeTransactionDAO;
-import bct.ct413.model.StockOwned;
 import bct.ct413.model.Trade;
 import bct.ct413.model.TradeTransaction;
 

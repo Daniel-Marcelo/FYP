@@ -1,6 +1,5 @@
 package bct.ct413.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -20,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.Interval;
-
 import com.google.gson.Gson;
 
 import bct.ct413.dao.GameDAO;
@@ -41,8 +36,10 @@ import bct.ct413.model.UserGameParticipation;
 import bct.ct413.service.GameService;
 import bct.ct413.service.StockOwnedService;
 import bct.ct413.service.TradeService;
-import bct.ct413.service.TradeTransactionService;
 import bct.ct413.service.UserGameParticipationService;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.Interval;
 
 @Controller
 public class GameController {
@@ -81,9 +78,6 @@ public class GameController {
 	private TradeTransactionDAO tradeTransactionDAO;
 	
 	@Autowired
-	private TradeTransactionService tradeTransactionService;
-	
-	@Autowired
 	private LimitOrderDetailsDAO limitOrderDetailsDAO;
 	
 	@RequestMapping(value = "joining-private-game", method = RequestMethod.POST)
@@ -99,7 +93,7 @@ public class GameController {
 		}
 		else
 			System.out.println("User already in game");
-		return new ModelAndView("redirect:/trade");
+		return new ModelAndView("redirect:/games");
 
 	}
 	
@@ -164,6 +158,8 @@ public class GameController {
 	public ModelAndView editGameRulesView(@PathVariable int gameID) {
 		
 		Game game = gameDAO.get(gameID);
+		System.out.println("Date: "+game.getEndDate());
+		
 		ModelAndView model;
 		if(getActiveUserEmail().equals(game.getCreatorEmail())){
 			model = new ModelAndView("/game/edit-rules");
@@ -193,8 +189,10 @@ public class GameController {
 	public ModelAndView joinPrivateGameView() {
 		
 			List<String> joinCodes = gameService.getAllJoinCodes();
+			System.out.println("Size: "+joinCodes.size());
+			System.out.println(joinCodes);
 			ModelAndView model = new ModelAndView("game/join-private");
-			model.addObject("joinCodes", joinCodes);
+			model.addObject("joinCodes", new Gson().toJson(joinCodes));
 			return model;
 	}
 	
@@ -255,7 +253,11 @@ public class GameController {
 	@RequestMapping(value = "editing-game/{gameID}", method = RequestMethod.POST)
 	public ModelAndView editingGame(@ModelAttribute Game game, @PathVariable int gameID) {
 
+		boolean isGameNowOpen = gameService.isGameStatusChangedToOpen(game);
+		
 		game.setGameID(gameID);
+		if(isGameNowOpen)
+			gameDAO.updateStatus(gameID, "Active");
 		if (game.getGameType().equals("Private")) 
 			game.setJoinCode(generateJoinCode());
 		
@@ -283,7 +285,7 @@ public class GameController {
 		userGameParticipationDAO.remove(gameID, email);
 		
 		if(gameService.hasUserCreatedGame(email, gameID)){
-			
+			System.out.println("User has created game");
 			stockOwnedDAO.remove(gameID);
 			
 			Map<Integer, Integer> tradeTransactionIDsForGame = tradeService.getTradeAndTransactionIDs(gameID);
@@ -319,11 +321,11 @@ public class GameController {
 	}
 	
 	public ModelAndView getDashboardModel(){
+		
 		Set<Integer> gameIDs = new HashSet<Integer>();
 		String email = getActiveUserEmail(); 
 		Calendar from = Calendar.getInstance();
 		Calendar to = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");		
 		from.add(Calendar.YEAR, -1); 
 		
 		
@@ -359,7 +361,9 @@ public class GameController {
 		model.addObject("sAndP", new Gson().toJson(sAndP));
 		model.addObject("balanceHistory", new Gson().toJson(balancesForGames));
 		model.addObject("gameIDs", new Gson().toJson(gameIDs));
+		model.addObject("active", "Active");
 
+		
 		return model;
 	}
 	

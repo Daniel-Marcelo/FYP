@@ -26,4 +26,6 @@ public interface GameService {
 
 	public void setActiveGames(List<UserGameParticipation> participatingGames);
 
+	public boolean isGameStatusChangedToOpen(Game game);
+
 }

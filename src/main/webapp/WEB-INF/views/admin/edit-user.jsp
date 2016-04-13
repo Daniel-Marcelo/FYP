@@ -22,6 +22,7 @@
 		<div id="header"><%@include file="../header.jsp"%></div>
 		<div id="main-content">
 			<div id="side-menu"><%@include file="side-menu.jsp"%></div>
+			
 			<div id = "outer-table-div">
 			<div align = "center" class = "admin-title">
 				<h1>Select A User To Edit</h1>

@@ -52,7 +52,7 @@ public class StockOnWatchDAOImpl implements StockOnWatchDAO {
 	}
 	
 	@Override
-	public String insert(String email, String symbol) {
+	public void insert(String email, String symbol) {
 
 		int count = 0;
 		try {
@@ -67,7 +67,6 @@ public class StockOnWatchDAOImpl implements StockOnWatchDAO {
 				count = rs.getInt("count(*)");
 
 			if (count != 0) {
-				return "You're Already Watching " + symbol;
 			} else {
 
 				PreparedStatement stmt1 = conn
@@ -79,17 +78,15 @@ public class StockOnWatchDAOImpl implements StockOnWatchDAO {
 
 				stmt1.close();
 				conn.close();
-				return symbol + " added to your watch list";
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "Error";
 	}
 	
 	@Override
-	public String remove(String symbol, String email) {
+	public void remove(String symbol, String email) {
 
 		try {
 			Connection conn = dataSource.getConnection();
@@ -102,12 +99,10 @@ public class StockOnWatchDAOImpl implements StockOnWatchDAO {
 			stmt2.close();
 			conn.close();
 
-			return symbol + " removed from watchlist";
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return "Error: Unsuccessful";
 	}
 
 	@Override
