@@ -49,6 +49,8 @@
 		}
 	}
 	
+	
+	
 	function drawTables(gameIDs){
 		
 		for ( var key in gameIDs) {

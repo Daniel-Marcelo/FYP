@@ -20,9 +20,10 @@
 						be permanently erased.<br> If you rejoin the game, you will
 						be treated as a new user <br>with all previous trading
 						history and/or stocks owned are no longer in play and are permanently erased.<br>
+						If you are the creator of the game, all associated game data involving other users will also be erased.
 						<br>
 					</h2>
-					<div id="leaveForm" style = "width: 30%;">
+					<div id="leaveForm" style = "width: 30%; padding-top: 5%;">
 						<form action="${pageContext.request.contextPath}/leave-game" method="POST">
 							<input type="hidden" id="gameToLeaveID${game.getGameID()}" name="gameToLeaveID" value="${game.getGameID()}"> 
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

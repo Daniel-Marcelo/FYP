@@ -68,6 +68,7 @@ public class StockOwnedServiceImpl implements StockOwnedService {
 				
 				stockOwned.setCurrentPrice(stock.getQuote().getPrice().doubleValue());
 				stockOwned.setTotal(stockOwned.getCurrentPrice()* (double) stockOwned.getQuantity());
+				System.out.println("Gain or loss for symbol: "+stock.getSymbol()+" : "+(stockOwned.getTotal() - (stockOwned.getAvgPurchPrice() * (double) stockOwned.getQuantity())));
 				stockOwned.setGainOrLoss(stockOwned.getTotal() - (stockOwned.getAvgPurchPrice() * (double) stockOwned.getQuantity()));
 				stockOwned.setCompanyName(stock.getName());
 			}

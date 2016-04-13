@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="bct.ct413.dao.TradeTransactionDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/TradeTransactionDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="184" x="2602" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="2" language="java" name="bct.ct413.dao.UserDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="199" x="1624" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="3" language="java" name="bct.ct413.dao.UserRolesDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserRolesDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="149" x="5878" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="bct.ct413.dao.GameDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/GameDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="219" x="3166" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="5" language="java" name="bct.ct413.dao.TradeDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/TradeDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="236" x="4141" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="6" language="java" name="bct.ct413.dao.UserDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="199" x="1624" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="bct.ct413.dao.UserGameAccountValHistoryDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserGameAccountValHistoryDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="250" x="2063" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="bct.ct413.dao.StockOnWatchDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/StockOnWatchDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="160" x="1863" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="9" language="java" name="bct.ct413.dao.TradeTransactionDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/TradeTransactionDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="184" x="2602" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="10" language="java" name="bct.ct413.dao.UserGameAccountValHistoryDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserGameAccountValHistoryDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="250" x="2063" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="11" language="java" name="bct.ct413.dao.LimitOrderDetailsDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/LimitOrderDetailsDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="154" x="6067" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="12" language="java" name="bct.ct413.dao.PersistentLoginsDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/PersistentLoginsDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="81" width="146" x="5668" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="13" language="java" name="bct.ct413.dao.TradeDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/TradeDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="236" x="4141" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="14" language="java" name="bct.ct413.dao.StockOnWatchDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/StockOnWatchDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="160" x="1863" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="15" language="java" name="bct.ct413.dao.StockOwnedDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/StockOwnedDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="270" x="4417" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="16" language="java" name="bct.ct413.dao.UserGameParticipationDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserGameParticipationDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="218" x="5043" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="17" language="java" name="bct.ct413.dao.StockOwnedDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/StockOwnedDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="270" x="4417" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="18" language="java" name="bct.ct413.dao.PersistentLoginsDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/PersistentLoginsDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="170" x="5668" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="19" language="java" name="bct.ct413.dao.GameDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/GameDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="219" x="3166" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="20" language="java" name="bct.ct413.dao.UserGameParticipationDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserGameParticipationDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="218" x="5043" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="bct.ct413.dao.LimitOrderDetailsDAOImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/LimitOrderDetailsDAOImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="173" x="6067" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="22" language="java" name="bct.ct413.dao.UserRolesDAO" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/dao/UserRolesDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="149" x="5878" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="23" language="java" name="bct.ct413.service.TradeService" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/TradeService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="339" x="3762" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="24" language="java" name="bct.ct413.service.StockOwnedService" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/StockOwnedService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="276" x="4727" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="25" language="java" name="bct.ct413.service.UserGameParticipationServiceImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/UserGameParticipationServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="327" x="5301" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="bct.ct413.service.TradeTransactionServiceImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/TradeTransactionServiceImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="300" x="2826" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="bct.ct413.service.StockOwnedServiceImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/StockOwnedServiceImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="276" x="4727" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="bct.ct413.service.TradeServiceImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/TradeServiceImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="339" x="3762" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="29" language="java" name="bct.ct413.service.GameService" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/GameService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="297" x="3425" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="30" language="java" name="bct.ct413.service.TradeTransactionService" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/TradeTransactionService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="81" width="300" x="2826" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="31" language="java" name="bct.ct413.service.UserService" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/UserService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="200" x="1384" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="32" language="java" name="bct.ct413.service.UserServiceImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/UserServiceImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="200" x="1384" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="33" language="java" name="bct.ct413.service.GameServiceImpl" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/GameServiceImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="297" x="3425" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="34" language="java" name="bct.ct413.service.UserGameParticipationService" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/service/UserGameParticipationService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="327" x="5301" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="35" language="java" name="bct.ct413.model.DashboardUserDetails" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/DashboardUserDetails.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="459" width="226" x="2468" y="1575"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="bct.ct413.model.Game" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/Game.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="657" width="209" x="2353" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="bct.ct413.model.LimitOrder" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/LimitOrder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="567" width="165" x="216" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" name="bct.ct413.model.TradeTransaction" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/TradeTransaction.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="157" x="686" y="878"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="bct.ct413.model.StockOnWatch" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/StockOnWatch.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="135" x="41" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="bct.ct413.model.StockOwned" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/StockOwned.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="567" width="176" x="1168" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="bct.ct413.model.TradeDetails" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/TradeDetails.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="801" width="225" x="421" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="bct.ct413.model.User" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/User.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="549" width="190" x="2238" y="1575"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="bct.ct413.model.Trade" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/Trade.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="621" width="214" x="686" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="44" language="java" name="bct.ct413.model.UserGameParticipation" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/UserGameParticipation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="156" x="2353" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="45" language="java" name="bct.ct413.model.UserGameAccountValHistory" project="FYP" 
+    file="/FYP/src/main/java/bct/ct413/model/UserGameAccountValHistory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="405" width="188" x="940" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="46">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="47" name="tradeDAO"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="49">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="17"/>  
+  </realization>  
+  <realization id="50">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="16"/>  
+  </realization>  
+  <association id="51">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="52" name="usersInGame"/>      
+      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="42" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="54">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <realization id="55">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <realization id="56">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <association id="57">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="58" name="stockOwnedDAO"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="61" name="userGameParticipationDAO"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="63">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="30"/>  
+  </realization>  
+  <association id="64">    
+    <end type="SOURCE" refId="33" navigable="false">      
+      <attribute id="65" name="gameDAO"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="67">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="12"/>  
+  </realization>  
+  <realization id="68">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="22"/>  
+  </realization>  
+  <association id="69">    
+    <end type="SOURCE" refId="44" navigable="false">      
+      <attribute id="70" name="game"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="72">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <realization id="73">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="31"/>  
+  </realization>  
+  <association id="74">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="75" name="tradeTransactionDAO"/>      
+      <multiplicity id="76" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="77">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
+  <realization id="78">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <association id="79">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="80" name="transaction"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="82">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <realization id="83">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="14"/>  
+  </realization>  
+  <association id="84">    
+    <end type="SOURCE" refId="32" navigable="false">      
+      <attribute id="85" name="userDAO"/>      
+      <multiplicity id="86" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="87">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="19"/>  
+  </realization>  
+  <association id="88">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="89" name="board"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="91">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="23"/>  
+  </realization>  
+  <realization id="92">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="34"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

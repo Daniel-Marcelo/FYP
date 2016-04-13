@@ -19,16 +19,16 @@
 		var error = document.getElementById("errorMsg");
 		var table = $('#allUsersTable').DataTable();
 
-		if (table.row('.selected').length == 0) {
+		if (table.row('.active').length == 0) {
 			
 			error.innerHTML = "Please select a user to remove<br><br>";
 			error.style.display = "inline";
 			error.style.color = "RED";
 			
 		} else {
-			
-			var email = table.row('.selected').data()[2];
-			table.row('.selected').remove().draw(false);
+			console.log("Removing user");
+			var email = table.row('.active').data()[2];
+			table.row('.active').remove().draw(false);
 			
 			if (error.style.display == "inline") {
 				error.style.display = "none";

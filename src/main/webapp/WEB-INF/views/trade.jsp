@@ -51,7 +51,7 @@
 				<h4 id="errorTag2"></h4>
 			</div>		
 				<div style = "margin-bottom: 3%;">
-					<form:form name="trade" id="trade" action="execute-trade" method="POST" modelAttribute="trade" onSubmit="return enableBuyOrSell();">
+					<form:form name="trade" id="trade" action="execute-trade" method="POST" modelAttribute="trade" onSubmit="return enableBuyOrSellAndValidateFields();">
 						<table>
 							<tr>
 								<td>Game</td>
@@ -110,9 +110,8 @@
 							</tr>
 							<tr>
 								<td> </td>
-								<td><button id="orderButton" type="submit" class="wide btn blue-submit">Place Order</button></td>
+								<td><button id="orderButton" type="submit" class="wide btn blue-submit" disabled style = "display:none">Place Order</button></td>
 							</tr>
-							
 						</table>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form:form>

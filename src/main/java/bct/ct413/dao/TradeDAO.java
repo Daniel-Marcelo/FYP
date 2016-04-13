@@ -25,6 +25,6 @@ public interface TradeDAO {
 	
 	void remove(String email);
 
-	void insert(LimitOrder limitOrder);
-
+/*	void insert(LimitOrder limitOrder);
+*/
 }

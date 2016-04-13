@@ -17,4 +17,6 @@ public interface TradeService {
 
 	List<Integer> getPurchaseOrderTransactionIDs(String email, String symbol, int gameID);
 
+	List<Trade> getAllLimitOrders(String email);
+
 }

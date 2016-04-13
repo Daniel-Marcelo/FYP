@@ -12,4 +12,6 @@ public interface LimitOrderDetailsDAO {
 	// Delete
 	void remove(Set<Integer> tradeIDs);
 
+
+	LimitOrder get(int tradeID);
 }

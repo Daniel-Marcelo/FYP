@@ -15,6 +15,7 @@
 
 
 	<http auto-config="true" use-expressions="true">
+	
 		<intercept-url pattern="/account**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/symbol-lookup**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/trade**" access="hasRole('ROLE_USER')" />
@@ -30,6 +31,8 @@
 		<intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin-edit-user/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin-deleting-user/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
+		<access-denied-handler error-page="/403" />
 		
 		<!-- <intercept-url pattern="/portfolio**" access="hasRole('ROLE_USER')" 
 			/> <intercept-url pattern="/dashboard**" access="hasRole('ROLE_USER')" /> 
@@ -42,9 +45,7 @@
 			/> <intercept-url pattern="/viewGameRules/**" access="hasRole('ROLE_USER')" 
 			/> <intercept-url pattern="/leaveGame/**" access="hasRole('ROLE_USER')" /> -->
 
- 		<intercept-url pattern="/" access="hasRole('ROLE_USER')" />
 
-		<access-denied-handler error-page="/403" />
 
 		<form-login login-page="/login" default-target-url="/games"
 			authentication-failure-url="/login?error" username-parameter="email"

@@ -1,45 +1,52 @@
-/**
- * 
- */
 
-/*	var isEmailValid = false;
-*/
-	function validateEmail() {
-		var isEmailValid = false;
-		performValidation(document.getElementById("newEmail").value);
+function validateEmail() {
+		var uemail = document.getElementById("newEmail");
+		var existingEmails = getExistingEmails();
 		
-		function performValidation(uemail) {
-
-			var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-			if (uemail.match(mailformat)) {
-				//window.location.reload();
-
-				console.log("Correct Format - Checking this email - " + uemail);
-
-				$.ajax({
-					async : false,
-					url : '../is-email-free/' + uemail,
-					success : function(result) {
-						console.log("Connection was a success: " + result);
-
-						if (result > 0) {
-							alert("Email already associated to an account");
-							isEmailValid = false;
-						} else {
-							console.log("The email is free to be used.");
-							isEmailValid = true;
-						}
-					}
-				});
-				
-			} else {
-				alert("You have entered an invalid email address!");
+		
+		if(checkEmailFormat(uemail) && isEmailFree(uemail, existingEmails) ){
+			console.log("Format good and email free");
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	function checkEmailFormat(uemail){
+		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+			console.log("Checking email format");
+			if(uemail.value.match(mailformat))
+			{
+				console.log("Email Correct Format");
+				return true;
+			}
+			else
+			{
+				errorMsg("Email Address Not Formatted Correctly!");
 				return false;
 			}
-		}
-		
-		return isEmailValid;
 
+		}
+	
+	function isEmailFree(uemail, existingEmails)
+	{
+		
+			for(var key in existingEmails){
+				if(existingEmails.hasOwnProperty(key)){
+					if(existingEmails[key] == uemail.value){
+						errorMsg("Email Already In Use");
+						return false;
+					}
+				}
+			}
+	 return true;
+	}
+	
+	function errorMsg(msg) {
+		var errorMsg = document.getElementById("error");
+
+		errorMsg.innerHTML = msg;
+		errorMsg.style.color = "RED";
+		errorMsg.style.display = "inline";
 	}
 

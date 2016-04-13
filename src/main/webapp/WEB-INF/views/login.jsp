@@ -8,7 +8,6 @@
 <title>User Login</title>
 <script src="${pageContext.request.contextPath}/resources/js/registration-form-validation.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-1.12.0.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/recover-password.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/buttons-and-fields.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/reg-login.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/tags.css">
@@ -19,22 +18,29 @@
 		<div id="header"><%@include file="header.jsp"%></div>
 		<div id="main-content">
 			<div align="center" id="main">
+			
 				<div id="image">
 					<img src="${pageContext.request.contextPath}/resources/img/wall-street.jpg" height="1000" width="100%" />
 				</div>
+				
 				<div class = "white-background">
+					<div id = "login-div">
 					<div><h1>User Login</h1></div>
+					
 					<c:if test="${not empty error}">
-						<div class="errorblock">
-							Your login attempt was not successful, try again.<br /> Caused :
-							${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+						<div>
+						<h3>
+							Your login attempt was not successful, try again.<br /> Cause :
+							${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} </h3>
 						</div>
 					</c:if>
+					
 					<c:if test="${not empty passwordConfirmation}">
-						<div class="errorblock">
-							${passwordConfirmation}
+						<div>
+							<h3>${passwordConfirmation}</h3>
 						</div>
 					</c:if>
+					
 					<c:if test="${not empty msg}"> <h3>${msg}</h3> </c:if>
 					<form:form id="loginForm" name="loginForm" action="/FYP/auth/login_check?targetUrl=${targetUrl}" method="post" modelAttribute="user">
 						<table>
@@ -62,6 +68,7 @@
 						</table>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form:form>
+				</div>
 				</div>
 			</div>
 		</div>

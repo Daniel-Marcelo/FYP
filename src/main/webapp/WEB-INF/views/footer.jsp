@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html>
 
 
@@ -21,16 +23,18 @@
 <div class="footer-distributed">
 			<div class="footer-left">
 				<h3>x<span>Change</span></h3>
-				<p class="footer-links">
-					<a href="home">Home</a>
-					<a href="account">Account</a>
-					<a href="games">Games</a>
-					<a href="game-dashboard">Dashboard</a>
-					<a href="portfolio">Portfolio</a>
-					<a href="watchlist">Watchlist</a>
-					<a href="admin">Admin</a>
-					
-				</p>
+				<c:if test="${pageContext.request.userPrincipal.name != null}">
+					<p class="footer-links">
+						<a href="home">Home</a>
+						<a href="account">Account</a>
+						<a href="games">Games</a>
+						<a href="game-dashboard">Dashboard</a>
+						<a href="portfolio">Portfolio</a>
+						<a href="watchlist">Watchlist</a>
+						<a href="admin">Admin</a>
+						
+					</p>
+				</c:if>
 				<p class="footer-company-name">xChange &copy; 2016</p>
 			</div>
 

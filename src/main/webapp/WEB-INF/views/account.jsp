@@ -32,9 +32,8 @@ function getEmails(){
 <div id="main-container">
  		<div id="header"><%@include file="header.jsp"%></div>
 		<div id="main-content">
-		<div >
-		<div style = "width: 20%; overflow:hidden; padding-bottom: 5%; margin-left: 20%; display: inline-block; float: left;">
-			<div align = "center" style = "padding-top: 1% 0%;">
+		<div style = "width: 20%; overflow:hidden; padding-bottom: 5%; margin-left: 25%; display: inline-block; float: left;">
+			<div align = "center" class = "headings">
 				<h1>Details</h1>
 				<c:if test="${not empty detailsConfirmation}">
 						<div style = "color: GREEN;">
@@ -79,28 +78,30 @@ function getEmails(){
 				</form:form>
 			</div>	
 			
-			<div style = "display: inline-block; margin-left: 5%;">
-			<div style = "padding-top: 1% 0%; margin-left:35%;">
+			<div style = "display: inline-block; margin-left: 5%; width: 20%;">
+			<div class = "headings" align = "center">
 				<h1>Change Password</h1>
 			</div>
 					<c:if test="${not empty passwordError}">
-						<div style = "color: RED; padding-top: 1% 0%; margin-left:32%;" >
+						<div style = "color: RED; padding-top: 1% 0%;" align = "center">
 							<h2>${passwordError}</h2>
 						</div>
 					</c:if>
-			<%-- <c:if test="${not empty msg}"> <h3>${msg}</h3> </c:if> --%>
 			<form action="updating-password" method="POST">
 							<table>
 								<tr>
 									<td>Current Password</td> 
+								</tr>
+								<tr>
 									<td><input name = "oldPassword" type="password" class="form-field" placeholder="Old Password.." /></td>
 								</tr>
 								<tr>
 									<td>New Password</td>
+								</tr>
+								<tr>
 									<td><input name = "newPassword" type="password" class="form-field" placeholder="New Password.." /></td>
 								</tr>
 								<tr>
-									<td> </td>
 									<td align="center"><button type="submit" class="field-width btn blue-submit">Save Changes</button></td>
 								</tr>
 							</table>
@@ -109,7 +110,6 @@ function getEmails(){
 			</div>	
  		</div>
  		</div>
-	</div>
  	<div id = "footer"><%@include file="footer.jsp"%></div>
 </body>
 </html>

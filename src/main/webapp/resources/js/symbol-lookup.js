@@ -100,13 +100,15 @@ function performLookup(stockSymbol){
 	        document.getElementById("chart_div").style.visibility = "visible";
 	        document.getElementById("stockInfoArea").style.visibility = "visible";
 	        document.getElementById("watch-div").style.visibility = "visible";
+	        document.getElementById("marketStatus").style.visibility = "visible";
 	        myLoad.style.visibility = "hidden";
-	
-	        console.log("Performing 2 second update");
-	        intervalID = setInterval(function(){
-	        	console.log("Update");
-	       		updateStockPrice(stockSymbol)       	
-	       		}, 2000); 
+	        if (isStockMarketOpen()){
+		        console.log("Performing 2 second update");
+		        intervalID = setInterval(function(){
+		        	console.log("Update");
+		       		updateStockPrice(stockSymbol)       	
+		       		}, 2000); 
+	        }
 		}
         }
 	});

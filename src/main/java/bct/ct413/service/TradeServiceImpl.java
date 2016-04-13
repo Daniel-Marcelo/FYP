@@ -88,5 +88,17 @@ public class TradeServiceImpl implements TradeService {
 		return ids;
 				
 	}
+
+	@Override
+	public List<Trade> getAllLimitOrders(String email) {
+		List<Trade> limitOrders = new ArrayList<Trade>();
+		List<Trade> trades = tradeDAO.getList();
+		
+		for(Trade t : trades)
+			if(t.getEmail().equals(email) && t.getTradeType().equals("Limit"))
+				limitOrders.add(t);
+		
+		return limitOrders;
+	}
 	
 }

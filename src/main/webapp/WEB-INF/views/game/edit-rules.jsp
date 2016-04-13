@@ -32,7 +32,7 @@ $(document).ready(function() {
 			<div style = "padding: 3% 0%;">
 			<h1 >Edit Game Rules For ${game.getGameName()}</h1>
 			</div>
-				<form:form action="${pageContext.request.contextPath}/editing-game/${game.getGameID()}" method="post" modelAttribute="game" onSubmit="return validateTheDates();">
+				<form:form action="${pageContext.request.contextPath}/editing-game/${game.getGameID()}" method="post" modelAttribute="game" onSubmit="return validate();">
 					<h3 id="gameCreationErrorMessage"></h3>
 					<table>
 		
@@ -43,17 +43,17 @@ $(document).ready(function() {
 			
 						<tr>
 							<td>Starting Cash</td>
-							<td><form:input path="startingCash" class="form-field" type="number" min="1" max="100,000,000" placeholder="Starting Cash..." value="${game.getStartingCash() }" /></td>
+							<td><form:input path="startingCash" class="form-field" type="number" min="100" max="100,000,000" placeholder="Starting Cash..." value="${game.getStartingCash() }" /></td>
 						</tr>
 		
 						<tr>
 							<td>Start Date</td>
-							<td><form:input path="startDate" name="startDate" id="startDateGame" class="form-field" type="date" readOnly="true" value="${game.getStartDate() }" /></td>
+							<td><form:input path="startDate" name="startDate" id="startDateGame" class="form-field" type="text" readOnly="true" value="${game.getStartDate() }" /></td>
 						</tr>
 		
 						<tr>
 							<td>End Date</td>
-							<td><form:input path="endDate" id="endDateGame" class="form-field" type="date" readOnly="true" value="${game.getEndDate()}" /></td>
+							<td><form:input path="endDate" id="endDateGame" class="form-field" type="text" readOnly="true" value="${game.getEndDate()}" /></td>
 						</tr>
 						
 						<c:if test="${game.getGameType() == privateType}">

@@ -2,6 +2,7 @@ package bct.ct413.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -67,5 +68,28 @@ public class LimitOrderDetailsDAOImpl implements LimitOrderDetailsDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public LimitOrder get(int tradeID) {
+		LimitOrder lo = new LimitOrder();
+	try{
+			Connection conn = dataSource.getConnection();
+			PreparedStatement stmt1 = conn.prepareStatement("SELECT * FROM fyp_limit_order_details WHERE trade_id = ?");
+			stmt1.setInt(1, tradeID);
+	
+		
+			ResultSet rs = stmt1.executeQuery();
+			while(rs.next()){
+				lo.setQuantity(rs.getInt("quantity"));
+				lo.setDesiredPrice(rs.getDouble("desired_price"));
+				lo.setDurationDays(rs.getInt("duration_days"));
+			}
+				
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return lo;
 	}
 }

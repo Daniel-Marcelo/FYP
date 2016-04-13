@@ -82,10 +82,11 @@ public class User implements Comparable<User> {
 	@Override
 	public int compareTo(User o) {
 
+		System.out.println("Comparing this user: "+email+" : "+this.curAccVal+" to :"+o.getEmail()+" : "+o.getCurAccVal());
 		if (this.curAccVal < o.getCurAccVal())
-			return -1;
-		if (this.curAccVal > o.getCurAccVal())
 			return 1;
+		if (this.curAccVal > o.getCurAccVal())
+			return -1;
 		else
 			return 0;
 	}

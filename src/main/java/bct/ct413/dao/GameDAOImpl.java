@@ -226,6 +226,23 @@ public class GameDAOImpl implements GameDAO {
 			e.printStackTrace();
 		}
 	}
+	@Override
+	public void updateStatus(int gameID, String status) {
+
+		try{
+			Connection conn = dataSource.getConnection();
+
+			PreparedStatement stmt3 = conn.prepareStatement("UPDATE fyp_game SET status = ? WHERE game_id = ?");
+			stmt3.setString(1, status);
+			stmt3.setInt(2, gameID);
+			stmt3.execute();
+			stmt3.close();
+			
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 

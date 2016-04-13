@@ -9,8 +9,8 @@
 	margin-left: 2%;
 	float: initial;
 /* 	margin-right: 5%;
- */	width: 900px;
- 	max-width: 900px;
+ */	width: 43%;
+ 	max-width: 43%;
 	margin-bottom: 3%;
 	display: inline-table;
 /* 	 max-height: 700px;
@@ -28,3 +28,9 @@
 	width: 100%;
 }
 
+.red{
+	color: red;
+}
+.green{
+	color: green;
+}
